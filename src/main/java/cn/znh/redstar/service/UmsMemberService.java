@@ -10,11 +10,11 @@ import cn.znh.redstar.common.api.CommonResult;
 public interface UmsMemberService {
 
     /**
-     * 生成验证码
-     * @param telephone 手机号
+     * 生成验证码,通过邮箱发送
+     * @param email 邮箱号
      * @return
      */
-    CommonResult generateAuthCode(String telephone);
+    CommonResult generateAuthCode(String email);
 
     /**
      * 验证手机号和验证码是否匹配

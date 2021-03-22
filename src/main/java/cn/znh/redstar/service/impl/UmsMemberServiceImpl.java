@@ -1,6 +1,7 @@
 package cn.znh.redstar.service.impl;
 
 import cn.znh.redstar.common.api.CommonResult;
+import cn.znh.redstar.component.mail.MailServer;
 import cn.znh.redstar.service.RedisService;
 import cn.znh.redstar.service.UmsMemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,11 @@ import java.util.Random;
 @Service
 public class UmsMemberServiceImpl implements UmsMemberService {
     /**
+     * 邮件服务
+     */
+    @Resource
+    MailServer mailServer;
+    /**
      * 注入 RedisService
      */
     @Resource
@@ -37,7 +43,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private Long REDIS_KEY_AUTH_CODE_EXPIRE;
     
     @Override
-    public CommonResult generateAuthCode(String telephone) {
+    public CommonResult generateAuthCode(String email) {
         //验证码位数
         try {
             final int AUTH_CODE_NUM =6;
@@ -48,9 +54,22 @@ public class UmsMemberServiceImpl implements UmsMemberService {
                 sb.append(random.nextInt(10));
             }
             //存入redis
-            redisService.set(REDIS_KEY_AUTH_CODE_PREFIX+telephone,sb.toString());
-            redisService.expire(REDIS_KEY_AUTH_CODE_PREFIX+telephone,REDIS_KEY_AUTH_CODE_EXPIRE);
-            return CommonResult.success(sb.toString(),"验证码获取成功");
+            redisService.set(REDIS_KEY_AUTH_CODE_PREFIX+email,sb.toString());
+            redisService.expire(REDIS_KEY_AUTH_CODE_PREFIX+email,REDIS_KEY_AUTH_CODE_EXPIRE);
+            //通过邮件发送
+            String subject="你的验证码如下";
+            String message=sb.toString();
+            String addr=email;
+            int result = mailServer.qqMailSend(subject, message, addr);
+            if (result==1)
+            {
+                //发送成功
+                return CommonResult.success(sb.toString(),"验证码获取成功");
+            }
+            else {
+                return CommonResult.failed("验证码获取失败");
+            }
+
         }
         catch (Exception e)
         {

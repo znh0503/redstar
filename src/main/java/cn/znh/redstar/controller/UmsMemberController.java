@@ -1,6 +1,7 @@
 package cn.znh.redstar.controller;
 
 import cn.znh.redstar.common.api.CommonResult;
+import cn.znh.redstar.component.mail.MailServer;
 import cn.znh.redstar.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,9 +28,9 @@ public class UmsMemberController {
     @ApiOperation("获取验证码")
     @GetMapping("/AuthCode")
     @ResponseBody
-    public CommonResult getAuthCode(@RequestParam String telephone)
+    public CommonResult getAuthCode(@RequestParam String email)
     {
-        CommonResult commonResult = umsMemberService.generateAuthCode(telephone);
+        CommonResult commonResult = umsMemberService.generateAuthCode(email);
         return commonResult;
     }
 
