@@ -115,6 +115,11 @@
             <artifactId>commons-email</artifactId>
             <version>1.4</version>
         </dependency>
+        <!--        springboot data-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

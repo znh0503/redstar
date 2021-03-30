@@ -8,7 +8,7 @@ spring:
     url: jdbc:mysql://localhost:3306/redstar?serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: 192.168.10.107
+    host: 192.168.10.109
     database: 0 #redis索引（默认为0）
     port: 6379  #Redis服务器连接端口
     password: #redis服务器连接密码（默认为空）
@@ -19,6 +19,9 @@ spring:
         max-wait: -1ms  #连接池最大阻塞等待时间（负数表示无限制）
         min-idle: 0 #连接池中的最小空闲连接
     timeout: 3000ms #连接超时时间（毫秒）
+  elasticsearch:
+    rest:
+      uris: 192.168.10.109:9200
 #r redis配置
 mybatis:
   mapper-locations:
@@ -53,6 +56,11 @@ secure:
       - /**/*.css
       - /**/*.png
       - /**/*.ico
+      - /**/*.gif
+      - /*.html
+      - /**/*.html
+      - /**/*.json
+      - /**/*.woff2
       - /webjars/springfox-swagger-ui/**
       - /actuator/**
       - /druid/**
@@ -61,9 +69,10 @@ secure:
       - /admin/info
       - /admin/logout
       - /minio/upload
-      - /sso/AuthCode
-      - /sso/verifyAuthCode
-
+      - /member/authCode
+      - /member/verifyAuthCode
+      - /member/login
+      - /member/register
 #邮箱配置
 mail:
   qq:
@@ -71,3 +80,4 @@ mail:
       username: 604793921@qq.com
       password: axalpxejckiubegf
     name: redstar
+

@@ -39,7 +39,7 @@ public class UmsAdminController {
 
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public CommonResult<UmsAdmin> regist(@Validated @RequestBody UmsAdminParam umsAdminParam)
+    public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam)
     {
         UmsAdmin registerUmsAdmin = umsAdminService.register(umsAdminParam);
         if (registerUmsAdmin==null)

@@ -66,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
         //放行options请求，跨域
         registry.antMatchers(HttpMethod.OPTIONS).permitAll();
+        //测试阶段全部放行
+        registry.antMatchers("/**").permitAll();
         //其它任何请求都要身份认证
         registry.and()
                 .authorizeRequests()
@@ -90,6 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         {
             registry.and().addFilterBefore(dynamicSecurityFilter(), FilterSecurityInterceptor.class );
         }
+        //让X-frame-options失效,去除iframe限制
+        httpSecurity.headers().frameOptions().disable();
     }
 
     /**
