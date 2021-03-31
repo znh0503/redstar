@@ -61,7 +61,7 @@ public class UmsAdminController {
         }
         Map<String,String> tokenMap=new HashMap<>();
         tokenMap.put("token",token);
-        tokenMap.put("claimsHead","claimsHead");
+        tokenMap.put("claimsHead",claimsHead);
         return CommonResult.success(tokenMap,"登陆成功");
     }
 
