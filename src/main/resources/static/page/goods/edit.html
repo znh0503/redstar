@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分步表单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <link rel="stylesheet" href="../../js/lay-module/step-lay/step.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 40px;">
+                    <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                        <input id="id" type="hidden" />
+                        <div carousel-item>
+<!--                            填写商品信息-->
+                            <div>
+                                <form lay-filter="stepForm1" class="layui-form" style="margin: 0 auto;max-width: 700px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品分类:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-input-inline">
+                                                <select lay-filter="goodsCategory1" id="goodsCategory1" name="goodsCategory1" lay-verify="required">
+                                                </select>
+                                            </div>
+                                            <div class="layui-input-inline">
+                                                <select lay-filter="goodsCategory2" id="goodsCategory2" name="goodsCategory2">
+<!--                                                    <option value="">请选择市</option>-->
+<!--                                                    <option value="杭州">杭州</option>-->
+<!--                                                    <option value="宁波" disabled="">宁波</option>-->
+<!--                                                    <option value="温州">温州</option>-->
+<!--                                                    <option value="温州">台州</option>-->
+<!--                                                    <option value="温州">绍兴</option>-->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品名称:</label>
+                                        <div class="layui-input-block">
+                                            <input id="name" name="name" type="text" placeholder="请填写商品名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品品牌:</label>
+                                        <div class="layui-input-block">
+                                            <select id="brand" name="brand" lay-filter="brand"  lay-verify="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">副标题:</label>
+                                        <div class="layui-input-block">
+                                            <input id="subTitle" name="subTitle" type="text" placeholder="请填写副标题" value="" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品介绍:</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="description" name="description" placeholder="填写商品介绍" value="" class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品货号:</label>
+                                        <div class="layui-input-block">
+                                            <input id="goodsSn" name="goodsSn" type="text" placeholder="填写商品货号" value="" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品售价:</label>
+                                        <div class="layui-input-block">
+                                            <input id="price" name="price" type="number" placeholder="请填写商品售价" value="" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">市场价:</label>
+                                        <div class="layui-input-block">
+                                            <input id="originalPrice" name="originalPrice" type="number" placeholder="请填写市场价" value="" class="layui-input" >
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品库存:</label>
+                                        <div class="layui-input-block">
+                                            <input id="stock" type="number" name="stock" placeholder="请填写商品库存" value="" class="layui-input" lay-verify="number">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">计量单位:</label>
+                                        <div class="layui-input-block">
+                                            <input id="unit" type="text" name="unit" placeholder="请填写计量单位" value="" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品重量（克）:</label>
+                                        <div class="layui-input-block">
+                                            <input id="weight" name="weight" type="number" placeholder="请填写入商品重量" value="" class="layui-input"  >
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">排序:</label>
+                                        <div class="layui-input-block">
+                                            <input id="sort" name="sort" type="number" placeholder="排序" value="" class="layui-input" lay-verify="number" >
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步,填写促销信息&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+<!--                            填写促销信息-->
+                            <div>
+                                <form lay-filter="stepForm2" class="layui-form" style="margin: 0 auto;max-width: 700px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">赠送积分:</label>
+                                        <div class="layui-input-block">
+                                            <input id="giftPoint" name="giftPoint" type="number" placeholder="请填写赠送积分" class="layui-input" lay-verify="number" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">赠送成长值:</label>
+                                        <div class="layui-input-block">
+                                            <input id="giftGrowth" name="giftGrowth" type="number" placeholder="请填写赠送成长值" class="layui-input" lay-verify="number" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">积分购买限制:</label>
+                                        <div class="layui-input-block">
+                                            <input id="usePointLimit" name="usePointLimit" type="text" placeholder="请填写积分购买限制" class="layui-input" lay-verify="number" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">预购商品:</label>
+                                        <div class="layui-input-block">
+                                            <input id="previewStatus" name="previewStatus" type="checkbox"  lay-skin="switch">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品上架:</label>
+                                        <div class="layui-input-block">
+                                            <input id="publishStatus" name="publishStatus" type="checkbox"  lay-skin="switch">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品推荐:</label>
+                                        <div class="layui-input-block">
+                                            <input id="recommendStatus" name="recommendStatus" type="checkbox"  lay-skin="switch">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">是否新品:</label>
+                                        <div class="layui-input-block">
+                                            <input id="newStatus" name="newStatus" type="checkbox"  lay-skin="switch">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">服务保证:</label>
+                                        <div class="layui-input-block" id="serviceIds">
+                                            <input type="checkbox" name="" title="无忧退货">
+                                            <input type="checkbox" name="" title="快速退款">
+                                            <input type="checkbox" name="" title="免费包邮">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">详细页标题:</label>
+                                        <div class="layui-input-block">
+                                            <input id="detailTitle" name="detailTitle" type="text" placeholder="请填写入款人游戏ID" class="layui-input"  required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">详细页描述:</label>
+                                        <div class="layui-input-block">
+                                            <input id="detailDesc" name="detailDesc" type="text" placeholder="请填写入款人游戏ID" class="layui-input"  required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品关键字:</label>
+                                        <div class="layui-input-block">
+                                            <input id="keywords" name="keywords" type="text" placeholder="请填写入款人游戏ID" class="layui-input"  required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">商品备注:</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="note" name="note" placeholder="入款备注" value="" class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">选择优惠方式:</div>
+                                        <div class="layui-input-block">
+                                            <input type="radio" lay-filter="promotionType" name="promotionType" value="0" title="无优惠" checked>
+                                            <input type="radio" lay-filter="promotionType" name="promotionType" value="1" title="特惠促销">
+                                            <input type="radio" lay-filter="promotionType" name="promotionType" value="2" title="会员价格">
+                                            <input type="radio" lay-filter="promotionType" name="promotionType" value="3" title="阶梯价格">
+                                            <input type="radio" lay-filter="promotionType" name="promotionType" value="4" title="满减价格">
+                                        </div>
+                                        <div id="promotionTypeDiv" style="float: left;color: #c24f4a">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步，填写商品信息</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步，填写商品属性&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+<!--                            填写商品属性-->
+                            <div>
+                                <form lay-filter="stepForm3" class="layui-form" style="margin: 0 auto;max-width: 700px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">属性分类:</label>
+                                        <div class="layui-input-block">
+                                            <select lay-filter="goodsAttributeCategory" id="goodsAttributeCategory" name="goodsAttributeCategory">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div id="goodsAttributeCategoryDiv"  class="layui-input-block" style="background-color:lightyellow;">
+                                            <input id="test" type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏ID:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">639537</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">账户余额:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">3000 元（保险箱：1000，现金：2000）</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款金额:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">
+                                                <span style="font-size: 18px;color: #333;">1800 元</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款类型:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">保险箱</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款方式:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">人工入款</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注说明:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">备注说明</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步，填写促销信息</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步，选择商品关联&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+<!--                            选择商品关联-->
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 700px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">游戏ID:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">639537</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">账户余额:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">3000 元（保险箱：1000，现金：2000）</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款金额:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">
+                                                <span style="font-size: 18px;color: #333;">1800 元</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款类型:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">保险箱</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款方式:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">人工入款</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注说明:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">备注说明</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步，填写商品属性</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2">
+                                                &emsp;完成&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+<!--                            完成-->
+                            <div>
+                                <div style="text-align: center;margin-top: 90px;">
+                                    <i class="layui-icon layui-circle"
+                                       style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
+                                        入款成功
+                                    </div>
+                                    <div style="font-size: 14px;color: #666;margin-top: 20px;">预计两小时到账</div>
+                                </div>
+                                <div style="text-align: center;margin-top: 50px;">
+                                    <button class="layui-btn next">再入一笔</button>
+                                    <button class="layui-btn layui-btn-primary">查看账单</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+<!--                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">-->
+<!--                        <h3>说明</h3><br>-->
+<!--                        <h4>入款到保险箱</h4>-->
+<!--                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>-->
+<!--                        <br><h4>入款到现金</h4>-->
+<!--                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>-->
+<!--                    </div>-->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<!--  全局配置  -->
+<script src="../../js/Config.js"></script>
+<script>
+    layui.use([ 'form', 'step','element','laydate','tableSelect'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            step = layui.step,
+            laydate = layui.laydate,
+            tableSelect = layui.tableSelect;
+
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%', //设置容器宽度
+            stepWidth: '750px',
+            height: '1200px',
+            stepItems: [{
+                title: '填写商品信息'
+            }, {
+                title: '填写促销信息'
+            }, {
+                title: '填写属性信息'
+            }, {
+                title: '选择商品关联'
+            }, {
+                title: '完成'
+            }]
+        });
+        // tableSelect.render({
+        //     elem: '#test',	//定义输入框input对象 必填
+        //     checkedKey: 'id', //表格的唯一建值，非常重要，影响到选中状态 必填
+        //     searchKey: 'keyword',	//搜索输入框的name值 默认keyword
+        //     searchPlaceholder: '关键词搜索',	//搜索输入框的提示文字 默认关键词搜索
+        //     height:'400',  //自定义高度
+        //     width:'900',  //自定义宽度
+        //     table: {	//定义表格参数，与LAYUI的TABLE模块一致，只是无需再定义表格elem
+        //         url:'',
+        //         cols: [[]]
+        //     },
+        //     done: function (elem, data) {
+        //         //选择完后的回调，包含2个返回值 elem:返回之前input对象；data:表格返回的选中的数据 []
+        //         //拿到data[]后 就按照业务需求做想做的事情啦~比如加个隐藏域放ID...
+        //     }
+        // })
+
+        form.on('submit(formStep)', function (data) {
+            step.next('#stepForm');
+            //alert("下一步");
+            return false;
+        });
+
+        form.on('submit(formStep2)', function (data) {
+            step.next('#stepForm');
+            //alert("完成")
+            return false;
+        });
+
+        $('.pre').click(function () {
+            step.pre('#stepForm');
+        });
+
+        $('.next').click(function () {
+            step.next('#stepForm');
+        });
+
+        //监听商品分类下拉框1级变化，获取二级分类
+        form.on('select(goodsCategory1)', function(data){
+            var url=IP_HOST+"goodsCategory/two/"+data.value;
+            $.ajax({
+                //请求方式
+                type:"get",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:url,
+                //同步
+                async:false,
+                //请求成功
+                success:function (result) {
+                    console.log(result);
+                    var code=result.code;
+                    var data=result.data;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            var goodsCategory2Dom = $('#goodsCategory2');
+                            goodsCategory2Dom.empty();
+                            for (var i=0;i<data.length;i++) {
+                                goodsCategory2Dom.append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                            }
+
+                            //重新渲染
+                            form.render('select',"stepForm1");
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    console.log(e);
+                }
+            });
+        });
+        //监听优惠方式
+        form.on('radio(promotionType)', function(data){
+            debugger
+           // console.log(data.elem); //得到radio原始DOM对象
+            //console.log(data.value); //被点击的radio的value值
+            $("#promotionType").val(data.value);
+            var promotionTypeDivDom = $("#promotionTypeDiv");
+            promotionTypeDivDom.empty();
+            //促销类型
+            //promotionTypeDivDom.append(" <input id=\"promotionType\" type=\"hidden\" value='"+data.value+"' />")
+            switch (data.value) {
+                //无优惠
+                case '0':
+                    break;
+                //特惠促销
+                    //
+                case '1':promotionTypeDivDom.append("  <div class=\"layui-inline\" style=\"float: left\">\n" +
+                    "                    <label class=\"layui-form-label\">优惠时间</label>\n" +
+                    "                    <div class=\"layui-input-inline\" style=\"width: 150px;\">\n" +
+                    "                        <input type=\"text\" id=\"promotionStartTime\" name=\"promotionStartTime\" placeholder=\"开始时间\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"layui-form-mid\">-</div>\n" +
+                    "                    <div class=\"layui-input-inline\" style=\"width: 150px;\">\n" +
+                    "                        <input type=\"text\" id=\"promotionEndTime\" name=\"promotionEndTime\" placeholder=\"结束时间\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                    "                    </div>\n" +
+                    "                </div>");
+                    //执行一个laydate实例
+                    laydate.render({
+                        elem: '#promotionStartTime', //指定元素
+                        type: 'datetime'
+                    });
+                    laydate.render({
+                        elem: '#promotionEndTime', //指定元素
+                        type: 'datetime'
+                    });
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">促销价格:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"promotionPrice\" name=\"promotionPrice\" type=\"number\" placeholder=\"请填写促销价格\" class=\"layui-input\"  required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+                    break;
+                //会员价格
+                case '2':
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">小会员:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"memberPrice1\" name=\"memberPrice1\" type=\"number\" placeholder=\"请填写小会员价格\" class=\"layui-input\"  required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">中会员:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"memberPrice2\" name=\"memberPrice2\" type=\"number\" placeholder=\"请填写中会员价格\" class=\"layui-input\"  required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">大会员:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"memberPrice3\" name=\"memberPrice3\" type=\"number\" placeholder=\"请填写大会员价格\" class=\"layui-input\"  required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+                    break;
+                //阶梯价格
+                case '3':
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">数量:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"count\" name=\"count\" type=\"number\" placeholder=\"请填写商品数量\" class=\"layui-input\" lay-verify=\"number\" required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">折扣:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"discount\" name=\"discount\" type=\"number\" placeholder=\"请填写折扣\" class=\"layui-input\"  required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+
+                    break;
+                //满减价格
+                case '4':
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">满:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"fullPrice\" name=\"fullPrice\" type=\"number\" placeholder=\"满多少\" class=\"layui-input\"  required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+                    promotionTypeDivDom.append("<div class=\"layui-form-item\">\n" +
+                        "                                        <label class=\"layui-form-label\">立减:</label>\n" +
+                        "                                        <div class=\"layui-input-block\">\n" +
+                        "                                            <input id=\"reducePrice\" name=\"reducePrice\" type=\"number\" placeholder=\"减多少\" class=\"layui-input\" required />\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>");
+
+                    break;
+
+            }
+        });
+        //监听属性分类下拉框
+        form.on('select(goodsAttributeCategory)',function (data) {
+            $.ajax({
+                //请求方式
+                type:"get",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:IP_HOST+"/goodsAttribute/"+data.value,
+                //同步
+                async:false,
+                //请求成功
+                success:function (result) {
+                    console.log(result);
+                    var code=result.code;
+                    var data=result.data;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            if (data!=null)
+                            {
+                                //0是规格，1是参数
+                                var type=data.type;
+                                //规格
+                                if (type==0)
+                                {
+                                    alert(0);
+                                    // var goodsAttributeCategoryDom = $('#goodsAttributeCategory');
+                                    // goodsAttributeCategoryDom.empty();
+                                    // for (var i=0;i<data.length;i++) {
+                                    //     goodsAttributeCategoryDom.append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                                    // }
+                                }
+                                //参数
+                                else if(type==1)
+                                {
+
+                                }
+                            }
+                            //重新渲染
+                            form.render('select',"stepForm1");
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    console.log(e);
+                }
+            });
+        })
+    });
+
+
+
+</script>
+</body>
+</html>

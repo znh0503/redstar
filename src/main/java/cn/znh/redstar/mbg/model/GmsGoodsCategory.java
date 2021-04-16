@@ -7,13 +7,13 @@ import javax.annotation.Generated;
 public class GmsGoodsCategory implements Serializable {
     private Long id;
 
-    @ApiModelProperty(value = "上级分类的编号：1表示一级分类")
+    @ApiModelProperty(value = "上级分类的编号：0表示一级分类")
     private Long parentId;
 
     @ApiModelProperty(value = "名称")
     private String name;
 
-    @ApiModelProperty(value = "分类级别：1->1级；1->2级")
+    @ApiModelProperty(value = "分类级别：1->1级；2->2级")
     private Integer level;
 
     @ApiModelProperty(value = "商品数量")

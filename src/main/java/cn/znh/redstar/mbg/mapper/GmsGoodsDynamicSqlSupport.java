@@ -33,7 +33,7 @@ public final class GmsGoodsDynamicSqlSupport {
 
     public static final SqlColumn<Integer> newStatus = gmsGoods.newStatus;
 
-    public static final SqlColumn<Integer> recommandStatus = gmsGoods.recommandStatus;
+    public static final SqlColumn<Integer> recommendStatus = gmsGoods.recommendStatus;
 
     public static final SqlColumn<Integer> verifyStatus = gmsGoods.verifyStatus;
 
@@ -119,7 +119,7 @@ public final class GmsGoodsDynamicSqlSupport {
 
         public final SqlColumn<Integer> newStatus = column("new_status", JDBCType.INTEGER);
 
-        public final SqlColumn<Integer> recommandStatus = column("recommand_status", JDBCType.INTEGER);
+        public final SqlColumn<Integer> recommendStatus = column("recommend_status", JDBCType.INTEGER);
 
         public final SqlColumn<Integer> verifyStatus = column("verify_status", JDBCType.INTEGER);
 

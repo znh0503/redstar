@@ -40,7 +40,7 @@ public class GmsGoods implements Serializable {
     private Integer newStatus;
 
     @ApiModelProperty(value = "推荐状态；0->不推荐；1->推荐")
-    private Integer recommandStatus;
+    private Integer recommendStatus;
 
     @ApiModelProperty(value = "审核状态：0->未审核；1->审核通过")
     private Integer verifyStatus;
@@ -246,13 +246,13 @@ public class GmsGoods implements Serializable {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getRecommandStatus() {
-        return recommandStatus;
+    public Integer getRecommendStatus() {
+        return recommendStatus;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRecommandStatus(Integer recommandStatus) {
-        this.recommandStatus = recommandStatus;
+    public void setRecommendStatus(Integer recommendStatus) {
+        this.recommendStatus = recommendStatus;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -573,7 +573,7 @@ public class GmsGoods implements Serializable {
         sb.append(", deleteStatus=").append(deleteStatus);
         sb.append(", publishStatus=").append(publishStatus);
         sb.append(", newStatus=").append(newStatus);
-        sb.append(", recommandStatus=").append(recommandStatus);
+        sb.append(", recommendStatus=").append(recommendStatus);
         sb.append(", verifyStatus=").append(verifyStatus);
         sb.append(", sort=").append(sort);
         sb.append(", sale=").append(sale);

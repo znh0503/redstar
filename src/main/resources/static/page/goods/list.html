@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="search_name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品货号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="search_sn" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品分类</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="search_category" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品品牌</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="search_brand" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">上架状态</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="search_publishStatus" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">审核状态</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="search_verifyStatus" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<!--  全局配置  -->
+<script src="../../js/Config.js"></script>
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: 'http://localhost:8080/goods',    //../../api/table.json
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50,fixed:"left"},
+                {field: 'id', width: 80, title: '编号', sort: true},
+                {field: 'pic', width: 80, title: '商品图片'},
+                {field: 'name', width: 180, title: '商品名称'},
+                {field: 'brandName', width: 120, title: '品牌'},
+                {field: 'price', width: 80, title: '价格'},
+                {field: 'goods_sn', title: '货号', minWidth: 80},
+                {field: 'tar', title: '标签', minWidth: 80},
+                {field: 'sort', width: 80, title: '排序', sort: true},
+                {field: 'sku', width: 100, title: 'sku库存'},
+                {field: 'sale', width: 80, title: '销量', sort: true},
+                {field: 'verify_status', width: 120, title: '审核状态'},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line',
+            //自定义返回参数格式
+            parseData: function(res) { //res 即为原始返回的数据
+                //alert(res.data);
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "data": res.data //解析数据列表
+                };
+            },
+            response: {
+                //statusName: 'status', //规定数据状态的字段名称，默认：code
+                statusCode: 200 //规定成功的状态码，默认：0
+                //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                //,countName: 'total' //规定数据总数的字段名称，默认：count
+                //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+            },
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+
+            //执行搜索重载
+            list.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {  // 监听添加操作
+                var index = layer.open({
+                    title: '商品添加',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../goods/add.html',
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = list.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        //会员价格
+        var memberPrice;
+        var goodsLadder;
+        var goodsFullReduction;
+        //列表行数据
+        table.on('tool(currentTableFilter)', function (obj) {
+            //行数据
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                //根据商品的促销类型获取相关优惠设定信息
+                switch (data.promotionType) {
+                    //无优惠
+                    case 0:
+                        break;
+                    //特惠促销
+                    case 1:
+
+                        break;
+                    //会员价格
+                    case 2:{
+                        //请求后端
+                        $.ajax({
+                            //请求方式
+                            type:"get",
+                            //请求的媒体类型
+                            contentType: "application/json;charset=UTF-8",
+                            //请求地址
+                            url:IP_HOST+"memberPrice/"+data.id,
+                            //请求成功
+                            success:function (result) {
+                                memberPrice=result.data;
+                                //alert(memberPrice);
+                            },
+                            //请求失败
+                            error:function (e) {
+                                console.log("获取商品品牌");
+                                console.log(e);
+                            }
+                        });
+                    }break;
+                    //阶梯价格
+                    case 3:{
+                        //请求后端
+                        $.ajax({
+                            //请求方式
+                            type:"get",
+                            //请求的媒体类型
+                            contentType: "application/json;charset=UTF-8",
+                            //请求地址
+                            url:IP_HOST+"goodsLadder/"+data.id,
+                            //请求成功
+                            success:function (result) {
+                                goodsLadder=result.data;
+                            },
+                            //请求失败
+                            error:function (e) {
+                                console.log("获取商品品牌");
+                                console.log(e);
+                            }
+                        });
+                    }break;
+                    //满减价格
+                    case 4:{
+                        //请求后端
+                        $.ajax({
+                            //请求方式
+                            type:"get",
+                            //请求的媒体类型
+                            contentType: "application/json;charset=UTF-8",
+                            //请求地址
+                            url:IP_HOST+"goodsFullReduction/"+data.id,
+                            //请求成功
+                            success:function (result) {
+                                goodsFullReduction=result.data;
+                            },
+                            //请求失败
+                            error:function (e) {
+                                console.log("获取商品品牌");
+                                console.log(e);
+                            }
+                        });
+                    }break;
+                }
+
+
+                var index = layer.open({
+                    title: '商品编辑',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['75%', '85%'],
+                    content: '../goods/edit.html',
+                    //open成功回调
+                    success:function (layero,index) {
+                        var body = layer.getChildFrame('body', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                        //设置编辑页面的值
+                        //console.log(data);
+                        //查询商品分类一级分类
+                        $.ajax({
+                            //请求方式
+                            type:"get",
+                            //请求的媒体类型
+                            contentType: "application/json;charset=UTF-8",
+                            //请求地址
+                            url:IP_HOST+"goodsCategory/one",
+                            //同步
+                            //async:false,
+                            //请求成功
+                            success:function (result) {
+                                var code=result.code;
+                                var goodsCategory1Data=result.data;
+                                switch (code) {
+                                    case RESULT_SUCCESS:
+                                        //debugger;
+                                        var goodsCategory1Dom =body.find('#goodsCategory1');
+                                        for (var i=0;i<goodsCategory1Data.length;i++) {
+                                            goodsCategory1Dom.append("<option value="+goodsCategory1Data[i].id+">"+goodsCategory1Data[i].name+"</option>");
+                                        }
+                                        //重新渲染
+                                        iframeWin.layui.form.render('select',"stepForm1");
+                                        $.ajax({
+                                            //请求方式
+                                            type:"get",
+                                            //请求的媒体类型
+                                            contentType: "application/json;charset=UTF-8",
+                                            //请求地址
+                                            url:IP_HOST+"goodsCategory/preLevel/"+data.goodsCategoryId,
+                                            //请求成功
+                                            success:function (result) {
+                                                var code=result.code;
+                                                var preLevelData=result.data;
+                                                switch (code) {
+                                                    case RESULT_SUCCESS:
+                                                        //debugger;
+                                                        //获取上一级的id
+                                                        var preId = preLevelData.id;
+                                                        //alert(preId);
+                                                        //手动触发下拉框点击
+                                                        goodsCategory1Dom.val(preId);
+                                                        body.find('select[name="goodsCategory1"]').siblings("div.layui-form-select").find('dl dd[lay-value=' + preId + ']').click();
+                                                        body.find("#goodsCategory2").val(data.goodsCategoryId);
+                                                        body.find('select[name="goodsCategory2"]').siblings("div.layui-form-select").find('dl dd[lay-value=' + data.goodsCategoryId + ']').click();
+                                                        break;
+                                                    default:layer.msg('服务器出错了');break;
+                                                }
+                                            },
+                                            //请求失败
+                                            error:function (e) {
+                                                console.log("查询商品分类一级分类");
+                                                console.log(e);
+                                            }
+                                        });
+                                        break;
+                                    default:layer.msg('服务器出错了');break;
+                                }
+                            },
+                            //请求失败
+                            error:function (e) {
+                                console.log(e);
+                            }
+                        });
+                        //获取商品品牌
+                        $.ajax({
+                            //请求方式
+                            type:"get",
+                            //请求的媒体类型
+                            contentType: "application/json;charset=UTF-8",
+                            //请求地址
+                            url:IP_HOST+"brand",
+                            //请求成功
+                            success:function (result) {
+                                var code=result.code;
+                                var brandData=result.data;
+                                switch (code) {
+                                    case RESULT_SUCCESS:
+                                        //debugger;
+                                        var brandNameDom = body.find('#brand');
+                                        for (var i=0;i<brandData.length;i++) {
+                                            brandNameDom.append("<option value="+brandData[i].id+">"+brandData[i].name+"</option>");
+                                        }
+                                        //商品品牌默认选
+                                        brandNameDom.val(data.brandId);
+                                        //$('select[name="goodsCategory1"]').siblings("div.layui-form-select").find('dl dd[lay-value=' + preId + ']').click();
+                                        //重新渲染
+                                        iframeWin.layui.form.render('select',"stepForm1");
+                                        break;
+                                    default:layer.msg('服务器出错了');break;
+                                }
+                            },
+                            //请求失败
+                            error:function (e) {
+                                console.log("获取商品品牌");
+                                console.log(e);
+                            }
+                        });
+                        //获取属性分类
+                        $.ajax({
+                            //请求方式
+                            type:"get",
+                            //请求的媒体类型
+                            contentType: "application/json;charset=UTF-8",
+                            //请求地址
+                            url:IP_HOST+"goodsAttributeCategory",
+                            //请求成功
+                            success:function (result) {
+                                var code=result.code;
+                                var goodsAttributeCategoryData=result.data;
+                                switch (code) {
+                                    case RESULT_SUCCESS:
+                                        //debugger;
+                                        var goodsAttributeCategoryDom = body.find('#goodsAttributeCategory');
+                                        for (var i=0;i<goodsAttributeCategoryData.length;i++) {
+                                            goodsAttributeCategoryDom.append("<option value="+goodsAttributeCategoryData[i].id+">"+goodsAttributeCategoryData[i].name+"</option>");
+                                        }
+                                        //属性分类默认选
+                                        //goodsAttributeCategoryDom.val(goodsAttributeCategoryData.brandId);
+                                        //$('select[name="goodsCategory1"]').siblings("div.layui-form-select").find('dl dd[lay-value=' + preId + ']').click();
+                                        //重新渲染
+                                        iframeWin.layui.form.render('select',"stepForm3");
+                                        break;
+                                    default:layer.msg('服务器出错了');break;
+                                }
+                            },
+                            //请求失败
+                            error:function (e) {
+                                console.log("获取属性分类");
+                                console.log(e);
+                            }
+                        });
+
+                        $(layero).find("iframe").contents().find("#id").val(data.id);
+                        //填写商品信息
+                        $(layero).find("iframe").contents().find("#name").val(data.name);
+                        $(layero).find("iframe").contents().find("#subTitle").val(data.subTitle);
+                        $(layero).find("iframe").contents().find("#description").val(data.description);
+                        $(layero).find("iframe").contents().find("#goodsSn").val(data.goodsSn);
+                        $(layero).find("iframe").contents().find("#price").val(data.price);
+                        $(layero).find("iframe").contents().find("#originalPrice").val(data.originalPrice);
+                        $(layero).find("iframe").contents().find("#stock").val(data.stock);
+                        $(layero).find("iframe").contents().find("#unit").val(data.unit);
+                        $(layero).find("iframe").contents().find("#weight").val(data.weight);
+                        $(layero).find("iframe").contents().find("#sort").val(data.sort);
+                        //填写促销信息
+                        $(layero).find("iframe").contents().find("#giftPoint").val(data.giftPoint);
+                        $(layero).find("iframe").contents().find("#giftGrowth").val(data.giftGrowth);
+                        $(layero).find("iframe").contents().find("#usePointLimit").val(data.usePointLimit);
+                        if (data.previewStatus==1) {
+                            $(layero).find("iframe").contents().find("#previewStatus").prop("checked","checked");
+                        }
+                        if (data.publishStatus==1) {
+                            $(layero).find("iframe").contents().find("#publishStatus").prop("checked","checked");
+                        }
+                        if (data.recommendStatus==1) {
+                            $(layero).find("iframe").contents().find("#recommendStatus").prop("checked","checked");
+                        }
+                        if (data.newStatus==1) {
+                            $(layero).find("iframe").contents().find("#newStatus").prop("checked","checked");
+                        }
+                        if (data.serviceIds!=null&&data.serviceIds!="") {
+                            var serviceIdsDom = $(layero).find("iframe").contents().find("#serviceIds");
+                            var splitArr = data.serviceIds.split(",");
+                            for (var i = 0; i < splitArr.length; i++) {
+                                var serviceId = parseInt(splitArr[i]) - 1;
+                                serviceIdsDom.find("input:eq(" + serviceId + ")").prop("checked", "checked");
+                            }
+                        }
+                        //重新渲染checkbox
+                        iframeWin.layui.form.render('checkbox',"stepForm2");
+                        $(layero).find("iframe").contents().find("#detailTitle").val(data.detailTitle);
+                        $(layero).find("iframe").contents().find("#detailDesc").val(data.detailDesc);
+                        $(layero).find("iframe").contents().find("#keywords").val(data.keywords);
+                        $(layero).find("iframe").contents().find("#note").val(data.note);
+                        //$(layero).find("iframe").contents().find("input[name=promotionType][value="+data.promotionType+"]").prop("checked","checked");
+                        //重新渲染radio
+                        iframeWin.layui.form.render("radio","stepForm2");
+                        //手动触发选择优惠方式单选框点击事件
+                        body.find("input[name=promotionType][value="+data.promotionType+"]").next('.layui-form-radio').click();
+                        //填充各种优惠数据
+                        switch (data.promotionType) {
+                            //无优惠
+                            case 0:break;
+                            //特惠促销
+                            case 1:
+                                body.find("#promotionStartTime").val(data.promotionStartTime);
+                                body.find("#promotionEndTime").val(data.promotionEndTime);
+                                body.find("#promotionPrice").val(data.promotionPrice);
+                                break;
+                            //会员价格
+                            case 2:
+                                body.find("#memberPrice1").val(memberPrice[0].memberPrice);
+                                body.find("#memberPrice2").val(memberPrice[1].memberPrice);
+                                body.find("#memberPrice3").val(memberPrice[2].memberPrice);
+                                break;
+                            //阶梯价格
+                            case 3:
+                                body.find("#count").val(goodsLadder[0].count);
+                                body.find("#discount").val(goodsLadder[0].discount);
+                                break;
+                            //满减价格
+                            case 4:
+                                body.find("#fullPrice").val(goodsFullReduction[0].count);
+                                body.find("#reducePrice").val(goodsFullReduction[0].count);
+                                break;
+                        }
+                    }
+                });
+                $(window).on("resize", function () {
+                    //浏览器大小变化事件
+                    //alert("!");
+                    //layer.full(index);
+                });
+            } else if (obj.event === 'delete') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

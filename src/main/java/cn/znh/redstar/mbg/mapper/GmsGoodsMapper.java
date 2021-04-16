@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GmsGoodsMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    BasicColumn[] selectList = BasicColumn.columnList(id, brandId, goodsCategoryId, feightTemplateId, goodsAttributeCategoryId, name, pic, goodsSn, deleteStatus, publishStatus, newStatus, recommandStatus, verifyStatus, sort, sale, price, promotionPrice, giftGrowth, giftPoint, usePointLimit, subTitle, originalPrice, stock, lowStock, unit, weight, previewStatus, serviceIds, keywords, note, albumPics, detailTitle, promotionStartTime, promotionEndTime, promotionPerLimit, promotionType, goodsCategoryName, brandName, description, detailDesc, detailHtml, detailMobileHtml);
+    BasicColumn[] selectList = BasicColumn.columnList(id, brandId, goodsCategoryId, feightTemplateId, goodsAttributeCategoryId, name, pic, goodsSn, deleteStatus, publishStatus, newStatus, recommendStatus, verifyStatus, sort, sale, price, promotionPrice, giftGrowth, giftPoint, usePointLimit, subTitle, originalPrice, stock, lowStock, unit, weight, previewStatus, serviceIds, keywords, note, albumPics, detailTitle, promotionStartTime, promotionEndTime, promotionPerLimit, promotionType, goodsCategoryName, brandName, description, detailDesc, detailHtml, detailMobileHtml);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -72,7 +72,7 @@ public interface GmsGoodsMapper {
         @Result(column="delete_status", property="deleteStatus", jdbcType=JdbcType.INTEGER),
         @Result(column="publish_status", property="publishStatus", jdbcType=JdbcType.INTEGER),
         @Result(column="new_status", property="newStatus", jdbcType=JdbcType.INTEGER),
-        @Result(column="recommand_status", property="recommandStatus", jdbcType=JdbcType.INTEGER),
+        @Result(column="recommend_status", property="recommendStatus", jdbcType=JdbcType.INTEGER),
         @Result(column="verify_status", property="verifyStatus", jdbcType=JdbcType.INTEGER),
         @Result(column="sort", property="sort", jdbcType=JdbcType.INTEGER),
         @Result(column="sale", property="sale", jdbcType=JdbcType.INTEGER),
@@ -141,7 +141,7 @@ public interface GmsGoodsMapper {
             .map(deleteStatus).toProperty("deleteStatus")
             .map(publishStatus).toProperty("publishStatus")
             .map(newStatus).toProperty("newStatus")
-            .map(recommandStatus).toProperty("recommandStatus")
+            .map(recommendStatus).toProperty("recommendStatus")
             .map(verifyStatus).toProperty("verifyStatus")
             .map(sort).toProperty("sort")
             .map(sale).toProperty("sale")
@@ -189,7 +189,7 @@ public interface GmsGoodsMapper {
             .map(deleteStatus).toProperty("deleteStatus")
             .map(publishStatus).toProperty("publishStatus")
             .map(newStatus).toProperty("newStatus")
-            .map(recommandStatus).toProperty("recommandStatus")
+            .map(recommendStatus).toProperty("recommendStatus")
             .map(verifyStatus).toProperty("verifyStatus")
             .map(sort).toProperty("sort")
             .map(sale).toProperty("sale")
@@ -237,7 +237,7 @@ public interface GmsGoodsMapper {
             .map(deleteStatus).toPropertyWhenPresent("deleteStatus", record::getDeleteStatus)
             .map(publishStatus).toPropertyWhenPresent("publishStatus", record::getPublishStatus)
             .map(newStatus).toPropertyWhenPresent("newStatus", record::getNewStatus)
-            .map(recommandStatus).toPropertyWhenPresent("recommandStatus", record::getRecommandStatus)
+            .map(recommendStatus).toPropertyWhenPresent("recommendStatus", record::getRecommendStatus)
             .map(verifyStatus).toPropertyWhenPresent("verifyStatus", record::getVerifyStatus)
             .map(sort).toPropertyWhenPresent("sort", record::getSort)
             .map(sale).toPropertyWhenPresent("sale", record::getSale)
@@ -311,7 +311,7 @@ public interface GmsGoodsMapper {
                 .set(deleteStatus).equalTo(record::getDeleteStatus)
                 .set(publishStatus).equalTo(record::getPublishStatus)
                 .set(newStatus).equalTo(record::getNewStatus)
-                .set(recommandStatus).equalTo(record::getRecommandStatus)
+                .set(recommendStatus).equalTo(record::getRecommendStatus)
                 .set(verifyStatus).equalTo(record::getVerifyStatus)
                 .set(sort).equalTo(record::getSort)
                 .set(sale).equalTo(record::getSale)
@@ -357,7 +357,7 @@ public interface GmsGoodsMapper {
                 .set(deleteStatus).equalToWhenPresent(record::getDeleteStatus)
                 .set(publishStatus).equalToWhenPresent(record::getPublishStatus)
                 .set(newStatus).equalToWhenPresent(record::getNewStatus)
-                .set(recommandStatus).equalToWhenPresent(record::getRecommandStatus)
+                .set(recommendStatus).equalToWhenPresent(record::getRecommendStatus)
                 .set(verifyStatus).equalToWhenPresent(record::getVerifyStatus)
                 .set(sort).equalToWhenPresent(record::getSort)
                 .set(sale).equalToWhenPresent(record::getSale)
@@ -403,7 +403,7 @@ public interface GmsGoodsMapper {
             .set(deleteStatus).equalTo(record::getDeleteStatus)
             .set(publishStatus).equalTo(record::getPublishStatus)
             .set(newStatus).equalTo(record::getNewStatus)
-            .set(recommandStatus).equalTo(record::getRecommandStatus)
+            .set(recommendStatus).equalTo(record::getRecommendStatus)
             .set(verifyStatus).equalTo(record::getVerifyStatus)
             .set(sort).equalTo(record::getSort)
             .set(sale).equalTo(record::getSale)
@@ -451,7 +451,7 @@ public interface GmsGoodsMapper {
             .set(deleteStatus).equalToWhenPresent(record::getDeleteStatus)
             .set(publishStatus).equalToWhenPresent(record::getPublishStatus)
             .set(newStatus).equalToWhenPresent(record::getNewStatus)
-            .set(recommandStatus).equalToWhenPresent(record::getRecommandStatus)
+            .set(recommendStatus).equalToWhenPresent(record::getRecommendStatus)
             .set(verifyStatus).equalToWhenPresent(record::getVerifyStatus)
             .set(sort).equalToWhenPresent(record::getSort)
             .set(sale).equalToWhenPresent(record::getSale)

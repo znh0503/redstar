@@ -8,7 +8,7 @@ spring:
     url: jdbc:mysql://localhost:3306/redstar?serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: 192.168.10.110
+    host: 192.168.10.113
     database: 0 #redis索引（默认为0）
     port: 6379  #Redis服务器连接端口
     password: #redis服务器连接密码（默认为空）
@@ -21,12 +21,14 @@ spring:
     timeout: 3000ms #连接超时时间（毫秒）
   elasticsearch:
     rest:
-      uris: 192.168.10.110:9200
+      uris: 192.168.10.113:9200
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #时间戳统一转换为指定格式
+    #time-zone: GMT+8 # 时区修改为东8区
 #r redis配置
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
-
 #自定义redis key
 redis:
   database: redstar
@@ -81,3 +83,16 @@ mail:
       password: axalpxejckiubegf
     name: redstar
 
+#阿里云oss相关
+aliyun:
+  oss:
+    endpoint: oss-cn-guangzhou.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: test # 访问身份验证中用到用户标识
+    accessKeySecret: test # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: redstar-oss2 # oss的存储空间名称
+    policy:
+      expire: 300 # 签名有效期(S)
+    maxSize: 10 # 上传文件大小(M)
+    callback: http://localhost:8080/aliyun/oss/callback # 文件上传成功后的回调地址
+    dir:
+      prefix: redstar/images/ # 上传文件夹路径前缀
