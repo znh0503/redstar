@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" name="id" id="id">
+    <input type="hidden" name="goodsCount" id="goodsCount">
+    <input type="hidden" name="goodsCommentCount" id="goodsCommentCount">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">品牌名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="name" name="name" lay-verify="required" lay-reqtext="品牌名称不能为空" placeholder="不能为空" value="" class="layui-input">
+<!--            <tip>填写自己管理账号的名称。</tip>-->
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">首字母</label>
+        <div class="layui-input-block">
+            <input type="text" id="firstLetter" name="firstLetter"  placeholder="首字母" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">品牌故事</label>
+        <div class="layui-input-block">
+            <textarea id="brandStory" name="brandStory" class="layui-textarea" placeholder="请输入内容"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">排序</label>
+        <div class="layui-input-block">
+            <input type="number" id="sort" name="sort"  placeholder="排序" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">是否显示</label>
+        <div class="layui-input-block">
+            <input type="radio" name="showStatus" value="1" title="是" checked="">
+            <input type="radio" name="showStatus" value="0" title="否">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">品牌制造商</label>
+        <div class="layui-input-block">
+            <input type="radio" name="factoryStatus" value="1" title="是" checked="">
+            <input type="radio" name="factoryStatus" value="0" title="否">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">品牌LOGO</label>
+
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="logoBtn">
+                <i class="layui-icon">&#xe67c;</i>上传品牌图片
+            </button>
+            <tip>不能超过10M。</tip>
+            <img id="logoImg" type="image" height="150"/>
+            <input type="hidden" id="logo" name="logo">
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">专区大图</label>
+
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="bigPicBtn">
+                <i class="layui-icon">&#xe67c;</i>上传专区大图
+            </button>
+            <tip>不能超过10M。</tip>
+            <div style="padding: 10px;background-color: whitesmoke;overflow: auto;height: 300px">
+                <img id="bigPicImg1" type="image" height="150" src="http://redstar-oss2.oss-cn-guangzhou.aliyuncs.com/redstar/images/20210418/1618733482874"/>
+                <img id="bigPicImg2" type="image" height="150" src="http://redstar-oss2.oss-cn-guangzhou.aliyuncs.com/redstar/images/20210418/1618733482874"/>
+                <img id="bigPicImg3" type="image" height="150" src="http://redstar-oss2.oss-cn-guangzhou.aliyuncs.com/redstar/images/20210418/1618733482874"/>
+                <img id="bigPicImg4" type="image" height="150" src="http://redstar-oss2.oss-cn-guangzhou.aliyuncs.com/redstar/images/20210418/1618733482874"/>
+                <img id="bigPicImg5" type="image" height="150" src="http://redstar-oss2.oss-cn-guangzhou.aliyuncs.com/redstar/images/20210418/1618733482874"/>
+            </div>
+
+            <input type="hidden" id="bigPic" name="logo">
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="saveBtn" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+<script>
+    var ossConfig;
+    layui.use(['form','upload'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            upload=layui.upload,
+            $ = layui.$;
+
+
+
+        //监听提交
+        var brandData;
+        form.on('submit(saveBtn)', function (data) {
+            brandData=data;
+            logoUploadObj.upload();
+            // var index = layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // }, function () {
+            //
+            //     // 关闭弹出层
+            //     layer.close(index);
+            //
+            //     var iframeIndex = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.close(iframeIndex);
+            //
+            // });
+
+
+
+
+            return false;
+        });
+
+
+        //创建品牌logo上传组件
+        var logo;
+        var logoUpload;
+        var logoFile;
+        var logoUploadObj=upload.render({
+            elem: '#logoBtn',
+            url: 'localhost:8080',
+            auto:false, //关闭自动提交
+                before:function()
+                {
+                    console.log("before");
+                    logoUpload=this;
+                    $.ajax({
+                        //请求方式
+                        type:"get",
+                        //请求的媒体类型
+                        contentType: "application/json;charset=UTF-8",
+                        //请求地址
+                        url:IP_HOST+"aliyunOss/policy",
+                        //同步
+                        async:false,
+                        //请求成功
+                        success:function (result) {
+                            var code=result.code;
+                            var policyData=result.data;
+                            switch (code) {
+                                case RESULT_SUCCESS:
+                                    //将url改为oss
+                                    logoUpload.url=policyData.host;
+                                    //传到oss需要的参数
+                                    console.log(logoUpload)
+                                    logoUpload.data={
+                                        policy:policyData.policy,
+                                        signature:policyData.signature,
+                                        //以当前时间戳命名文件
+                                        key:policyData.dir+"/"+new Date().getTime(),
+                                        ossaccessKeyId:policyData.accessKeyId,
+                                        dir:policyData.dir,
+                                        host:policyData.host,
+                                        callback:policyData.callback
+                                    }
+                                    break;
+                                default:layer.msg('服务器出错了');break;
+                            }
+                        },
+                        //请求失败
+                        error:function (e) {
+                            console.log("获取属性分类");
+                            console.log(e);
+                        }
+                    });
+
+                }
+            //选择文件回调
+            ,choose: function(obj) {
+                console.log("choose");
+                //将每次选择的文件追加到文件队列
+                var files = obj.pushFile();
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                obj.preview(function (index, file, result) {
+                    logo=result;
+                    // console.log(index); //得到文件索引
+                     //console.log(file); //得到文件对象
+                    logoFile=file;
+                    // console.log(result); //得到文件base64编码，比如图片
+                    //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+                    //这里还可以做一些 append 文件列表 DOM 的操作
+                    $("#logoImg").attr('src',result);
+
+                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                })
+            },
+            done: function(res, index, upload){ //上传后的回调
+                // console.log(res); //服务端响应信息
+                // console.log(index); //当前文件的索引
+                // console.log(upload); //重新上传的方法
+                //设置logo的值
+                $("#logo").val(res.data.filename);
+                brandData.field.logo=res.data.filename;
+                //提交表单
+                $.ajax({
+                    //请求方式
+                    type:"put",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"brand/"+brandData.field.id,
+                    data:JSON.stringify(brandData.field),
+                    //请求成功
+                    success:function (result) {
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                layer.msg("提交成功");
+
+                                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                                //1.5秒后关闭
+                                setTimeout(function (){
+                                    parent.layer.close(iframeIndex);
+                                    parent.location.reload();
+                                }, 1500);
+
+
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+
+            }
+            ,accept: 'images' //允许上传的文件类型
+            ,size: 10000 //最大允许上传的文件大小
+        })
+
+
+        //创建专区图片
+        upload.render({
+            elem: '#id'
+            ,url: ''
+            ,multiple:'true'
+            ,allDone: function(obj){ //当文件全部被提交后，才触发
+                console.log(obj.total); //得到总文件数
+                console.log(obj.successful); //请求成功的文件数
+                console.log(obj.aborted); //请求失败的文件数
+            }
+            ,done: function(res, index, upload){ //每个文件提交一次触发一次。详见“请求成功的回调”
+
+            }
+            ,accept: 'file' //允许上传的文件类型
+            ,size: 10000 //最大允许上传的文件大小
+
+        })
+    });
+</script>
+</body>
+</html>

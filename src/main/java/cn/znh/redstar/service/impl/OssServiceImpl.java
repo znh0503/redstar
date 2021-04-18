@@ -76,7 +76,7 @@ public class OssServiceImpl implements OssService {
         OssCallbackParam ossCallbackParam=new OssCallbackParam();
         ossCallbackParam.setCallbackUrl(ALIYUN_OSS_CALLBACK);
         ossCallbackParam.setCallbackBody("filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
-        ossCallbackParam.setCallbackBody("application/x-www-form-urlencoded");
+        ossCallbackParam.setCallbackBodyType("application/x-www-form-urlencoded");
         // 提交节点
         String action = "http://" + ALIYUN_OSS_BUCKET_NAME + "." + ALIYUN_OSS_ENDPOINT;
         try{

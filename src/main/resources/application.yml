@@ -1,7 +1,11 @@
 server:
   port: 8080
 spring:
-#  mysql数据源
+  servlet:
+    multipart:
+      max-file-size: 10MB     #上传文件最大大小
+      max-request-size: 100MB #上传文件总大小最大值
+  #  mysql数据源
   datasource:
     username: root
     password: root
@@ -87,12 +91,12 @@ mail:
 aliyun:
   oss:
     endpoint: oss-cn-guangzhou.aliyuncs.com # oss对外服务的访问域名
-    accessKeyId: test # 访问身份验证中用到用户标识
-    accessKeySecret: test # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    accessKeyId: LTAI5tKBRJp2NMFrCecBJjd8 # 访问身份验证中用到用户标识
+    accessKeySecret: z27Ik0E5Y9g0S3Qf6MVEV03hTASTMI # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
     bucketName: redstar-oss2 # oss的存储空间名称
     policy:
       expire: 300 # 签名有效期(S)
     maxSize: 10 # 上传文件大小(M)
-    callback: http://localhost:8080/aliyun/oss/callback # 文件上传成功后的回调地址
+    callback: http://5lkkkleh.dongtaiyuming.net/aliyunOss/callback # 文件上传成功后的回调地址,使用网云穿内网穿透
     dir:
       prefix: redstar/images/ # 上传文件夹路径前缀

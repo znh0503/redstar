@@ -89,7 +89,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: 'http://localhost:8080/goods',    //../../api/table.json
+            url: IP_HOST+"goods",    //../../api/table.json
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -274,7 +274,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['75%', '85%'],
-                    content: '../goods/edit.html',
+                    content: '../goods/goodsEdit.html',
                     //open成功回调
                     success:function (layero,index) {
                         var body = layer.getChildFrame('body', index);
