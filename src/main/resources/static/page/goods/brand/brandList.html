@@ -80,20 +80,20 @@
                 {
                     field: 'factoryStatus', width: 120,templet: function (d) {
                         if (d.factoryStatus == 0) {
-                            return '<input type="checkbox"  name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">';
+                            return '<input type="checkbox"  name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
                         }
                          else {
-                            return '<input type="checkbox" checked="" name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">';
+                            return '<input type="checkbox" checked="" name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
                         }
                     }, title: '品牌制造商'
                 },
                 {
                     field: 'showStatus', width: 120,templet: function (d) {
                         if (d.showStatus == 0) {
-                            return '<input type="checkbox"  name="showStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">';
+                            return '<input type="checkbox"  name="showStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
                         }
                         else {
-                            return '<input type="checkbox" checked="" name="showStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">';
+                            return '<input type="checkbox" checked="" name="showStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
                         }
                     }, title: '是否显示'
                 },
@@ -140,27 +140,51 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
-                    title: '添加用户',
+                    title: '添加品牌',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '../page/table/add.html',
+                    content: 'brandAdd.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                var checkStatus = list.checkStatus('currentTableId')
+                var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+
+                $.ajax({
+                    //请求方式
+                    type:"delete",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"brand",
+                    data:JSON.stringify(data),
+                    //请求成功
+                    success:function (result) {
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                window.location.reload();
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+               // layer.alert(JSON.stringify(data));
             }
         });
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            //console.log(obj)
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
@@ -191,7 +215,10 @@
                         body.find("input[name=factoryStatus][value="+data.factoryStatus+"]").prop("checked", "checked");
                         //重新渲染radio
                         iframeWin.layui.form.render("radio");
+                        $(layero).find("iframe").contents().find("#logo").val(data.logo);
                         $(layero).find("iframe").contents().find("#logoImg").attr('src',data.logo);
+                        $(layero).find("iframe").contents().find("#bigPic").val(data.bigPic);
+                        $(layero).find("iframe").contents().find("#bigPicImg").attr('src',data.bigPic);
                     }
                 });
                 $(window).on("resize", function () {
@@ -200,8 +227,31 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    console.log(data);
+                    $.ajax({
+                        //请求方式
+                        type:"delete",
+                        //请求的媒体类型
+                        contentType: "application/json;charset=UTF-8",
+                        //请求地址
+                        url:IP_HOST+"brand/"+data.id,
+                        //请求成功
+                        success:function (result) {
+                            var code=result.code;
+                            switch (code) {
+                                case RESULT_SUCCESS:
+                                    layer.msg("删除成功");
+                                    obj.del();
+                                    layer.close(index);
+                                    break;
+                                default:layer.msg('服务器出错了');break;
+                            }
+                        },
+                        //请求失败
+                        error:function (e) {
+                            layer.msg("提交失败");
+                        }
+                    });
                 });
             }
         });

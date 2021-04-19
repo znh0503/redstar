@@ -58,7 +58,7 @@ public class GmsBrandController {
     @ApiOperation("创建一个品牌")
     @PostMapping("")
     @ResponseBody
-    public CommonResult<GmsBrand> createBrand(GmsBrand gmsBrand)
+    public CommonResult<GmsBrand> createBrand(@RequestBody GmsBrand gmsBrand)
     {
         CommonResult<GmsBrand> commonResult;
         int result = gmsBrandService.createBrand(gmsBrand);
@@ -116,6 +116,24 @@ public class GmsBrandController {
             commonResult=CommonResult.failed("删除品牌信息失败,id="+id);
             log.debug("删除品牌信息失败,id={}",id);
         }
+        return commonResult;
+    }
+
+    @ApiOperation("删除多条品牌信息")
+    @DeleteMapping("")
+    @ResponseBody
+    public CommonResult<GmsBrand> deleteBrandList(@RequestBody List<GmsBrand> brandList)
+    {
+        CommonResult commonResult;
+        int count=0;
+        for (GmsBrand brand:brandList)
+        {
+            int result =gmsBrandService.deleteBrand(brand.getId());
+            count+=result;
+
+        }
+            //删除成功
+        commonResult=CommonResult.success("执行完成，共删除"+count+"条");
         return commonResult;
     }
 

@@ -17,9 +17,6 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <input type="hidden" name="id" id="id">
-    <input type="hidden" name="goodsCount" id="goodsCount">
-    <input type="hidden" name="goodsCommentCount" id="goodsCommentCount">
     <div class="layui-form-item">
         <label class="layui-form-label required">品牌名称</label>
         <div class="layui-input-block">
@@ -134,22 +131,28 @@
                 layer.msg("文件上传中，请稍后提交");
                 return ;
             }
+            //品牌logo一定要有
+            if ($("#logo").val()=="")
+            {
+                layer.msg("品牌logo必须上传");
+                return ;
+            }
             //提交表单
             $.ajax({
                 //请求方式
-                type:"put",
+                type:"post",
                 //请求的媒体类型
                 contentType: "application/json;charset=UTF-8",
                 //请求地址
-                url:IP_HOST+"brand/"+data.field.id,
+                url:IP_HOST+"brand",
                 data:JSON.stringify(data.field),
                 //请求成功
                 success:function (result) {
+                    console.log(result);
                     var code=result.code;
                     switch (code) {
                         case RESULT_SUCCESS:
                             layer.msg("提交成功");
-
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             //1.5秒后关闭
                             setTimeout(function (){
