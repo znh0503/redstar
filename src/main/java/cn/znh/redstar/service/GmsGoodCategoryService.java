@@ -1,5 +1,6 @@
 package cn.znh.redstar.service;
 
+import cn.znh.redstar.mbg.model.GmsBrand;
 import cn.znh.redstar.mbg.model.GmsGoodsCategory;
 
 import java.util.List;
@@ -37,4 +38,26 @@ public interface GmsGoodCategoryService {
      * @return
      */
     GmsGoodsCategory getGoodsCategoryById(Long id);
+
+    /**
+     * 创建一个分类
+     * @param category
+     * @return
+     */
+    int createCategory(GmsGoodsCategory category);
+
+    /**
+     * 根据id更新分类信息
+     * @param id
+     * @param category
+     * @return
+     */
+    int updateCategory(Long id, GmsGoodsCategory category);
+
+    /**
+     * 根据id删除分类信息
+     * @param id
+     * @return
+     */
+    int deleteCategory(Long id);
 }

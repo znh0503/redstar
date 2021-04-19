@@ -46,4 +46,23 @@ public class GmsGoodCategoryServiceImpl implements GmsGoodCategoryService {
         GmsGoodsCategory goodsCategory = gmsGoodCategoryDao.getGoodsCategoryById(id);
         return goodsCategory;
     }
+
+    @Override
+    public int createCategory(GmsGoodsCategory category) {
+        int result = gmsGoodsCategoryMapper.insert(category);
+        return result;
+    }
+
+    @Override
+    public int updateCategory(Long id, GmsGoodsCategory category) {
+        category.setId(id);
+        int result = gmsGoodsCategoryMapper.updateByPrimaryKey(category);
+        return result;
+    }
+
+    @Override
+    public int deleteCategory(Long id) {
+        int result = gmsGoodsCategoryMapper.deleteByPrimaryKey(id);
+        return result;
+    }
 }

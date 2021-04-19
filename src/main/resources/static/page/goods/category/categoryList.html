@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+    <style>
+        .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
+            height: 34px;
+            line-height: 34px;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div>
+            <div class="layui-btn-group">
+                <button class="layui-btn" id="btn-expand">全部展开</button>
+                <button class="layui-btn layui-btn-normal" id="btn-fold">全部折叠</button>
+            </div>
+            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+        </div>
+    </div>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="auth-state">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+    </div>
+</script>
+
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+<script>
+    layui.use(['table', 'treetable'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var treetable = layui.treetable;
+
+        // 渲染表格
+        layer.load(2);
+        treetable.render({
+            treeColIndex: 1,    //树形图标显示在第几列
+            treeSpid: 0,        //一级分类的id
+            treeIdName: 'id',
+            treePidName: 'parentId',
+            elem: '#munu-table',
+            url: IP_HOST+"goodsCategory",
+            page: false,
+            toolbar:'#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: 'numbers'},
+                {field: 'name', minWidth: 200, title: '分类名称'},
+                {field: 'level', title: '级别'},
+                {field: 'goodsCount', title: '商品数量'},
+                {field: 'goodsUnit', title: '数量单位'},
+                {
+                    field: 'navStatus', width: 120,templet: function (d) {
+                        if (d.navStatus == 0) {
+                            return '<input type="checkbox"  name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                        else {
+                            return '<input type="checkbox" checked="" name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                    }, title: '导航栏'
+                },
+                {
+                    field: 'showStatus', width: 120,templet: function (d) {
+                        if (d.showStatus == 0) {
+                            return '<input type="checkbox"  name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                        else {
+                            return '<input type="checkbox" checked="" name="factoryStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                    }, title: '显示状态'
+                },
+                {field: 'sort', width: 80, align: 'center',title: '排序'},
+                {templet: '#auth-state', width: 120, align: 'center', title: '操作'}
+            ]],
+            //自定义返回参数格式
+            parseData: function(res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code ,//解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "data": res.data //解析数据列表
+                };
+            },
+            response: {
+                //statusName: 'status', //规定数据状态的字段名称，默认：code
+                statusCode: 200 //规定成功的状态码，默认：0
+                //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                //,countName: 'total' //规定数据总数的字段名称，默认：count
+                //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+            },
+            done: function (res, curr, count) {
+                // console.log();
+                // console.log(res);
+                // console.log(curr);
+                // console.log(count);
+                treetable.foldAll('#munu-table');
+                layer.closeAll('loading');
+            }
+        });
+
+        $('#btn-expand').click(function () {
+            treetable.expandAll('#munu-table');
+        });
+
+        $('#btn-fold').click(function () {
+            treetable.foldAll('#munu-table');
+        });
+
+        // //监听tool
+        table.on('toolbar(munu-table)', function (obj) {
+            if (obj.event === 'add') {  // 监听添加操作
+                var index = layer.open({
+                    title: '添加分类',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['85%', '85%'],
+                    content: 'categoryAdd.html',
+                    //open成功回调
+                    success:function (layero,index) {
+                        var body = layer.getChildFrame('body', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                            $.ajax({
+                                //请求方式
+                                type: "get",
+                                //请求的媒体类型
+                                contentType: "application/json;charset=UTF-8",
+                                //请求地址
+                                url: IP_HOST + "goodsCategory/one",
+                                //请求成功
+                                success: function (result) {
+                                    var code = result.code;
+                                    var categoryData = result.data;
+                                    switch (code) {
+                                        case RESULT_SUCCESS:
+                                            //debugger;
+                                            for (var i = 0; i < categoryData.length; i++) {
+                                                $(layero).find("iframe").contents().find("#parentId")
+                                                    .append("<option value=" + categoryData[i].id + ">" + categoryData[i].name + "</option>");
+                                            }
+                                            //重新渲染
+                                            iframeWin.layui.form.render('select');
+                                            break;
+                                        default:
+                                            layer.msg('服务器出错了');
+                                            break;
+                                    }
+                                },
+                                //请求失败
+                                error: function (e) {
+                                    console.log("获取商品品牌");
+                                    console.log(e);
+                                }
+                            });
+                        }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            }
+        });
+        //监听工具条
+        table.on('tool(munu-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'del') {
+                $.ajax({
+                    //请求方式
+                    type: "delete",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url: IP_HOST + "goodsCategory/"+data.id,
+                    //请求成功
+                    success: function (result) {
+                        var code = result.code;
+                        var categoryData = result.data;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                window.location.reload();
+                                break;
+                            default:
+                                layer.msg('服务器出错了');
+                                break;
+                        }
+                    },
+                    //请求失败
+                    error: function (e) {
+                        console.log("获取商品品牌");
+                        console.log(e);
+                    }
+                });
+            } else if (layEvent === 'edit') {
+                var index = layer.open({
+                    title: '修改商品分类',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['85%', '85%'],
+                    content: 'categoryEdit.html',
+                    //open成功回调
+                    success:function (layero,index) {
+                        var body = layer.getChildFrame('body', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                        if (data.parentId==0)
+                        {
+                            //一级分类没有上级
+                            $(layero).find("iframe").contents().find("#parentId").val(data.parentId);
+                        }
+                        else {
+                            $.ajax({
+                                //请求方式
+                                type: "get",
+                                //请求的媒体类型
+                                contentType: "application/json;charset=UTF-8",
+                                //请求地址
+                                url: IP_HOST + "goodsCategory/one",
+                                //请求成功
+                                success: function (result) {
+                                    var code = result.code;
+                                    var categoryData = result.data;
+                                    switch (code) {
+                                        case RESULT_SUCCESS:
+                                            //debugger;
+                                            for (var i = 0; i < categoryData.length; i++) {
+                                                $(layero).find("iframe").contents().find("#parentId")
+                                                    .append("<option value=" + categoryData[i].id + ">" + categoryData[i].name + "</option>");
+                                            }
+                                            //上级分类默认选
+                                            $(layero).find("iframe").contents().find("#parentId").val(data.parentId);
+                                            //重新渲染
+                                            iframeWin.layui.form.render('select');
+                                            break;
+                                        default:
+                                            layer.msg('服务器出错了');
+                                            break;
+                                    }
+                                },
+                                //请求失败
+                                error: function (e) {
+                                    console.log("获取商品品牌");
+                                    console.log(e);
+                                }
+                            });
+                        }
+                        $(layero).find("iframe").contents().find("#id").val(data.id);
+                        $(layero).find("iframe").contents().find("#level").val(data.level);
+                        $(layero).find("iframe").contents().find("#goodsCount").val(data.goodsCount);
+                        $(layero).find("iframe").contents().find("#name").val(data.name);
+                        $(layero).find("iframe").contents().find("#goodsUnit").val(data.goodsUnit);
+                        $(layero).find("iframe").contents().find("#sort").val(data.sort);
+                        $(layero).find("iframe").contents().find("#keywords").val(data.keywords);
+                        $(layero).find("iframe").contents().find("#description").val(data.description);
+
+                        body.find("input[name=showStatus][value="+data.showStatus+"]").prop("checked", "checked");
+                        body.find("input[name=navStatus][value="+data.navStatus+"]").prop("checked", "checked");
+                        //重新渲染radio
+                        iframeWin.layui.form.render("radio");
+                        $(layero).find("iframe").contents().find("#icon").val(data.icon);
+                        $(layero).find("iframe").contents().find("#iconImg").attr('src',data.icon);
+
+                    }
+                });
+                //layer.msg('修改' + data.id);
+            }
+        });
+    });
+</script>
+</body>
+</html>
