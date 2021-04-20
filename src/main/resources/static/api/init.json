@@ -54,12 +54,6 @@
               "target": "_self"
             },
             {
-              "title": "商品添加",
-              "href": "page/goods/list-1.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
-            },
-            {
               "title": "商品分类",
               "href": "page/goods/category/categoryList.html",
               "icon": "fa fa-tachometer",
@@ -67,7 +61,7 @@
             },
             {
               "title": "商品类型",
-              "href": "page/goods/list-3.html",
+              "href": "page/goods/attributeCategory/attributeCategoryList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },

@@ -154,7 +154,6 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
-
                 $.ajax({
                     //请求方式
                     type:"delete",
@@ -168,6 +167,7 @@
                         var code=result.code;
                         switch (code) {
                             case RESULT_SUCCESS:
+                                alert("删除成功");
                                 window.location.reload();
                                 break;
                             default:layer.msg('服务器出错了');break;
