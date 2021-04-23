@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" id="id" name="id" />
+    <input type="hidden" id="type" name="type" />
+    <div class="layui-form-item">
+        <label class="layui-form-label required">属性名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="name" name="name" lay-verify="required" lay-reqtext="品牌名称不能为空" placeholder="不能为空" value="" class="layui-input">
+<!--            <tip>填写自己管理账号的名称。</tip>-->
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品类型</label>
+        <div class="layui-input-block">
+            <select lay-filter="goodsAttributeCategoryId" id="goodsAttributeCategoryId" name="goodsAttributeCategoryId">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">分类筛选样式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="filterType" value="0" title="普通" checked="">
+            <input type="radio" name="filterType" value="1" title="颜色">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">检索类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="searchType" value="0" title="不需要进行检索" />
+            <input type="radio" name="searchType" value="1" title="关键字检索"/>
+            <input type="radio" name="searchType" value="2" title="范围检索" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">商品属性关联</label>
+        <div class="layui-input-block">
+            <input type="radio" name="relatedStatus" value="0" title="不关联" />
+            <input type="radio" name="relatedStatus" value="1" title="关联"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">属性选择类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="selectType" value="0" title="唯一" />
+            <input type="radio" name="selectType" value="1" title="单选"/>
+            <input type="radio" name="selectType" value="2" title="多选"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">属性录入方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="inputType" value="0" title="手工录入" />
+            <input type="radio" name="inputType" value="1" title="从列表中选取"/>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">可选值列表</label>
+        <div class="layui-input-block">
+            <textarea id="inputList" name="inputList" class="layui-textarea" placeholder="以逗号隔开"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">是否支持手动新增</label>
+        <div class="layui-input-block">
+            <input type="radio" name="handAddStatus" value="0" title="是" />
+            <input type="radio" name="handAddStatus" value="1" title="否"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">排序</label>
+        <div class="layui-input-block">
+            <input type="number" id="sort" name="sort"  placeholder="排序" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="saveBtn" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+<script>
+    var ossConfig;
+    layui.use(['form','upload','element'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            upload=layui.upload,
+            element=layui.element,
+            $ = layui.$;
+
+
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+
+            // var index = layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // }, function () {
+            //
+            //     // 关闭弹出层
+            //     layer.close(index);
+            //
+            //     var iframeIndex = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.close(iframeIndex);
+            //
+            // });
+            //alert(JSON.stringify(data.field));
+            //提交表单
+            $.ajax({
+                //请求方式
+                type:"put",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:IP_HOST+"goodsAttribute/"+$("#id").val(),
+                data:JSON.stringify(data.field),
+                //请求成功
+                success:function (result) {
+                    var code=result.code;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            layer.msg("提交成功");
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            //1.5秒后关闭
+                            setTimeout(function (){
+                                parent.layer.close(iframeIndex);
+                                parent.location.reload();
+                            }, 1500);
+
+
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    layer.msg("提交失败");
+                }
+            });
+
+
+
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

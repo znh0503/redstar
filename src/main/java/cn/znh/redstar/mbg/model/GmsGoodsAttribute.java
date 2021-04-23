@@ -25,7 +25,7 @@ public class GmsGoodsAttribute implements Serializable {
     @ApiModelProperty(value = "排序字段：最高的可以单独上传图片")
     private Integer sort;
 
-    @ApiModelProperty(value = "分类筛选样式：1->普通；1->颜色")
+    @ApiModelProperty(value = "分类筛选样式：0->普通；1->颜色")
     private Integer filterType;
 
     @ApiModelProperty(value = "检索类型；0->不需要进行检索；1->关键字检索；2->范围检索")

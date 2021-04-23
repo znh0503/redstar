@@ -23,7 +23,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="setting">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="attributeList">属性列表</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="attributeList">规格列表</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="paramList">参数列表</a>
         </script>
 
@@ -54,7 +54,7 @@
                 {type: "checkbox", width: 50},
                 {field: 'id', width: 80, title: '编号', sort: true},
                 {field: 'name', width: 150, title: '类型名称',edit:'text'},
-                {field: 'attributeCount', width: 120, title: '属性数量', sort: true,align: "center"},
+                {field: 'attributeCount', width: 120, title: '规格数量', sort: true,align: "center"},
                 {field: 'paramCount', width: 120, title: '参数数量', sort: true,align: "center"},
                 {title: '设置', minWidth: 150, toolbar: '#setting', align: "center"},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
@@ -251,6 +251,41 @@
                     });
                 });
             }
+              else if (obj.event === 'attributeList')
+              {
+                  var index = layer.open({
+                      id:'attributeList',
+                      title: '商品规格列表',
+                      type: 2,
+                      shade: 0.2,
+                      maxmin: true,
+                      shadeClose: true,
+                      area: ['85%', '85%'],
+                      content: 'setting.html?goodsAttributeCategoryId='+data.id+"&goodsAttributeCategoryName="+data.name+"&type="+0,
+                      //open成功回调
+                      success: function (layero, index) {
+                          var body = layer.getChildFrame('body', index);
+                          var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+
+                      }
+                  });
+              }
+              else if (obj.event === 'paramList')
+              {
+                  var index = layer.open({
+                      title: '商品参数列表',
+                      type: 2,
+                      shade: 0.2,
+                      maxmin: true,
+                      shadeClose: true,
+                      area: ['85%', '85%'],
+                      content: 'setting.html?goodsAttributeCategoryId='+data.id+"&goodsAttributeCategoryName="+data.name+"&type="+1,
+                      //open成功回调
+                      success: function (layero, index) {
+
+                      }
+                  });
+              }
         });
 
     });
