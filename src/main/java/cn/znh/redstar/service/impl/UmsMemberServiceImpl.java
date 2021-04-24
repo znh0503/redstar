@@ -19,6 +19,7 @@ import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import sun.rmi.runtime.Log;
 
@@ -36,6 +37,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UmsMemberServiceImpl implements UmsMemberService {
     @Resource
     UmsMemberMapper umsMemberMapper;

@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -41,6 +42,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
  */
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class UmsAdminServiceImpl implements UmsAdminService {
     @Resource
     UmsAdminMapper umsAdminMapper;

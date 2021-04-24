@@ -18,6 +18,7 @@ import org.mybatis.dynamic.sql.select.SelectModel;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.mybatis.dynamic.sql.where.condition.IsEqualTo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -35,6 +36,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
  * 后台资源管理Service
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UmsResourceServiceImpl implements UmsResourceService {
 
     @Resource

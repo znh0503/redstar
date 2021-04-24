@@ -15,6 +15,7 @@ import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +29,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  * 后台用户缓存操作service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
     @Resource
     private UmsAdminService umsAdminService;

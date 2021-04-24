@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Optional;
  * 品牌管理service的实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class GmsBrandServiceImpl implements GmsBrandService {
 
     @Resource

@@ -12,6 +12,7 @@ import org.mybatis.dynamic.sql.update.UpdateDSL;
 import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,11 +27,13 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  * 商品属性service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class GmsGoodsAttributeServiceImpl implements GmsGoodsAttributeService {
     @Resource
     GmsGoodsAttributeMapper gmsGoodsAttributeMapper;
     @Resource
     GmsGoodsAttributeCategoryMapper gmsGoodsAttributeCategoryMapper;
+
 
     @Override
     public List<GmsGoodsAttribute> getGoodsAttribute(Long goodsAttributeCategoryId) {

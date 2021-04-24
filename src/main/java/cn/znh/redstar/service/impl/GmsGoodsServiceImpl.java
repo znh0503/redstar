@@ -6,6 +6,7 @@ import cn.znh.redstar.mbg.model.GmsGoods;
 import cn.znh.redstar.service.GmsGoodsService;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Optional;
  * 商品管理service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class GmsGoodsServiceImpl implements GmsGoodsService {
     @Resource
     GmsGoodsMapper gmsGoodsMapper;

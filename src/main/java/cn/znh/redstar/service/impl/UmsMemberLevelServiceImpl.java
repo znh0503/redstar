@@ -5,6 +5,7 @@ import cn.znh.redstar.mbg.model.UmsMemberLevel;
 import cn.znh.redstar.service.UmsMemberLevelService;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * 会员等级管理Service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UmsMemberLevelServiceImpl implements UmsMemberLevelService {
     @Resource
     UmsMemberLevelMapper umsMemberLevelMapper;

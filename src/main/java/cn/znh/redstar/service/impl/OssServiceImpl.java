@@ -12,6 +12,7 @@ import com.aliyun.oss.model.PolicyConditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import java.util.Date;
  */
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class OssServiceImpl implements OssService {
     /**
      * 签名有效期

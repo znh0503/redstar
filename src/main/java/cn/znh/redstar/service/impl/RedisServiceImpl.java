@@ -3,6 +3,7 @@ package cn.znh.redstar.service.impl;
 import cn.znh.redstar.service.RedisService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @date : 21:48 2021/3/16
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class RedisServiceImpl implements RedisService {
 
     /**

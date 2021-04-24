@@ -6,6 +6,7 @@ import cn.znh.redstar.mbg.model.GmsGoodsCategory;
 import cn.znh.redstar.service.GmsGoodCategoryService;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  * 商品分类信息管理service
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class GmsGoodCategoryServiceImpl implements GmsGoodCategoryService {
     @Resource
     GmsGoodsCategoryMapper gmsGoodsCategoryMapper;

@@ -11,6 +11,7 @@ import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -25,6 +26,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
  * 商品会员价格管理service的实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class GmsMemberPriceServiceImpl implements GmsMemberPriceService {
     @Resource
     GmsMemberPriceMapper gmsMemberPriceMapper;
