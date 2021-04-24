@@ -74,6 +74,56 @@
           ]
         },
         {
+          "title": "营销管理",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "秒杀活动列表",
+              "href": "page/goods/goodsList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "优惠券列表",
+              "href": "page/goods/category/categoryList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "品牌推荐",
+              "href": "page/marketing/homeBrand/homeBrandList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "新品推荐",
+              "href": "page/goods/brand/brandList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "人气推荐",
+              "href": "page/goods/brand/brandList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "专题推荐",
+              "href": "page/goods/brand/brandList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "广告列表",
+              "href": "page/goods/brand/brandList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
           "title": "菜单管理",
           "href": "page/menu.html",
           "icon": "fa fa-window-maximize",
