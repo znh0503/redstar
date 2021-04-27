@@ -31,4 +31,19 @@ public interface MmsHomeBrandService {
      */
     int deleteHomeBrand(List<Long> id);
 
+    /**
+     * 批量添加品牌推荐信息
+     * @param brandList
+     * @return
+     */
+    List createHomeBrand(List<GmsBrand> brandList);
+
+    /**
+     * 根据id更新品牌推荐信息
+     * @param id
+     * @param homeBrand
+     * @return
+     */
+    int updateHomeBrand(Long id, MmsHomeBrand homeBrand);
+
 }

@@ -48,6 +48,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
@@ -55,11 +56,13 @@
 </div>
 <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../../js/Config.js"></script>
+<script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'table'], function () {
+    layui.use(['form', 'table','tableSelect'], function () {
         var $ = layui.jquery,
             form = layui.form,
-            table = layui.table;
+            table = layui.table,
+            tableSelect=layui.tableSelect;
 
         table.render({
             elem: '#currentTableId',
@@ -99,28 +102,58 @@
                 //,dataName: 'rows' //规定数据列表的字段名称，默认：data
             }
         });
-        // tableSelect.render({
-        //     elem: '#demo',
-        //     searchKey: 'my',
-        //     checkedKey: 'id',
-        //     searchPlaceholder: '自定义文字和name',
-        //     table: {
-        //         url: IP_HOST+'brand',
-        //         cols: [[
-        //             { type: 'checkbox' },
-        //             { field: 'id', title: 'ID', width: 100 },
-        //             { field: 'username', title: '姓名', width: 300 },
-        //             { field: 'sex', title: '性别', width: 100 }
-        //         ]]
-        //     },
-        //     done: function (elem, data) {
-        //         var NEWJSON = []
-        //         layui.each(data.data, function (index, item) {
-        //             NEWJSON.push(item.username)
-        //         })
-        //         elem.val(NEWJSON.join(","))
-        //     }
-        // })
+
+        tableSelect.render({
+            elem: '#selectBrandBtn',
+            searchKey: 'name',
+            checkedKey: 'id',
+            searchPlaceholder: '搜索品牌',
+            url:IP_HOST+"brand",
+            table: {
+                url: IP_HOST+'brand',
+                cols: [[
+                    { type: 'checkbox' },
+                    { field: 'id', title: 'ID', width: 100 },
+                    { field: 'name', title: '品牌名称', width: 300 },
+                    { field: 'goodsCount', title: '商品数量', width: 100 },
+                    { field: 'goodsCommentCount', title: '评论数量', width: 100 }
+                ]],
+                response: {
+                    //statusName: 'code', //规定数据状态的字段名称，默认：code
+                    statusCode: 200 //规定成功的状态码，默认：0
+                    //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                    //,countName: 'total' //规定数据总数的字段名称，默认：count
+                    //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+                }
+            },
+            done: function (elem, data) {//选择完成的回调
+                $.ajax({
+                    //请求方式
+                    type:"post",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"homeBrand",
+                    data:JSON.stringify(data.data),
+                    //请求成功
+                    success:function (result) {
+                        console.log(result);
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                alert("提交成功，共添加了"+result.data.length+"条");
+                                window.location.reload();
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+            }
+        })
 
 
         // 监听搜索操作
@@ -148,18 +181,7 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 选择品牌事件
-                var index = layer.open({
-                    title: '选择品牌',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: 'brandAdd.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
+
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var ids= [];
                 var checkStatus = table.checkStatus('currentTableId')
@@ -231,7 +253,29 @@
                         }
                     });
                 });
-            }
+            }else if (obj.event === 'edit')
+             {
+                 var index = layer.open({
+                     title: '编辑品牌推荐',
+                     type: 2,
+                     shade: 0.2,
+                     maxmin:true,
+                     shadeClose: true,
+                     area: ['50%', '50%'],
+                     content: 'homeBrandEdit.html',
+                     success:function (layero,index) {
+                         var body = layer.getChildFrame('body', index);
+                         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                         $(layero).find("iframe").contents().find("#id").val(data.id);
+                         $(layero).find("iframe").contents().find("#brandId").val(data.brandId);
+                         $(layero).find("iframe").contents().find("#brandName").val(data.brandName);
+                         $(layero).find("iframe").contents().find("#sort").val(data.sort);
+                         body.find("input[name=recommendStatus][value="+data.recommendStatus+"]").prop("checked", "checked");
+                         //重新渲染radio
+                         iframeWin.layui.form.render("radio");
+                     }
+                 });
+             }
         });
 
     });

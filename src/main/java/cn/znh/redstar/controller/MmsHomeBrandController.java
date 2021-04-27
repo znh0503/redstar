@@ -36,7 +36,7 @@ public class MmsHomeBrandController {
 
     @ApiOperation("根据id删除品牌推荐信息")
     @DeleteMapping("/{id}")
-    public CommonResult deleteBrand(@PathVariable("id")Long id)
+    public CommonResult deleteHomeBrand(@PathVariable("id")Long id)
     {
         CommonResult commonResult;
         int result = mmsHomeBrandService.deleteHomeBrand(id);
@@ -56,12 +56,43 @@ public class MmsHomeBrandController {
 
     @ApiOperation("删除多条品牌信息")
     @DeleteMapping("")
-    public CommonResult<GmsBrand> deleteBrandList(@RequestBody List<Long> ids)
+    public CommonResult<GmsBrand> deleteHomeBrandList(@RequestBody List<Long> ids)
     {
         CommonResult commonResult;
         int result = mmsHomeBrandService.deleteHomeBrand(ids);
         //删除成功
         commonResult=CommonResult.success("执行完成，共删除"+result+"条");
+        return commonResult;
+    }
+
+    @ApiOperation("创建一个品牌推荐信息")
+    @PostMapping("")
+    @ResponseBody
+    public CommonResult<MmsHomeBrand> createHomeBrand(@RequestBody List<GmsBrand> brandList)
+    {
+        CommonResult commonResult;
+        List result = mmsHomeBrandService.createHomeBrand(brandList);
+        commonResult=CommonResult.success(result);
+        return commonResult;
+    }
+
+    @ApiOperation("根据id更新品牌信息")
+    @PutMapping("/{id}")
+    @ResponseBody
+    public CommonResult updateHomeBrandById(@PathVariable("id") Long id,@RequestBody MmsHomeBrand homeBrand)
+    {
+        CommonResult commonResult;
+        int result = mmsHomeBrandService.updateHomeBrand(id, homeBrand);
+        if (result==1)
+        {
+            //更新成功
+            commonResult=CommonResult.success(homeBrand);
+        }
+        else {
+            //更新失败
+            commonResult=CommonResult.failed("更新品牌推荐信息失败");
+            log.debug("更新品牌推荐信息失败,id={},data={}",id,homeBrand);
+        }
         return commonResult;
     }
 }

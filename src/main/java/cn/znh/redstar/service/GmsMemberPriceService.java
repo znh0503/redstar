@@ -16,4 +16,6 @@ public interface GmsMemberPriceService {
       * @return
       */
      List<GmsMemberPrice> getMemberPriceByGoodsId(Long goodsId);
+
+
 }
