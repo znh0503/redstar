@@ -40,7 +40,7 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button id="selectBrandBtn" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn"> 选择品牌 </button>
+                <button id="selectBrandBtn" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加广告 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
@@ -48,7 +48,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs layui-btn-normal data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-normal  data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
@@ -58,15 +58,14 @@
 <script src="../../../js/Config.js"></script>
 <script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'table','tableSelect'], function () {
+    layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
-            table = layui.table,
-            tableSelect=layui.tableSelect;
+            table = layui.table;
 
         table.render({
             elem: '#currentTableId',
-            url: IP_HOST+"homeBrand",
+            url: IP_HOST+"homeAdvertise",
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -76,17 +75,33 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'id', width: 80, title: '编号', sort: true},
-                {field: 'brandName', width: 120, title: '品牌名称'},
+                {field: 'name', width: 120, title: '广告名称'},
                 {
-                    field: 'recommendStatus', width: 120,templet: function (d) {
-                        if (d.recommendStatus == 0) {
-                            return '<input type="checkbox"  name="recommendStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                    field: 'type', width: 120,templet: function (d) {
+                        if (d.type == 0) {
+                            return 'PC';
                         }
                          else {
-                            return '<input type="checkbox" checked="" name="recommendStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                            return 'App';
                         }
-                    }, title: '品牌制造商'
+                    }, title: '轮播位置'
                 },
+                {field: 'pic', width: 120, title: '图片地址'},
+                {field: 'startTime', width: 120, title: '开始时间',sort: true},
+                {field: 'endTime', width: 120, title: '结束时间',sort: true},
+                {
+                    field: 'status', width: 120,templet: function (d) {
+                        if (d.status == 0) {
+                            return '<input type="checkbox"  name="status" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                        else {
+                            return '<input type="checkbox" checked="" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                    }, title: '上下线状态'
+                },
+                {field: 'clickCount', width: 120, title: '点击数',sort: true},
+                {field: 'orderCount', width: 120, title: '下单数',sort: true},
+                {field: 'url', width: 120, title: '链接地址'},
                 {field: 'sort', width: 80, align: "center", title: '排序',sort: true},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -102,58 +117,6 @@
                 //,dataName: 'rows' //规定数据列表的字段名称，默认：data
             }
         });
-
-        tableSelect.render({
-            elem: '#selectBrandBtn',
-            searchKey: 'name',
-            checkedKey: 'id',
-            searchPlaceholder: '搜索品牌',
-            url:IP_HOST+"brand",
-            table: {
-                url: IP_HOST+'brand',
-                cols: [[
-                    { type: 'checkbox' },
-                    { field: 'id', title: 'ID', width: 100 },
-                    { field: 'name', title: '品牌名称', width: 300 },
-                    { field: 'goodsCount', title: '商品数量', width: 100 },
-                    { field: 'goodsCommentCount', title: '评论数量', width: 100 }
-                ]],
-                response: {
-                    //statusName: 'code', //规定数据状态的字段名称，默认：code
-                    statusCode: 200 //规定成功的状态码，默认：0
-                    //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-                    //,countName: 'total' //规定数据总数的字段名称，默认：count
-                    //,dataName: 'rows' //规定数据列表的字段名称，默认：data
-                }
-            },
-            done: function (elem, data) {//选择完成的回调
-                $.ajax({
-                    //请求方式
-                    type:"post",
-                    //请求的媒体类型
-                    contentType: "application/json;charset=UTF-8",
-                    //请求地址
-                    url:IP_HOST+"homeBrand",
-                    data:JSON.stringify(data.data),
-                    //请求成功
-                    success:function (result) {
-                        console.log(result);
-                        var code=result.code;
-                        switch (code) {
-                            case RESULT_SUCCESS:
-                                alert("提交成功，共添加了"+result.data.length+"条");
-                                window.location.reload();
-                                break;
-                            default:layer.msg('服务器出错了');break;
-                        }
-                    },
-                    //请求失败
-                    error:function (e) {
-                        layer.msg("提交失败");
-                    }
-                });
-            }
-        })
 
 
         // 监听搜索操作
@@ -180,8 +143,21 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {  // 选择品牌事件
+            if (obj.event === 'add') {  // 添加广告事件
+                var index = layer.open({
+                    title: '添加广告',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['85%', '85%'],
+                    content: 'homeAdvertiseAdd.html',
+                    success:function (layero,index) {
+                        var body = layer.getChildFrame('body', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
 
+                    }
+                });
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var ids= [];
                 var checkStatus = table.checkStatus('currentTableId')
@@ -196,7 +172,7 @@
                     //请求的媒体类型
                     contentType: "application/json;charset=UTF-8",
                     //请求地址
-                    url:IP_HOST+"homeBrand",
+                    url:IP_HOST+"homeAdvertise",
                     data:JSON.stringify(ids),
                     //请求成功
                     success:function (result) {
@@ -234,7 +210,7 @@
                         //请求的媒体类型
                         contentType: "application/json;charset=UTF-8",
                         //请求地址
-                        url:IP_HOST+"homeBrand/"+data.id,
+                        url:IP_HOST+"homeAdvertise/"+data.id,
                         //请求成功
                         success:function (result) {
                             var code=result.code;
@@ -256,21 +232,28 @@
             }else if (obj.event === 'edit')
              {
                  var index = layer.open({
-                     title: '编辑品牌推荐',
+                     title: '编辑广告',
                      type: 2,
                      shade: 0.2,
                      maxmin:true,
                      shadeClose: true,
-                     area: ['50%', '50%'],
-                     content: 'homeBrandEdit.html',
+                     area: ['85%', '85%'],
+                     content: 'homeAdvertiseEdit.html',
                      success:function (layero,index) {
                          var body = layer.getChildFrame('body', index);
                          var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
                          $(layero).find("iframe").contents().find("#id").val(data.id);
-                         $(layero).find("iframe").contents().find("#brandId").val(data.brandId);
-                         $(layero).find("iframe").contents().find("#brandName").val(data.brandName);
+                         $(layero).find("iframe").contents().find("#name").val(data.name);
+                         $(layero).find("iframe").contents().find("#type").val(data.type);
+                         $(layero).find("iframe").contents().find("#startTime").val(data.startTime);
+                         $(layero).find("iframe").contents().find("#endTime").val(data.endTime);
+                         body.find("input[name=status][value="+data.status+"]").prop("checked", "checked");
+                         $(layero).find("iframe").contents().find("#picImg").attr('src',data.logo);
                          $(layero).find("iframe").contents().find("#sort").val(data.sort);
-                         body.find("input[name=recommendStatus][value="+data.recommendStatus+"]").prop("checked", "checked");
+                         $(layero).find("iframe").contents().find("#url").val(data.url);
+                         $(layero).find("iframe").contents().find("#note").val(data.note);
+                         //重新渲染
+                         iframeWin.layui.form.render('select');
                          //重新渲染radio
                          iframeWin.layui.form.render("radio");
                      }

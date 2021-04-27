@@ -117,7 +117,7 @@
             },
             {
               "title": "广告列表",
-              "href": "page/goods/brand/brandList.html",
+              "href": "page/marketing/homeAdvertise/homeAdvertiseList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             }

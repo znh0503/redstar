@@ -10,6 +10,7 @@ import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -20,6 +21,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  * @author : znh
  * @date : 0:06 2021/4/28
  */
+@Service
 public class MmsHomeAdvertiseImpl implements MmsHomeAdvertiseSevice {
     @Resource
     MmsHomeAdvertiseMapper mmsHomeAdvertiseMapper;
