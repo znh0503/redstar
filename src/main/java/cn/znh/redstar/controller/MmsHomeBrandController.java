@@ -65,7 +65,7 @@ public class MmsHomeBrandController {
         return commonResult;
     }
 
-    @ApiOperation("创建一个品牌推荐信息")
+    @ApiOperation("批量创建品牌推荐信息")
     @PostMapping("")
     @ResponseBody
     public CommonResult<MmsHomeBrand> createHomeBrand(@RequestBody List<GmsBrand> brandList)

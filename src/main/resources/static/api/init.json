@@ -99,7 +99,7 @@
             },
             {
               "title": "新品推荐",
-              "href": "page/goods/brand/brandList.html",
+              "href": "page/marketing/homeNewGoods/homeNewGoodsList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },

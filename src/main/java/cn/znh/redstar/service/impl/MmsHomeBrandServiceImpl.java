@@ -58,7 +58,6 @@ public class MmsHomeBrandServiceImpl implements MmsHomeBrandService {
     @Override
     public List createHomeBrand(List<GmsBrand> brandList) {
         List<MmsHomeBrand> result=new ArrayList<>();
-
         for (GmsBrand brand:brandList)
         {
             MmsHomeBrand homeBrand=new MmsHomeBrand();
