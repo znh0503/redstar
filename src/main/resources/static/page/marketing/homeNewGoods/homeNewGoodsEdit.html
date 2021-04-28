@@ -18,11 +18,11 @@
 <body>
 <div class="layui-form layuimini-form">
     <input type="hidden" id="id" name="id" />
-    <input type="hidden" id="brandId" name="type" />
+    <input type="hidden" id="goodsId" name="goodsId" />
     <div class="layui-form-item">
-        <label class="layui-form-label required">品牌名称</label>
+        <label class="layui-form-label required">商品名称</label>
         <div class="layui-input-block">
-            <input type="text" id="brandName" disabled name="brandName" lay-verify="required" value="" class="layui-input">
+            <input type="text" id="goodsName" disabled name="goodsName" lay-verify="required" value="" class="layui-input">
 <!--            <tip>填写自己管理账号的名称。</tip>-->
         </div>
     </div>
@@ -83,7 +83,7 @@
                 //请求的媒体类型
                 contentType: "application/json;charset=UTF-8",
                 //请求地址
-                url:IP_HOST+"homeBrand/"+$("#id").val(),
+                url:IP_HOST+"homeNewGoods/"+$("#id").val(),
                 data:JSON.stringify(data.field),
                 //请求成功
                 success:function (result) {
