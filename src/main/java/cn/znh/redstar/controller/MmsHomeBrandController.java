@@ -18,7 +18,7 @@ import java.util.List;
  * 首页品牌推荐controller
  */
 @Slf4j
-@Api(tags = "MmsHomeBrandController",description = "营销首页品牌推荐controller")
+@Api(tags = "MmsHomeBrandController",description = "营销首页品牌推荐")
 @RestController
 @RequestMapping("/homeBrand")
 public class MmsHomeBrandController {
@@ -31,6 +31,14 @@ public class MmsHomeBrandController {
     public CommonResult getHomeBrandList()
     {
         List<MmsHomeBrand> homeBrandList = mmsHomeBrandService.listAllHomeBrand();
+        return CommonResult.success(homeBrandList);
+    }
+
+    @ApiOperation("获取品牌推荐列表")
+    @GetMapping("/{recommendStatus}")
+    public CommonResult getHomeBrandList(@PathVariable("recommendStatus") int recommendStatus)
+    {
+        List<MmsHomeBrand> homeBrandList = mmsHomeBrandService.listAllHomeBrand(recommendStatus);
         return CommonResult.success(homeBrandList);
     }
 

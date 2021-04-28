@@ -19,14 +19,14 @@ import java.util.List;
  * 首页轮播广告controller
  */
 @Slf4j
-@Api(tags = "MmsHomeAdvertiseController",description = "营销首页轮播广告controller")
+@Api(tags = "MmsHomeAdvertiseController",description = "营销首页轮播广告")
 @RestController
 @RequestMapping("/homeAdvertise")
 public class MmsHomeAdvertiseController {
     @Resource
     MmsHomeAdvertiseSevice mmsHomeAdvertiseSevice;
 
-    @ApiOperation("获取品牌推荐列表")
+    @ApiOperation("获取轮播广告列表")
     @GetMapping("")
     public CommonResult getHomeAdvertise()
     {
@@ -34,7 +34,7 @@ public class MmsHomeAdvertiseController {
         return CommonResult.success(homeAdvertiseList);
     }
 
-    @ApiOperation("根据轮播位置和上线状态获取品牌推荐列表")
+    @ApiOperation("根据轮播位置和上线状态获取轮播广告列表")
     @GetMapping("/{type}/{status}")
     public CommonResult getHomeAdvertise(@PathVariable("type") int type, @PathVariable("status") int status)
     {
@@ -99,7 +99,7 @@ public class MmsHomeAdvertiseController {
         return commonResult;
     }
 
-    @ApiOperation("删除多条品牌信息")
+    @ApiOperation("删除多条轮播广告")
     @DeleteMapping("")
     public CommonResult deleteHomeAdvertiseList(@RequestBody List<Long> ids)
     {

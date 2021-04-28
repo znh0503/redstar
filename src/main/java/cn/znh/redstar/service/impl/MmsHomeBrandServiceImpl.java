@@ -39,6 +39,16 @@ public class MmsHomeBrandServiceImpl implements MmsHomeBrandService {
     }
 
     @Override
+    public List<MmsHomeBrand> listAllHomeBrand(int recommendStatus) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(MmsHomeBrandMapper.selectList)
+                .from(MmsHomeBrandDynamicSqlSupport.mmsHomeBrand)
+                .where(MmsHomeBrandDynamicSqlSupport.recommendStatus, isEqualTo(recommendStatus))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<MmsHomeBrand> homeBrandList = mmsHomeBrandMapper.selectMany(selectStatement);
+        return homeBrandList;
+    }
+
+    @Override
     public int deleteHomeBrand(Long id) {
         int result = mmsHomeBrandMapper.deleteByPrimaryKey(id);
         return result;

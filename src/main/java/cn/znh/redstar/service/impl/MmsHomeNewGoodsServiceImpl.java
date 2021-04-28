@@ -36,6 +36,16 @@ public class MmsHomeNewGoodsServiceImpl implements MmsHomeNewGoodsService {
     }
 
     @Override
+    public List<MmsHomeNewGoods> getHomeNewGoods(int recommendStatus) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(MmsHomeNewGoodsMapper.selectList)
+                .from(MmsHomeNewGoodsDynamicSqlSupport.mmsHomeNewGoods)
+                .where(MmsHomeNewGoodsDynamicSqlSupport.recommendStatus, isEqualTo(recommendStatus))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<MmsHomeNewGoods> homeNewGoodsList = mmsHomeNewGoodsMapper.selectMany(selectStatement);
+        return homeNewGoodsList;
+    }
+
+    @Override
     public List<MmsHomeNewGoods> createHomeNewGoods(List<GmsGoods> goodsList) {
         List<MmsHomeNewGoods> result=new ArrayList<>();
         for (GmsGoods goods:goodsList)

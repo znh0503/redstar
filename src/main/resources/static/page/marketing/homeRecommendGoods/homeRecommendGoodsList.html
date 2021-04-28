@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">推荐状态</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="recommendStatus" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button id="selectGoodsBtn" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn"> 选择商品 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-normal data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+<script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'table','tableSelect'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            tableSelect=layui.tableSelect;
+
+        table.render({
+            elem: '#currentTableId',
+            url: IP_HOST+"homeRecommendGoods",
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'id', width: 80, title: '编号', sort: true},
+                {field: 'goodsName', width: 120, title: '商品名称'},
+                {
+                    field: 'recommendStatus', width: 120,templet: function (d) {
+                        if (d.recommendStatus == 0) {
+                            return '<input type="checkbox"  name="recommendStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                         else {
+                            return '<input type="checkbox" checked="" name="recommendStatus" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                    }, title: '推荐状态'
+                },
+                {field: 'sort', width: 80, align: "center", title: '排序',sort: true},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line',
+            response: {
+                //statusName: 'status', //规定数据状态的字段名称，默认：code
+                statusCode: 200 //规定成功的状态码，默认：0
+                //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                //,countName: 'total' //规定数据总数的字段名称，默认：count
+                //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+            }
+        });
+
+        tableSelect.render({
+            elem: '#selectGoodsBtn',
+            searchKey: 'name',
+            checkedKey: 'id',
+            searchPlaceholder: '搜索商品',
+            table: {
+                url: IP_HOST+'goods',
+                cols: [[
+                    { type: 'checkbox' },
+                    { field: 'id', title: 'ID', width: 100 },
+                    { field: 'name', title: '商品名称', width: 300 },
+                    { field: 'goodsSn', title: '货号', width: 100 },
+                ]],
+                response: {
+                    //statusName: 'code', //规定数据状态的字段名称，默认：code
+                    statusCode: 200 //规定成功的状态码，默认：0
+                    //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                    //,countName: 'total' //规定数据总数的字段名称，默认：count
+                    //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+                }
+            },
+            done: function (elem, data) {//选择完成的回调
+                $.ajax({
+                    //请求方式
+                    type:"post",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"homeRecommendGoods",
+                    data:JSON.stringify(data.data),
+                    //请求成功
+                    success:function (result) {
+                        console.log(result);
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                alert("提交成功，共添加了"+result.data.length+"条");
+                                window.location.reload();
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+            }
+        })
+
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+
+            //执行搜索重载
+            list.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var ids= [];
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                for (var i=0;i<data.length;i++)
+                {
+                    ids.push(data[i].id);
+                }
+                $.ajax({
+                    //请求方式
+                    type:"delete",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"homeRecommendGoods",
+                    data:JSON.stringify(ids),
+                    //请求成功
+                    success:function (result) {
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                alert(result.data);
+                                window.location.reload();
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+               // layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            //console.log(obj)
+        });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data=obj.data;
+             if (obj.event === 'delete') {
+                layer.confirm('真的删除行么', function (index) {
+                    console.log(data);
+                    $.ajax({
+                        //请求方式
+                        type:"delete",
+                        //请求的媒体类型
+                        contentType: "application/json;charset=UTF-8",
+                        //请求地址
+                        url:IP_HOST+"homeRecommendGoods/"+data.id,
+                        //请求成功
+                        success:function (result) {
+                            var code=result.code;
+                            switch (code) {
+                                case RESULT_SUCCESS:
+                                    layer.msg("删除成功");
+                                    obj.del();
+                                    layer.close(index);
+                                    break;
+                                default:layer.msg('服务器出错了');break;
+                            }
+                        },
+                        //请求失败
+                        error:function (e) {
+                            layer.msg("提交失败");
+                        }
+                    });
+                });
+            }else if (obj.event === 'edit')
+             {
+                 var index = layer.open({
+                     title: '编辑人气推荐',
+                     type: 2,
+                     shade: 0.2,
+                     maxmin:true,
+                     shadeClose: true,
+                     area: ['50%', '50%'],
+                     content: 'homeRecommendGoodsEdit.html',
+                     success:function (layero,index) {
+                         var body = layer.getChildFrame('body', index);
+                         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                         $(layero).find("iframe").contents().find("#id").val(data.id);
+                         $(layero).find("iframe").contents().find("#goodsId").val(data.goodsId);
+                         $(layero).find("iframe").contents().find("#goodsName").val(data.goodsName);
+                         $(layero).find("iframe").contents().find("#sort").val(data.sort);
+                         body.find("input[name=recommendStatus][value="+data.recommendStatus+"]").prop("checked", "checked");
+                         //重新渲染radio
+                         iframeWin.layui.form.render("radio");
+                     }
+                 });
+             }
+        });
+
+    });
+</script>
+
+</body>
+</html>

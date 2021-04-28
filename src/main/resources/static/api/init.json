@@ -105,13 +105,7 @@
             },
             {
               "title": "人气推荐",
-              "href": "page/goods/brand/brandList.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
-            },
-            {
-              "title": "专题推荐",
-              "href": "page/goods/brand/brandList.html",
+              "href": "page/marketing/homeRecommendGoods/homeRecommendGoodsList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },

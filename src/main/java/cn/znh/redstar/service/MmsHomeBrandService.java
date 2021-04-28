@@ -18,6 +18,13 @@ public interface MmsHomeBrandService {
     List<MmsHomeBrand> listAllHomeBrand();
 
     /**
+     * 根据推荐状态获取品牌推荐
+     * @param type
+     * @return
+     */
+    List<MmsHomeBrand> listAllHomeBrand(int recommendStatus);
+
+    /**
      * 根据id删除品牌推荐
      * @param id
      * @return
