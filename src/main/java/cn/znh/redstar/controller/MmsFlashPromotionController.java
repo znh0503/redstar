@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * @author : znh
  * @date : 19:02 2021/4/29
+ * 秒杀活动controller
  */
 @Slf4j
 @Api(tags = "MmsFlashPromotionController",description = "营销秒杀活动")
@@ -78,7 +79,7 @@ public class MmsFlashPromotionController {
 
     @ApiOperation("根据id删除秒杀活动")
     @DeleteMapping("/{id}")
-    public CommonResult deleteFlashPromotion(@PathVariable("id")Long id)
+    public CommonResult delete(@PathVariable("id")Long id)
     {
         CommonResult commonResult;
         int result = mmsFlashPromotionService.delete(id);
@@ -96,7 +97,7 @@ public class MmsFlashPromotionController {
         return commonResult;
     }
 
-    @ApiOperation("删除多条轮播广告")
+    @ApiOperation("删除多条秒杀活动")
     @DeleteMapping("")
     public CommonResult delete(@RequestBody List<Long> ids)
     {

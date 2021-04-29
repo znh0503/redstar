@@ -13,6 +13,7 @@ import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
@@ -47,6 +48,7 @@ public class MmsFlashPromotionServiceImpl implements MmsFlashPromotionService {
 
     @Override
     public int create(MmsFlashPromotion flashPromotion) {
+        flashPromotion.setCreateTime(new Date());
         int result = mmsFlashPromotionMapper.insert(flashPromotion);
         return result;
     }

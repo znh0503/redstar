@@ -19,22 +19,22 @@
 <div class="layui-form layuimini-form">
     <input type="hidden" id="id" name="id" />
     <div class="layui-form-item">
-        <label class="layui-form-label required">活动标题</label>
+        <label class="layui-form-label required">秒杀时间段名称</label>
         <div class="layui-input-block">
-            <input type="text" id="title"  name="title" lay-verify="required" value="" class="layui-input">
+            <input type="text" id="name"  name="name" lay-verify="required" value="" class="layui-input">
 <!--            <tip>填写自己管理账号的名称。</tip>-->
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">开始时间</label>
+        <label class="layui-form-label required">每日开始时间</label>
         <div class="layui-input-block">
-            <input type="text" id="startDate"  name="startDate" lay-verify="required" value="" class="layui-input">
+            <input type="text" id="startTime"  name="startTime" lay-verify="required" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">结束时间</label>
+        <label class="layui-form-label required">每日结束时间</label>
         <div class="layui-input-block">
-            <input type="text" id="endDate"  name="endDate" lay-verify="required" value="" class="layui-input">
+            <input type="text" id="endTime"  name="endTime" lay-verify="required" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -67,12 +67,12 @@
             $ = layui.$;
 
         laydate.render({
-            elem: '#startDate', //指定元素
-            type: 'datetime'
+            elem: '#startTime', //指定元素
+            type: 'time'
         });
         laydate.render({
-            elem: '#endDate', //指定元素
-            type: 'datetime'
+            elem: '#endTime', //指定元素
+            type: 'time'
         });
 
         //监听提交
@@ -85,7 +85,7 @@
                 //请求的媒体类型
                 contentType: "application/json;charset=UTF-8",
                 //请求地址
-                url:IP_HOST+"flashPromotion",
+                url:IP_HOST+"flashPromotionSession",
                 data:JSON.stringify(data.field),
                 //请求成功
                 success:function (result) {
