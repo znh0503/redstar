@@ -228,11 +228,13 @@
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <div id="goodsAttributeCategoryDiv"  class="layui-input-block" style="background-color:lightyellow;">
-                                            <input id="test" type="text" />
+                                        <div id="goodsAttribute0Div"  class="layui-input-block" style="background-color:#FFFFFF;padding: 10px">
                                         </div>
                                     </div>
-
+                                    <div class="layui-form-item">
+                                        <div id="goodsAttribute1Div"  class="layui-input-block" style="background-color:#FFFFFF;padding: 10px">
+                                        </div>
+                                    </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn layui-btn-primary pre">上一步，填写促销信息</button>
@@ -482,29 +484,35 @@
                 //请求的媒体类型
                 contentType: "application/json;charset=UTF-8",
                 //请求地址
-                url:IP_HOST+"/goodsAttribute/"+data.value,
+                url:IP_HOST+"goodsAttribute/"+data.value,
                 //同步
                 async:false,
                 //请求成功
                 success:function (result) {
                     console.log(result);
                     var code=result.code;
-                    var data=result.data;
+                    var goodsAttributeData=result.data;
                     switch (code) {
                         case RESULT_SUCCESS:
-                            if (data!=null)
+                            var goodsAttribute0DivDom = $("#goodsAttribute0Div");
+                            goodsAttribute0DivDom.empty();
+                            for(var i=0;i<goodsAttributeData.length;i++)
                             {
                                 //0是规格，1是参数
-                                var type=data.type;
+                                var type=goodsAttributeData[i].type;
+                                var name=goodsAttributeData[i].name;
+                                //可选列表
+                                var inputList=goodsAttributeData[i].inputList;
+                                var inputListSplit = inputList.split(",");
                                 //规格
                                 if (type==0)
                                 {
-                                    alert(0);
-                                    // var goodsAttributeCategoryDom = $('#goodsAttributeCategory');
-                                    // goodsAttributeCategoryDom.empty();
-                                    // for (var i=0;i<data.length;i++) {
-                                    //     goodsAttributeCategoryDom.append("<option value="+data[i].id+">"+data[i].name+"</option>");
-                                    // }
+                                    goodsAttribute0DivDom.append(name+'：<br>');
+                                    for (var j=0;j<inputListSplit.length;j++)
+                                    {
+                                        goodsAttribute0DivDom.append('<input type="checkbox" name="" title="'+inputListSplit[j]+'" lay-skin="primary" checked>');
+                                    }
+                                    goodsAttribute0DivDom.append('<br>');
                                 }
                                 //参数
                                 else if(type==1)
@@ -512,8 +520,9 @@
 
                                 }
                             }
+
                             //重新渲染
-                            form.render('select',"stepForm1");
+                            form.render('checkbox',"stepForm3");
                             break;
                         default:layer.msg('服务器出错了');break;
                     }

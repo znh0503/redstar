@@ -399,8 +399,8 @@
                                             goodsAttributeCategoryDom.append("<option value="+goodsAttributeCategoryData[i].id+">"+goodsAttributeCategoryData[i].name+"</option>");
                                         }
                                         //属性分类默认选
-                                        //goodsAttributeCategoryDom.val(goodsAttributeCategoryData.brandId);
-                                        //$('select[name="goodsCategory1"]').siblings("div.layui-form-select").find('dl dd[lay-value=' + preId + ']').click();
+                                        goodsAttributeCategoryDom.val(data.goodsAttributeCategoryId);
+                                        $('select[name="goodsAttributeCategory"]').siblings("div.layui-form-select").find('dl dd[lay-value=' + data.goodsAttributeCategoryId + ']').click();
                                         //重新渲染
                                         iframeWin.layui.form.render('select',"stepForm3");
                                         break;

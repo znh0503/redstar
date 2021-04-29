@@ -81,7 +81,7 @@
           "child": [
             {
               "title": "秒杀活动列表",
-              "href": "page/homeBrandList.html",
+              "href": "page/goods/category/flashPromotionList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
