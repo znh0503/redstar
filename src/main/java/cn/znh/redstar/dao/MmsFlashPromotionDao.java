@@ -29,13 +29,14 @@ public interface MmsFlashPromotionDao {
             id = "flashPromotionGoodsResult",
             value = {
                     @Result(column = "id",property = "id",jdbcType = JdbcType.INTEGER,id = true),
+                    @Result(column = "goods_id",property = "goodsId",jdbcType = JdbcType.INTEGER),
                     @Result(column = "name",property = "name",jdbcType = JdbcType.VARCHAR),
                     @Result(column = "goods_sn",property = "goodsSn",jdbcType = JdbcType.VARCHAR),
                     @Result(column = "price",property = "price",jdbcType = JdbcType.DECIMAL),
                     @Result(column = "stock",property = "stock",jdbcType = JdbcType.INTEGER),
                     @Result(column = "flash_Promotion_Price",property = "flashPromotionPrice",jdbcType = JdbcType.DECIMAL),
                     @Result(column = "flash_Promotion_Count",property = "flashPromotionCount",jdbcType = JdbcType.INTEGER),
-                    @Result(column = "flashPromotionLimit",property = "flashPromotionLimit",jdbcType = JdbcType.INTEGER),
+                    @Result(column = "flash_Promotion_Limit",property = "flashPromotionLimit",jdbcType = JdbcType.INTEGER),
                     @Result(column = "sort",property = "sort",jdbcType = JdbcType.INTEGER)
             }
     )

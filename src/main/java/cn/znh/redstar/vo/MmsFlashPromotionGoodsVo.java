@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 public class MmsFlashPromotionGoodsVo {
     private Long id;
 
+    private Long goodsId;
+
     @ApiModelProperty(value = "商品名称")
     private String name;
 

@@ -1,5 +1,6 @@
 package cn.znh.redstar.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.znh.redstar.common.api.CommonResult;
 import cn.znh.redstar.dto.MmsFlashPromotionGoodsAddDto;
 import cn.znh.redstar.mbg.model.GmsGoods;
@@ -64,7 +65,6 @@ public class MmsFlashPromotionController {
 
     @ApiOperation("根据id更新秒杀活动")
     @PutMapping("/{id}")
-    @ResponseBody
     public CommonResult update(@PathVariable("id") Long id,@RequestBody MmsFlashPromotion flashPromotion)
     {
         CommonResult commonResult;
@@ -133,9 +133,59 @@ public class MmsFlashPromotionController {
 
     @ApiOperation("根据活动场次和时间段获取秒杀商品")
     @GetMapping("goods/{flashPromotionId}/{flashPromotionSessionId}")
-    public CommonResult getGoods(@PathVariable("flashPromotionId") Long flashPromotionId,@PathVariable("flashPromotionSessionId")Long flashPromotionSessionId)
+    public CommonResult getFlashPromotionGoods(@PathVariable("flashPromotionId") Long flashPromotionId,@PathVariable("flashPromotionSessionId")Long flashPromotionSessionId)
     {
         List<MmsFlashPromotionGoodsVo> flashPromotionGoodsVoList = mmsFlashPromotionService.getFlashPromotionGoods(flashPromotionId, flashPromotionSessionId);
         return CommonResult.success(flashPromotionGoodsVoList);
+    }
+
+    @ApiOperation("根据id更新秒杀活动商品信息")
+    @PutMapping("/goods/{id}")
+    public CommonResult updateFlashPromotionGoods(@PathVariable("id") Long id,@RequestBody  MmsFlashPromotionGoodsRelation flashPromotionGoodsRelation)
+    {
+        CommonResult commonResult;
+        int result = mmsFlashPromotionService.updateFlashPromotionGoods(id, flashPromotionGoodsRelation);
+        if (result==1)
+        {
+            //更新成功
+            commonResult=CommonResult.success(flashPromotionGoodsRelation);
+        }
+        else {
+            //更新失败
+            commonResult=CommonResult.failed("更新秒杀活动商品信息失败");
+            log.debug("更新秒杀活动商品信息失败,id={},data={}",id,flashPromotionGoodsRelation);
+        }
+        return commonResult;
+    }
+
+    @ApiOperation("根据id删除秒杀活动商品")
+    @DeleteMapping("/goods/{id}")
+    public CommonResult deleteFlashPromotionGoods(@PathVariable("id")Long id)
+    {
+        CommonResult commonResult;
+        int result = mmsFlashPromotionService.deleteFlashPromotionGoods(id);
+        if (result!=0)
+        {
+            //删除成功
+            commonResult=CommonResult.success(id);
+        }
+        else
+        {
+            //删除失败
+            commonResult=CommonResult.failed("删除秒杀活动商品失败,id="+id);
+            log.debug("删除秒杀活动商品失败,id={}",id);
+        }
+        return commonResult;
+    }
+
+    @ApiOperation("删除多条秒杀活动商品")
+    @DeleteMapping("/goods")
+    public CommonResult deleteFlashPromotionGoods(@RequestBody List<Long> ids)
+    {
+        CommonResult commonResult;
+        int result = mmsFlashPromotionService.deleteFlashPromotionGoods(ids);
+        //删除成功
+        commonResult=CommonResult.success("执行完成，共删除"+result+"条");
+        return commonResult;
     }
 }

@@ -17,7 +17,9 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button id="addBtn" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加商品</button>
+                <button id="addBtn" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event=""> 添加商品</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+                添加商品</button>
             </div>
         </script>
 
@@ -54,6 +56,7 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'id', width: 80, title: '编号', sort: true},
+                {field: 'goodsId', width: 80, title: '商品编号', sort: true},
                 {field: 'name', width: 120, title: '商品名称'},
                 {field: 'goodsSn', width: 120, title: '货号'},
                 {field: 'price', width: 120, title: '价格'},
@@ -133,7 +136,7 @@
                     //请求的媒体类型
                     contentType: "application/json;charset=UTF-8",
                     //请求地址
-                    url:IP_HOST+"flashPromotion/goods",
+                    url:IP_HOST+"flashPromotion/goods?flashPromotionId="+$("#flashPromotionId").val()+"&flashPromotionSessionId="+$("#flashPromotionSessionId").val(),
                     data:JSON.stringify(json),
                     //请求成功
                     success:function (result) {
@@ -160,18 +163,59 @@
             //console.log(obj)
         });
 
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var ids= [];
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                for (var i=0;i<data.length;i++)
+                {
+                    ids.push(data[i].id);
+                }
+                $.ajax({
+                    //请求方式
+                    type:"delete",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"flashPromotion/goods",
+                    data:JSON.stringify(ids),
+                    //请求成功
+                    success:function (result) {
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                alert("删除成功");
+                                window.location.reload();
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+                // layer.alert(JSON.stringify(data));
+            }
+        });
+
         table.on('tool(currentTableFilter)', function (obj) {
             var data=obj.data;
              if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    console.log(data);
                     $.ajax({
                         //请求方式
                         type:"delete",
                         //请求的媒体类型
                         contentType: "application/json;charset=UTF-8",
                         //请求地址
-                        url:IP_HOST+"flashPromotion/"+data.id,
+                        url:IP_HOST+"flashPromotion/goods/"+data.id,
                         //请求成功
                         success:function (result) {
                             var code=result.code;
@@ -192,28 +236,33 @@
                 });
             }else if (obj.event === 'edit')
              {
-                 // var index = layer.open({
-                 //     title: '编辑秒杀商品',
-                 //     type: 2,
-                 //     shade: 0.2,
-                 //     maxmin:true,
-                 //     shadeClose: true,
-                 //     area: ['85%', '85%'],
-                 //     content: 'flashPromotionEdit.html',
-                 //     success:function (layero,index) {
-                 //         var body = layer.getChildFrame('body', index);
-                 //         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
-                 //         $(layero).find("iframe").contents().find("#id").val(data.id);
-                 //         $(layero).find("iframe").contents().find("#title").val(data.title);
-                 //         $(layero).find("iframe").contents().find("#startDate").val(data.startDate);
-                 //         $(layero).find("iframe").contents().find("#endDate").val(data.endDate);
-                 //         body.find("input[name=status][value="+data.status+"]").prop("checked", "checked");
-                 //
-                 //         //重新渲染radio
-                 //         iframeWin.layui.form.render("radio");
-                 //     }
-                 // });
-                 alert($("#flashPromotionSessionId").val()+","+$("#flashPromotionId").val());
+                 var index = layer.open({
+                     title: '编辑秒杀商品',
+                     type: 2,
+                     shade: 0.2,
+                     maxmin:true,
+                     shadeClose: true,
+                     area: ['85%', '85%'],
+                     content: 'flashPromotionGoodsEdit.html',
+                     success:function (layero,index) {
+                         var body = layer.getChildFrame('body', index);
+                         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                         $(layero).find("iframe").contents().find("#id").val(data.id);
+                         $(layero).find("iframe").contents().find("#goodsId").val(data.goodsId);
+                         $(layero).find("iframe").contents().find("#flashPromotionId").val($("#flashPromotionId").val());
+                         $(layero).find("iframe").contents().find("#flashPromotionSessionId").val($("#flashPromotionSessionId").val());
+                         $(layero).find("iframe").contents().find("#name").val(data.name);
+                         $(layero).find("iframe").contents().find("#goodsSn").val(data.goodsSn);
+                         $(layero).find("iframe").contents().find("#price").val(data.price);
+                         $(layero).find("iframe").contents().find("#flashPromotionPrice").val(data.flashPromotionPrice);
+                         $(layero).find("iframe").contents().find("#stock").val(data.stock);
+                         $(layero).find("iframe").contents().find("#flashPromotionCount").val(data.flashPromotionCount);
+                         $(layero).find("iframe").contents().find("#flashPromotionLimit").val(data.flashPromotionLimit);
+                         $(layero).find("iframe").contents().find("#sort").val(data.sort);
+
+                     }
+                 });
+                // alert($("#flashPromotionSessionId").val()+","+$("#flashPromotionId").val());
              }
 
         });

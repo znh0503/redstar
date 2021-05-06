@@ -71,4 +71,26 @@ public interface MmsFlashPromotionService {
      * @return
      */
     List<MmsFlashPromotionGoodsVo> getFlashPromotionGoods(Long flashPromotionId,Long flashPromotionSessionId);
+
+    /**
+     * 根据id更新一条秒杀活动商品
+     * @param id
+     * @param flashPromotionGoodsRelation
+     * @return
+     */
+    int updateFlashPromotionGoods(Long id, MmsFlashPromotionGoodsRelation flashPromotionGoodsRelation);
+
+    /**
+     * 根据id删除一条秒杀活动商品
+     * @param id
+     * @return
+     */
+    int deleteFlashPromotionGoods(Long id);
+
+    /**
+     * 批量删除秒杀活动商品
+     * @param ids
+     * @return
+     */
+    int deleteFlashPromotionGoods(List<Long> ids);
 }

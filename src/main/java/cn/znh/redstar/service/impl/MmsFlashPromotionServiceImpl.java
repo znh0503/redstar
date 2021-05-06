@@ -123,7 +123,7 @@ public class MmsFlashPromotionServiceImpl implements MmsFlashPromotionService {
     @Override
     public List<MmsFlashPromotionGoodsVo> getFlashPromotionGoods(Long flashPromotionId, Long flashPromotionSessionId) {
         List<MmsFlashPromotionGoodsVo> result=new LinkedList<>();
-        SelectStatementProvider selectStatement = SqlBuilder.select(MmsFlashPromotionGoodsRelationDynamicSqlSupport.id,GmsGoodsDynamicSqlSupport.name,GmsGoodsDynamicSqlSupport.goodsSn,GmsGoodsDynamicSqlSupport.price,GmsGoodsDynamicSqlSupport.stock,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionPrice,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionCount,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionLimit,MmsFlashPromotionGoodsRelationDynamicSqlSupport.sort)
+        SelectStatementProvider selectStatement = SqlBuilder.select(MmsFlashPromotionGoodsRelationDynamicSqlSupport.id,MmsFlashPromotionGoodsRelationDynamicSqlSupport.goodsId,GmsGoodsDynamicSqlSupport.name,GmsGoodsDynamicSqlSupport.goodsSn,GmsGoodsDynamicSqlSupport.price,GmsGoodsDynamicSqlSupport.stock,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionPrice,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionCount,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionLimit,MmsFlashPromotionGoodsRelationDynamicSqlSupport.sort)
                 .from(GmsGoodsDynamicSqlSupport.gmsGoods)
                 .join(MmsFlashPromotionGoodsRelationDynamicSqlSupport.mmsFlashPromotionGoodsRelation)
                 .on(GmsGoodsDynamicSqlSupport.id, equalTo(MmsFlashPromotionGoodsRelationDynamicSqlSupport.goodsId))
@@ -134,5 +134,29 @@ public class MmsFlashPromotionServiceImpl implements MmsFlashPromotionService {
                 mmsFlashPromotionDao.getFlashPromotionGoods(
                         selectStatement);
         return flashPromotionGoodsVoList;
+    }
+
+    @Override
+    public int updateFlashPromotionGoods(Long id, MmsFlashPromotionGoodsRelation flashPromotionGoodsRelation) {
+        flashPromotionGoodsRelation.setId(id);
+        int result = mmsFlashPromotionGoodsRelationMapper.updateByPrimaryKey(flashPromotionGoodsRelation);
+        return result;
+    }
+
+    @Override
+    public int deleteFlashPromotionGoods(Long id) {
+        int result = mmsFlashPromotionGoodsRelationMapper.deleteByPrimaryKey(id);
+        return result;
+    }
+
+    @Override
+    public int deleteFlashPromotionGoods(List<Long> ids) {
+        int count=0;
+        for (Long id:ids)
+        {
+            int result = mmsFlashPromotionGoodsRelationMapper.deleteByPrimaryKey(id);
+            count+=result;
+        }
+        return count;
     }
 }
