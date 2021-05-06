@@ -1,15 +1,20 @@
 package cn.znh.redstar.controller;
 
 import cn.znh.redstar.common.api.CommonResult;
+import cn.znh.redstar.dto.MmsFlashPromotionGoodsAddDto;
+import cn.znh.redstar.mbg.model.GmsGoods;
 import cn.znh.redstar.mbg.model.MmsFlashPromotion;
+import cn.znh.redstar.mbg.model.MmsFlashPromotionGoodsRelation;
 import cn.znh.redstar.mbg.model.MmsHomeAdvertise;
 import cn.znh.redstar.service.MmsFlashPromotionService;
+import cn.znh.redstar.vo.MmsFlashPromotionGoodsVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -106,5 +111,31 @@ public class MmsFlashPromotionController {
         //删除成功
         commonResult=CommonResult.success("执行完成，共删除"+result+"条");
         return commonResult;
+    }
+
+    @ApiOperation("批量添加秒杀商品")
+    @PostMapping("goods")
+    public CommonResult createGoods(@RequestBody MmsFlashPromotionGoodsAddDto flashPromotionGoodsAddDto)
+    {
+        List<GmsGoods> goodsList = flashPromotionGoodsAddDto.getGoodsList();
+        List<MmsFlashPromotionGoodsRelation> flashPromotionGoodsRelationList=new LinkedList<>();
+        for (int i=0;i<goodsList.size();i++)
+        {
+            MmsFlashPromotionGoodsRelation flashPromotionGoodsRelation=new MmsFlashPromotionGoodsRelation();
+            flashPromotionGoodsRelation.setFlashPromotionId(flashPromotionGoodsAddDto.getFlashPromotionId());
+            flashPromotionGoodsRelation.setFlashPromotionSessionId(flashPromotionGoodsAddDto.getFlashPromotionSessionId());
+            flashPromotionGoodsRelation.setGoodsId(goodsList.get(i).getId());
+            flashPromotionGoodsRelationList.add(flashPromotionGoodsRelation);
+        }
+        int result = mmsFlashPromotionService.createGoods(flashPromotionGoodsRelationList);
+        return CommonResult.success("执行完成，共添加"+result+"条");
+    }
+
+    @ApiOperation("根据活动场次和时间段获取秒杀商品")
+    @GetMapping("goods/{flashPromotionId}/{flashPromotionSessionId}")
+    public CommonResult getGoods(@PathVariable("flashPromotionId") Long flashPromotionId,@PathVariable("flashPromotionSessionId")Long flashPromotionSessionId)
+    {
+        List<MmsFlashPromotionGoodsVo> flashPromotionGoodsVoList = mmsFlashPromotionService.getFlashPromotionGoods(flashPromotionId, flashPromotionSessionId);
+        return CommonResult.success(flashPromotionGoodsVoList);
     }
 }

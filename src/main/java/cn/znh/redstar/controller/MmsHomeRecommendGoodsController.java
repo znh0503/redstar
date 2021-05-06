@@ -37,7 +37,7 @@ public class MmsHomeRecommendGoodsController {
     @GetMapping("/{recommendStatus}")
     public CommonResult getHomeRecommendGoods(@PathVariable("recommendStatus") int recommendStatus)
     {
-        List<MmsHomeRecommendGoods> homeRecommendGoodsList = mmsHomeRecommendGoodsService.getHomeRecommendGoods(recommendStatus);
+        List<GmsGoods> homeRecommendGoodsList = mmsHomeRecommendGoodsService.getHomeRecommendGoods(recommendStatus);
         return CommonResult.success(homeRecommendGoodsList);
     }
 

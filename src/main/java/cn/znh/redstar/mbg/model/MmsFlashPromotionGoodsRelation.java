@@ -11,10 +11,10 @@ public class MmsFlashPromotionGoodsRelation implements Serializable {
     @ApiModelProperty(value = "限时购id")
     private Long flashPromotionId;
 
-    @ApiModelProperty(value = "编号")
+    @ApiModelProperty(value = "秒杀时间段编号")
     private Long flashPromotionSessionId;
 
-    @ApiModelProperty(value = "商品价格")
+    @ApiModelProperty(value = "商品id")
     private Long goodsId;
 
     @ApiModelProperty(value = "限时购价格")

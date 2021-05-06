@@ -33,7 +33,7 @@ public class MmsFlashPromotionSessionController {
         return CommonResult.success(flashPromotionSessionList);
     }
 
-    @ApiOperation("根据上线状态获取秒杀时间段")
+    @ApiOperation("根据启用状态获取秒杀时间段")
     @GetMapping("/{status}")
     public CommonResult get(@PathVariable("status") int status)
     {

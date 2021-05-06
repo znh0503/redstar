@@ -32,5 +32,4 @@ public class GmsGoodsController {
        return CommonResult.success(gmsGoodsService.listAllGoods());
     }
 
-
 }

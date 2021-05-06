@@ -38,10 +38,10 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label ">上线状态</label>
+        <label class="layui-form-label ">启用状态</label>
         <div class="layui-input-block">
-            <input type="radio" name="status" value="0" title="下线" checked/>
-            <input type="radio" name="status" value="1" title="上线" />
+            <input type="radio" name="status" value="0" title="不启用" checked/>
+            <input type="radio" name="status" value="1" title="启用" />
         </div>
     </div>
 
@@ -85,7 +85,7 @@
                 //请求的媒体类型
                 contentType: "application/json;charset=UTF-8",
                 //请求地址
-                url:IP_HOST+"flashPromotionSession",
+                url:IP_HOST+"flashPromotionSession/"+$("#id").val(),
                 data:JSON.stringify(data.field),
                 //请求成功
                 success:function (result) {

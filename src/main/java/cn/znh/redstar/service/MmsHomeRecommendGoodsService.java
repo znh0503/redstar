@@ -23,7 +23,7 @@ public interface MmsHomeRecommendGoodsService {
      * @param recommendStatus
      * @return
      */
-    List<MmsHomeRecommendGoods> getHomeRecommendGoods(int recommendStatus);
+    List<GmsGoods> getHomeRecommendGoods(int recommendStatus);
 
     /**
      * 批量创建首页人气推荐商品

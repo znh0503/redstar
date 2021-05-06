@@ -1,21 +1,27 @@
 package cn.znh.redstar.service.impl;
 
-import cn.znh.redstar.mbg.mapper.MmsFlashPromotionDynamicSqlSupport;
-import cn.znh.redstar.mbg.mapper.MmsFlashPromotionMapper;
-import cn.znh.redstar.mbg.mapper.MmsHomeAdvertiseDynamicSqlSupport;
-import cn.znh.redstar.mbg.mapper.MmsHomeAdvertiseMapper;
+import cn.znh.redstar.dao.MmsFlashPromotionDao;
+import cn.znh.redstar.dto.MmsFlashPromotionGoodsAddDto;
+import cn.znh.redstar.mbg.mapper.*;
+import cn.znh.redstar.mbg.model.GmsGoods;
 import cn.znh.redstar.mbg.model.MmsFlashPromotion;
+import cn.znh.redstar.mbg.model.MmsFlashPromotionGoodsRelation;
 import cn.znh.redstar.service.MmsFlashPromotionService;
+import cn.znh.redstar.vo.MmsFlashPromotionGoodsVo;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
+import org.mybatis.dynamic.sql.select.join.EqualTo;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
+import static org.mybatis.dynamic.sql.SqlBuilder.equalTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
@@ -28,6 +34,12 @@ public class MmsFlashPromotionServiceImpl implements MmsFlashPromotionService {
 
     @Resource
     MmsFlashPromotionMapper mmsFlashPromotionMapper;
+    @Resource
+    MmsFlashPromotionGoodsRelationMapper mmsFlashPromotionGoodsRelationMapper;
+    @Resource
+    GmsGoodsMapper gmsGoodsMapper;
+    @Resource
+    MmsFlashPromotionDao mmsFlashPromotionDao;
 
     @Override
     public List<MmsFlashPromotion> get() {
@@ -75,5 +87,52 @@ public class MmsFlashPromotionServiceImpl implements MmsFlashPromotionService {
             count+=result;
         }
         return count;
+    }
+
+    @Override
+    public int createGoods(List<MmsFlashPromotionGoodsRelation> flashPromotionGoodsRelationList) {
+        int count=0;
+        for (MmsFlashPromotionGoodsRelation flashPromotionGoodsRelation:flashPromotionGoodsRelationList)
+        {
+            //先判断当前活动的当前时间段有没有此商品
+            SelectStatementProvider selectStatement = SqlBuilder.select(MmsFlashPromotionGoodsRelationMapper.selectList)
+                   .from(MmsFlashPromotionGoodsRelationDynamicSqlSupport.mmsFlashPromotionGoodsRelation)
+                    .where(MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionId, isEqualTo(flashPromotionGoodsRelation.getFlashPromotionId()))
+                    .and(MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionSessionId,isEqualTo(flashPromotionGoodsRelation.getFlashPromotionSessionId()))
+                    .and(MmsFlashPromotionGoodsRelationDynamicSqlSupport.goodsId,isEqualTo(flashPromotionGoodsRelation.getGoodsId()))
+                    .build().render(RenderingStrategy.MYBATIS3);
+            List<MmsFlashPromotionGoodsRelation> result
+                    = mmsFlashPromotionGoodsRelationMapper.selectMany(selectStatement);
+            //如果没有则可以插入
+            if (result.isEmpty())
+            {
+                int insert = mmsFlashPromotionGoodsRelationMapper.insert(flashPromotionGoodsRelation);
+                count+=insert;
+                //更新商品的优惠方式为秒杀活动
+                UpdateStatementProvider updateStatement=SqlBuilder.update(GmsGoodsDynamicSqlSupport.gmsGoods)
+                        .set(GmsGoodsDynamicSqlSupport.promotionType).equalTo(5)
+                        .where(GmsGoodsDynamicSqlSupport.id,isEqualTo(flashPromotionGoodsRelation.getGoodsId()))
+                        .build()
+                        .render(RenderingStrategy.MYBATIS3);
+                gmsGoodsMapper.update(updateStatement);
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public List<MmsFlashPromotionGoodsVo> getFlashPromotionGoods(Long flashPromotionId, Long flashPromotionSessionId) {
+        List<MmsFlashPromotionGoodsVo> result=new LinkedList<>();
+        SelectStatementProvider selectStatement = SqlBuilder.select(MmsFlashPromotionGoodsRelationDynamicSqlSupport.id,GmsGoodsDynamicSqlSupport.name,GmsGoodsDynamicSqlSupport.goodsSn,GmsGoodsDynamicSqlSupport.price,GmsGoodsDynamicSqlSupport.stock,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionPrice,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionCount,MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionLimit,MmsFlashPromotionGoodsRelationDynamicSqlSupport.sort)
+                .from(GmsGoodsDynamicSqlSupport.gmsGoods)
+                .join(MmsFlashPromotionGoodsRelationDynamicSqlSupport.mmsFlashPromotionGoodsRelation)
+                .on(GmsGoodsDynamicSqlSupport.id, equalTo(MmsFlashPromotionGoodsRelationDynamicSqlSupport.goodsId))
+                .where(MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionId,isEqualTo(flashPromotionId))
+                .and(MmsFlashPromotionGoodsRelationDynamicSqlSupport.flashPromotionSessionId,isEqualTo(flashPromotionSessionId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<MmsFlashPromotionGoodsVo> flashPromotionGoodsVoList =
+                mmsFlashPromotionDao.getFlashPromotionGoods(
+                        selectStatement);
+        return flashPromotionGoodsVoList;
     }
 }

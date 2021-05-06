@@ -1,7 +1,11 @@
 package cn.znh.redstar.service;
 
+import cn.znh.redstar.dto.MmsFlashPromotionGoodsAddDto;
+import cn.znh.redstar.mbg.model.GmsGoods;
 import cn.znh.redstar.mbg.model.MmsFlashPromotion;
+import cn.znh.redstar.mbg.model.MmsFlashPromotionGoodsRelation;
 import cn.znh.redstar.mbg.model.MmsHomeAdvertise;
+import cn.znh.redstar.vo.MmsFlashPromotionGoodsVo;
 
 import java.util.List;
 
@@ -52,4 +56,19 @@ public interface MmsFlashPromotionService {
      * @return
      */
     int delete(List<Long> ids);
+
+    /**
+     * 批量添加秒杀活动商品
+     * @param flashPromotionGoodsRelationList
+     * @return
+     */
+    int createGoods(List<MmsFlashPromotionGoodsRelation> flashPromotionGoodsRelationList);
+
+    /**
+     * 根据活动场次和时间段获取秒杀商品
+     * @param flashPromotionId 活动场次id
+     * @param flashPromotionSessionId 秒杀时间段id
+     * @return
+     */
+    List<MmsFlashPromotionGoodsVo> getFlashPromotionGoods(Long flashPromotionId,Long flashPromotionSessionId);
 }

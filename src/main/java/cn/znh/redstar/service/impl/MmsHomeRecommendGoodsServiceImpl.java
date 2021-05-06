@@ -1,6 +1,8 @@
 package cn.znh.redstar.service.impl;
 
 
+import cn.znh.redstar.mbg.mapper.GmsGoodsDynamicSqlSupport;
+import cn.znh.redstar.mbg.mapper.GmsGoodsMapper;
 import cn.znh.redstar.mbg.mapper.MmsHomeRecommendGoodsDynamicSqlSupport;
 import cn.znh.redstar.mbg.mapper.MmsHomeRecommendGoodsMapper;
 import cn.znh.redstar.mbg.model.GmsGoods;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mybatis.dynamic.sql.SqlBuilder.equalTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
@@ -27,6 +30,8 @@ public class MmsHomeRecommendGoodsServiceImpl implements MmsHomeRecommendGoodsSe
 
     @Resource
     MmsHomeRecommendGoodsMapper homeRecommendGoodsMapper;
+    @Resource
+    GmsGoodsMapper gmsGoodsMapper;
 
     @Override
     public List<MmsHomeRecommendGoods> getHomeRecommendGoods() {
@@ -35,13 +40,19 @@ public class MmsHomeRecommendGoodsServiceImpl implements MmsHomeRecommendGoodsSe
     }
 
     @Override
-    public List<MmsHomeRecommendGoods> getHomeRecommendGoods(int recommendStatus) {
-        SelectStatementProvider selectStatement = SqlBuilder.select(MmsHomeRecommendGoodsMapper.selectList)
-                .from(MmsHomeRecommendGoodsDynamicSqlSupport.mmsHomeRecommendGoods)
-                .where(MmsHomeRecommendGoodsDynamicSqlSupport.recommendStatus, isEqualTo(recommendStatus))
+    public List<GmsGoods> getHomeRecommendGoods(int recommendStatus) {
+//        SelectStatementProvider selectStatement = SqlBuilder.select(MmsHomeRecommendGoodsMapper.selectList)
+//                .from(MmsHomeRecommendGoodsDynamicSqlSupport.mmsHomeRecommendGoods)
+//                .where(MmsHomeRecommendGoodsDynamicSqlSupport.recommendStatus, isEqualTo(recommendStatus))
+//                .build().render(RenderingStrategy.MYBATIS3);
+        SelectStatementProvider selectStatement = SqlBuilder.select(GmsGoodsMapper.selectList)
+                .from(GmsGoodsDynamicSqlSupport.gmsGoods)
+                .join(MmsHomeRecommendGoodsDynamicSqlSupport.mmsHomeRecommendGoods)
+                .on(GmsGoodsDynamicSqlSupport.id,equalTo(MmsHomeRecommendGoodsDynamicSqlSupport.goodsId))
+                .where(MmsHomeRecommendGoodsDynamicSqlSupport.recommendStatus,isEqualTo(recommendStatus))
                 .build().render(RenderingStrategy.MYBATIS3);
-        List<MmsHomeRecommendGoods> homeRecommendGoodsList = homeRecommendGoodsMapper.selectMany(selectStatement);
-        return homeRecommendGoodsList;
+        List<GmsGoods> goodsList = gmsGoodsMapper.selectMany(selectStatement);
+        return goodsList;
     }
 
     @Override

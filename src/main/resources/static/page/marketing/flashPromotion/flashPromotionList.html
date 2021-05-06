@@ -43,6 +43,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-normal  data-count-edit" lay-event="addGoods">设置商品</a>
             <a class="layui-btn layui-btn-xs layui-btn-normal  data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
@@ -248,6 +249,27 @@
                      }
                  });
              }
+             else if (obj.event==='addGoods')
+             {
+                 var index = layer.open({
+                     title: '设置商品-'+data.title,
+                     type: 2,
+                     shade: 0.2,
+                     maxmin:true,
+                     shadeClose: true,
+                     area: ['100%', '100%'],
+                     content: 'flashPromotionGoodsSessionList.html',
+                     success:function (layero,index) {
+                         var body = layer.getChildFrame('body', index);
+                         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                         $(layero).find("iframe").contents().find("#flashPromotionId").val(data.id);
+                         $(layero).find("iframe").contents().find("#flashPromotionTitle").val(data.title);
+
+
+                     }
+                 });
+             }
+
         });
 
     });

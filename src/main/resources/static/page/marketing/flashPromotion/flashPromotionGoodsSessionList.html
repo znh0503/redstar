@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+<!--                <button id="selectBrandBtn" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加时间段 </button>-->
+<!--                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
+            </div>
+        </script>
+        <input id="flashPromotionTitle" type="hidden" />
+        <input id="flashPromotionId" type="hidden" />
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-normal  data-count-edit" lay-event="goodsList">商品列表</a>
+        </script>
+
+    </div>
+</div>
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+<script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: IP_HOST+"flashPromotionSession/1",
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'id', width: 80, title: '编号', sort: true},
+                {field: 'name', width: 120, title: '场次名称'},
+                {
+                    field: 'status', width: 120,templet: function (d) {
+                        if (d.status == 0) {
+                            return '<input type="checkbox"  name="status" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                        else {
+                            return '<input type="checkbox" checked="" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" disabled>';
+                        }
+                    }, title: '上下线状态'
+                },
+                {field: 'startTime', width: 180, title: '每日开始时间',sort: true, align: "center"},
+                {field: 'endTime', width: 180, title: '每日结束时间',sort: true, align: "center"},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line',
+            response: {
+                //statusName: 'status', //规定数据状态的字段名称，默认：code
+                statusCode: 200 //规定成功的状态码，默认：0
+                //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                //,countName: 'total' //规定数据总数的字段名称，默认：count
+                //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+            }
+        });
+
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+
+            //执行搜索重载
+            list.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        // table.on('toolbar(currentTableFilter)', function (obj) {
+        //     if (obj.event === 'add') {  // 添加时间段
+        //         var index = layer.open({
+        //             title: '添加时间段',
+        //             type: 2,
+        //             shade: 0.2,
+        //             maxmin:true,
+        //             shadeClose: true,
+        //             area: ['85%', '85%'],
+        //             content: 'flashPromotionSessionAdd.html',
+        //             success:function (layero,index) {
+        //                 var body = layer.getChildFrame('body', index);
+        //                 var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+        //
+        //             }
+        //         });
+        //     } else if (obj.event === 'delete') {  // 监听删除操作
+        //         var ids= [];
+        //         var checkStatus = table.checkStatus('currentTableId')
+        //             , data = checkStatus.data;
+        //         for (var i=0;i<data.length;i++)
+        //         {
+        //             ids.push(data[i].id);
+        //         }
+        //         $.ajax({
+        //             //请求方式
+        //             type:"delete",
+        //             //请求的媒体类型
+        //             contentType: "application/json;charset=UTF-8",
+        //             //请求地址
+        //             url:IP_HOST+"flashPromotionSession",
+        //             data:JSON.stringify(ids),
+        //             //请求成功
+        //             success:function (result) {
+        //                 var code=result.code;
+        //                 switch (code) {
+        //                     case RESULT_SUCCESS:
+        //                         alert("删除成功");
+        //                         window.location.reload();
+        //                         break;
+        //                     default:layer.msg('服务器出错了');break;
+        //                 }
+        //             },
+        //             //请求失败
+        //             error:function (e) {
+        //                 layer.msg("提交失败");
+        //             }
+        //         });
+        //        // layer.alert(JSON.stringify(data));
+        //     }
+        // });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            //console.log(obj)
+        });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data=obj.data;
+             if (obj.event === 'goodsList') {
+                 var index = layer.open({
+                     title: '秒杀商品列表-'+$("#flashPromotionTitle").val()+"-"+data.name,
+                     type: 2,
+                     shade: 0.2,
+                     maxmin:true,
+                     shadeClose: true,
+                     area: ['100%', '100%'],
+                     content: 'flashPromotionGoodsList.html',
+                     success:function (layero,index) {
+                         var body = layer.getChildFrame('body', index);
+                         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                         $(layero).find("iframe").contents().find("#flashPromotionId").val($("#flashPromotionId").val());
+                         $(layero).find("iframe").contents().find("#flashPromotionSessionId").val(data.id);
+                     }
+                 });
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

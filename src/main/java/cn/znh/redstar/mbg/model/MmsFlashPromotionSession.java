@@ -1,5 +1,6 @@
 package cn.znh.redstar.mbg.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,9 +14,11 @@ public class MmsFlashPromotionSession implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "每日开始时间")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date startTime;
 
     @ApiModelProperty(value = "每日结束时间")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date endTime;
 
     @ApiModelProperty(value = "启用状态：0->不启用；1->启用")
