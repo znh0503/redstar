@@ -174,19 +174,19 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">详细页标题:</label>
                                         <div class="layui-input-block">
-                                            <input id="detailTitle" name="detailTitle" type="text" placeholder="请填写入款人游戏ID" class="layui-input"  required />
+                                            <input id="detailTitle" name="detailTitle" type="text"  class="layui-input"  required />
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">详细页描述:</label>
                                         <div class="layui-input-block">
-                                            <input id="detailDesc" name="detailDesc" type="text" placeholder="请填写入款人游戏ID" class="layui-input"  required />
+                                            <input id="detailDesc" name="detailDesc" type="text"  class="layui-input"  required />
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">商品关键字:</label>
                                         <div class="layui-input-block">
-                                            <input id="keywords" name="keywords" type="text" placeholder="请填写入款人游戏ID" class="layui-input"  required />
+                                            <input id="keywords" name="keywords" type="text"  class="layui-input"  required />
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -231,18 +231,83 @@
                                         <div id="goodsAttribute0Div"  class="layui-input-block" style="background-color:#FFFFFF;padding: 10px">
                                         </div>
                                     </div>
+
+<!--                                    <div class="layui-form-item">-->
+<!--                                        <div class="layui-input-block">-->
+<!--&lt;!&ndash;                                            <button id="skuFreshenBtn" type="button" class="layui-btn layui-btn-normal layui-btn-radius">刷新sku</button>&ndash;&gt;-->
+<!--                                        <table id="skuListTable" class="layui-table">-->
+<!--                                            <colgroup>-->
+<!--&lt;!&ndash;                                                <col width="80">&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <col width="80">&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <col>&ndash;&gt;-->
+<!--                                            </colgroup>-->
+<!--                                            <thead>-->
+<!--                                            <tr>-->
+<!--                                                <th>价格</th>-->
+<!--                                                <th>库存</th>-->
+<!--                                                <th>库存预警</th>-->
+<!--                                                <th>sku编码</th>-->
+<!--                                                <th>操作</th>-->
+<!--                                            </tr>-->
+<!--                                            </thead>-->
+<!--                                            <tbody>-->
+<!--                                            <tr>-->
+<!--                                                <td> <input id="skuPrice" name="skuPrice" type="text"  class="layui-input"   />-->
+<!--                                                </td>-->
+<!--                                                <td><input id="skuStock" name="skuStock" type="text"  class="layui-input"   /></td>-->
+<!--                                                <td><input id="skuLowStock" name="skuLowStock" type="text"  class="layui-input"   /></td>-->
+<!--                                                <td><input id="skuCode" name="skuCode" type="text"  class="layui-input"   /></td>-->
+<!--                                                <td><button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
+<!--                                            </tbody>-->
+<!--                                        </table>-->
+
+<!--                                        </div>-->
+<!--                                    </div>-->
+
                                     <div class="layui-form-item">
                                         <div id="goodsAttribute1Div"  class="layui-input-block" style="background-color:#FFFFFF;padding: 10px">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label required">商品相册:</label>
+
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn" id="picBtn">
+                                                <i class="layui-icon">&#xe67c;</i>上传商品图片
+                                            </button>
+                                            <tip>不能超过10M。</tip>
+                                            <img id="picImg" type="image" height="150"/>
+                                            <input type="hidden" id="pic" name="pic" value="">
+                                            <div class="layui-progress" lay-showPercent="yes" lay-filter="picProgress">
+                                                <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">移动端详情:</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="detailMobileHtml" name="detailMobileHtml" type="text"  class="layui-input"   style="height: 100px" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">pc端详情:</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="detailHtml" name="detailHtml"  type=""  class="layui-input" style="height: 100px"   ></textarea>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn layui-btn-primary pre">上一步，填写促销信息</button>
                                             <button class="layui-btn" lay-submit lay-filter="formStep">
-                                                &emsp;下一步，选择商品关联&emsp;
+                                                &emsp;完成&emsp;
                                             </button>
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
 <!--                            完成-->
@@ -281,12 +346,14 @@
 <!--  全局配置  -->
 <script src="../../js/Config.js"></script>
 <script>
-    layui.use([ 'form', 'step','element','laydate','tableSelect'], function () {
+    layui.use([ 'form', 'step','element','laydate','tableSelect','upload'], function () {
         var $ = layui.$,
             form = layui.form,
             step = layui.step,
             laydate = layui.laydate,
-            tableSelect = layui.tableSelect;
+            tableSelect = layui.tableSelect,
+            upload=layui.upload,
+            element=layui.element;
 
         step.render({
             elem: '#stepForm',
@@ -495,31 +562,44 @@
                     switch (code) {
                         case RESULT_SUCCESS:
                             var goodsAttribute0DivDom = $("#goodsAttribute0Div");
+                            var goodsAttribute1DivDom = $("#goodsAttribute1Div");
                             goodsAttribute0DivDom.empty();
+                            goodsAttribute1DivDom.empty();
                             for(var i=0;i<goodsAttributeData.length;i++)
                             {
                                 //0是规格，1是参数
                                 var type=goodsAttributeData[i].type;
-                                var name=goodsAttributeData[i].name;
+                                var goodsAttributeName=goodsAttributeData[i].name;
                                 //可选列表
                                 var inputList=goodsAttributeData[i].inputList;
-                                var inputListSplit = inputList.split(",");
-                                //规格
-                                if (type==0)
-                                {
-                                    goodsAttribute0DivDom.append(name+'：<br>');
-                                    for (var j=0;j<inputListSplit.length;j++)
-                                    {
-                                        goodsAttribute0DivDom.append('<input type="checkbox" name="" title="'+inputListSplit[j]+'" lay-skin="primary" checked>');
-                                    }
-                                    goodsAttribute0DivDom.append('<br>');
-                                }
-                                //参数
-                                else if(type==1)
-                                {
 
-                                }
-                            }
+                                   var inputListSplit = inputList.split(",");
+                                   //规格
+                                   if (type == 0&&inputList.length!=0) {
+                                           goodsAttribute0DivDom.append('<label>'+goodsAttributeName +'</label>'+ '：<br>');
+                                           for (var j = 0; j < inputListSplit.length; j++) {
+                                               goodsAttribute0DivDom.append('<input type="checkbox" name title="' + inputListSplit[j] + '" tag="' + goodsAttributeName + '" lay-skin="primary" >');
+                                           }
+                                           goodsAttribute0DivDom.append('<br>');
+                                   }
+                                   //参数
+                                   else if (type == 1) {
+                                       goodsAttribute1DivDom.append(goodsAttributeName + '：<br>');
+                                       for (var j = 0; j < inputListSplit.length; j++) {
+                                           if (goodsAttributeData[i].selectType==0)//唯一
+                                           {
+                                               goodsAttribute1DivDom.append('<input type="text" name="inputList" value="' + inputList+ '" lay-skin="primary">');
+                                           }
+                                           else if (goodsAttributeData[i].selectType==1)//单选
+                                           {
+                                               goodsAttribute1DivDom.append('<input type="checkbox" checked name="" title="' + inputListSplit[j] + '" lay-skin="primary">');
+                                           }
+
+                                       }
+                                       goodsAttribute1DivDom.append('<br>');
+                                   }
+                               }
+
 
                             //重新渲染
                             form.render('checkbox',"stepForm3");
@@ -533,6 +613,39 @@
                 }
             });
         })
+
+
+
+        //刷新sku
+        // $("#skuFreshenBtn").on('click',function () {
+        //     var skuListTableDom = $("#skuListTable");
+        //     skuListTableDom.children("tbody").empty();
+        //
+        //     var goodsAttribute;
+        //     var goodsAttributeInputList;
+        //     //表头
+        //     goodsAttribute=$("#goodsAttribute0Div").children("label");
+        //
+        //     //行
+        //     goodsAttributeInputList=$("#goodsAttribute0Div").children("label");
+        //     //生成sku列表
+        //
+        //     skuListTableDom.children("tbody").children("tr").append('<tr>\n' +
+        //                 '                                                <td> <input id="skuPrice" name="skuPrice" type="text"  class="layui-input"   />\n' +
+        //                 '                                                </td>\n' +
+        //                 '                                                <td><input id="skuStock" name="skuStock" type="text"  class="layui-input"   /></td>\n' +
+        //                 '                                                <td><input id="skuLowStock" name="skuLowStock" type="text"  class="layui-input"   /></td>\n' +
+        //                 '                                                <td><input id="skuCode" name="skuCode" type="text"  class="layui-input"   /></td>\n' +
+        //                 '                                                <td><button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>\n' +
+        //                 '                                                </td>\n' +
+        //                 '                                            </tr>');
+        //
+        //
+        //
+        //
+        //
+        //
+        // })
     });
 
 

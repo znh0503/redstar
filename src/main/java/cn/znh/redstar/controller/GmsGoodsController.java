@@ -1,15 +1,18 @@
 package cn.znh.redstar.controller;
 
 import cn.znh.redstar.common.api.CommonResult;
+import cn.znh.redstar.mbg.model.GmsGoods;
 import cn.znh.redstar.service.GmsGoodsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author : znh
@@ -32,4 +35,11 @@ public class GmsGoodsController {
        return CommonResult.success(gmsGoodsService.listAllGoods());
     }
 
+    @ApiOperation("获取一级分类下的所有商品")
+    @GetMapping("/{goodsCategoryId}")
+    public CommonResult get(@PathVariable("goodsCategoryId") Long goodsCategoryId)
+    {
+        List<GmsGoods> goodsList = gmsGoodsService.getGoods(goodsCategoryId);
+        return CommonResult.success(goodsList);
+    }
 }

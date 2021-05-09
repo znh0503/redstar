@@ -24,8 +24,16 @@ public interface GmsGoodsService {
     GmsGoods getGoodsById(Long id);
 
     /**
+     * 获取一级分类下的所有商品
+     * @param goodsCategoryId
+     * @return
+     */
+    List<GmsGoods> getGoods(Long goodsCategoryId);
+
+    /**
      * 根据id更新商品信息
      * @param id
+     * @param goods
      * @return
      */
     int updateGoods(Long id,GmsGoods goods);
