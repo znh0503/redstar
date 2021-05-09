@@ -59,7 +59,6 @@ public class MmsFlashPromotionSessionController {
 
     @ApiOperation("根据id更新秒杀时间段")
     @PutMapping("/{id}")
-    @ResponseBody
     public CommonResult update(@PathVariable("id") Long id,@RequestBody MmsFlashPromotionSession flashPromotionSession)
     {
         CommonResult commonResult;
