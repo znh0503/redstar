@@ -125,7 +125,7 @@
           "child": [
             {
               "title": "订单列表",
-              "href": "page/marketing/flashPromotion/flashPromotionList.html",
+              "href": "page/order/orderList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
@@ -137,7 +137,7 @@
             },
             {
               "title": "退货申请处理",
-              "href": "page/marketing/homeBrand/homeBrandList.html",
+              "href": "page/order/returnApply/returnApplyList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },

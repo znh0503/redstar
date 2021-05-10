@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface OmsOrderItemMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    BasicColumn[] selectList = BasicColumn.columnList(id, orderId, orderSn, goodsId, goodsPic, goodsName, goodsBrand, goodsSn, goodsPrice, goodsQuantity, goodsSkuId, goodsSkuCode, goodsCategoryId, sp1, sp2, sp3, promotionName, promotionAmount, couponAmount, integrationAmount, realAmount, giftIntegration, giftGrowth, goodsAttr);
+    BasicColumn[] selectList = BasicColumn.columnList(id, orderId, orderSn, productId, productPic, productName, productBrand, productSn, productPrice, productQuantity, productSkuId, productSkuCode, productCategoryId, promotionName, promotionAmount, couponAmount, integrationAmount, realAmount, giftIntegration, giftGrowth, productAttr);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -64,19 +64,16 @@ public interface OmsOrderItemMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="order_id", property="orderId", jdbcType=JdbcType.BIGINT),
         @Result(column="order_sn", property="orderSn", jdbcType=JdbcType.VARCHAR),
-        @Result(column="goods_id", property="goodsId", jdbcType=JdbcType.BIGINT),
-        @Result(column="goods_pic", property="goodsPic", jdbcType=JdbcType.VARCHAR),
-        @Result(column="goods_name", property="goodsName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="goods_brand", property="goodsBrand", jdbcType=JdbcType.VARCHAR),
-        @Result(column="goods_sn", property="goodsSn", jdbcType=JdbcType.VARCHAR),
-        @Result(column="goods_price", property="goodsPrice", jdbcType=JdbcType.DECIMAL),
-        @Result(column="goods_quantity", property="goodsQuantity", jdbcType=JdbcType.INTEGER),
-        @Result(column="goods_sku_id", property="goodsSkuId", jdbcType=JdbcType.BIGINT),
-        @Result(column="goods_sku_code", property="goodsSkuCode", jdbcType=JdbcType.VARCHAR),
-        @Result(column="goods_category_id", property="goodsCategoryId", jdbcType=JdbcType.BIGINT),
-        @Result(column="sp1", property="sp1", jdbcType=JdbcType.VARCHAR),
-        @Result(column="sp2", property="sp2", jdbcType=JdbcType.VARCHAR),
-        @Result(column="sp3", property="sp3", jdbcType=JdbcType.VARCHAR),
+        @Result(column="product_id", property="productId", jdbcType=JdbcType.BIGINT),
+        @Result(column="product_pic", property="productPic", jdbcType=JdbcType.VARCHAR),
+        @Result(column="product_name", property="productName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="product_brand", property="productBrand", jdbcType=JdbcType.VARCHAR),
+        @Result(column="product_sn", property="productSn", jdbcType=JdbcType.VARCHAR),
+        @Result(column="product_price", property="productPrice", jdbcType=JdbcType.DECIMAL),
+        @Result(column="product_quantity", property="productQuantity", jdbcType=JdbcType.INTEGER),
+        @Result(column="product_sku_id", property="productSkuId", jdbcType=JdbcType.BIGINT),
+        @Result(column="product_sku_code", property="productSkuCode", jdbcType=JdbcType.VARCHAR),
+        @Result(column="product_category_id", property="productCategoryId", jdbcType=JdbcType.BIGINT),
         @Result(column="promotion_name", property="promotionName", jdbcType=JdbcType.VARCHAR),
         @Result(column="promotion_amount", property="promotionAmount", jdbcType=JdbcType.DECIMAL),
         @Result(column="coupon_amount", property="couponAmount", jdbcType=JdbcType.DECIMAL),
@@ -84,7 +81,7 @@ public interface OmsOrderItemMapper {
         @Result(column="real_amount", property="realAmount", jdbcType=JdbcType.DECIMAL),
         @Result(column="gift_integration", property="giftIntegration", jdbcType=JdbcType.INTEGER),
         @Result(column="gift_growth", property="giftGrowth", jdbcType=JdbcType.INTEGER),
-        @Result(column="goods_attr", property="goodsAttr", jdbcType=JdbcType.VARCHAR)
+        @Result(column="product_attr", property="productAttr", jdbcType=JdbcType.VARCHAR)
     })
     List<OmsOrderItem> selectMany(SelectStatementProvider selectStatement);
 
@@ -115,19 +112,16 @@ public interface OmsOrderItemMapper {
             c.map(id).toProperty("id")
             .map(orderId).toProperty("orderId")
             .map(orderSn).toProperty("orderSn")
-            .map(goodsId).toProperty("goodsId")
-            .map(goodsPic).toProperty("goodsPic")
-            .map(goodsName).toProperty("goodsName")
-            .map(goodsBrand).toProperty("goodsBrand")
-            .map(goodsSn).toProperty("goodsSn")
-            .map(goodsPrice).toProperty("goodsPrice")
-            .map(goodsQuantity).toProperty("goodsQuantity")
-            .map(goodsSkuId).toProperty("goodsSkuId")
-            .map(goodsSkuCode).toProperty("goodsSkuCode")
-            .map(goodsCategoryId).toProperty("goodsCategoryId")
-            .map(sp1).toProperty("sp1")
-            .map(sp2).toProperty("sp2")
-            .map(sp3).toProperty("sp3")
+            .map(productId).toProperty("productId")
+            .map(productPic).toProperty("productPic")
+            .map(productName).toProperty("productName")
+            .map(productBrand).toProperty("productBrand")
+            .map(productSn).toProperty("productSn")
+            .map(productPrice).toProperty("productPrice")
+            .map(productQuantity).toProperty("productQuantity")
+            .map(productSkuId).toProperty("productSkuId")
+            .map(productSkuCode).toProperty("productSkuCode")
+            .map(productCategoryId).toProperty("productCategoryId")
             .map(promotionName).toProperty("promotionName")
             .map(promotionAmount).toProperty("promotionAmount")
             .map(couponAmount).toProperty("couponAmount")
@@ -135,7 +129,7 @@ public interface OmsOrderItemMapper {
             .map(realAmount).toProperty("realAmount")
             .map(giftIntegration).toProperty("giftIntegration")
             .map(giftGrowth).toProperty("giftGrowth")
-            .map(goodsAttr).toProperty("goodsAttr")
+            .map(productAttr).toProperty("productAttr")
         );
     }
 
@@ -145,19 +139,16 @@ public interface OmsOrderItemMapper {
             c.map(id).toProperty("id")
             .map(orderId).toProperty("orderId")
             .map(orderSn).toProperty("orderSn")
-            .map(goodsId).toProperty("goodsId")
-            .map(goodsPic).toProperty("goodsPic")
-            .map(goodsName).toProperty("goodsName")
-            .map(goodsBrand).toProperty("goodsBrand")
-            .map(goodsSn).toProperty("goodsSn")
-            .map(goodsPrice).toProperty("goodsPrice")
-            .map(goodsQuantity).toProperty("goodsQuantity")
-            .map(goodsSkuId).toProperty("goodsSkuId")
-            .map(goodsSkuCode).toProperty("goodsSkuCode")
-            .map(goodsCategoryId).toProperty("goodsCategoryId")
-            .map(sp1).toProperty("sp1")
-            .map(sp2).toProperty("sp2")
-            .map(sp3).toProperty("sp3")
+            .map(productId).toProperty("productId")
+            .map(productPic).toProperty("productPic")
+            .map(productName).toProperty("productName")
+            .map(productBrand).toProperty("productBrand")
+            .map(productSn).toProperty("productSn")
+            .map(productPrice).toProperty("productPrice")
+            .map(productQuantity).toProperty("productQuantity")
+            .map(productSkuId).toProperty("productSkuId")
+            .map(productSkuCode).toProperty("productSkuCode")
+            .map(productCategoryId).toProperty("productCategoryId")
             .map(promotionName).toProperty("promotionName")
             .map(promotionAmount).toProperty("promotionAmount")
             .map(couponAmount).toProperty("couponAmount")
@@ -165,7 +156,7 @@ public interface OmsOrderItemMapper {
             .map(realAmount).toProperty("realAmount")
             .map(giftIntegration).toProperty("giftIntegration")
             .map(giftGrowth).toProperty("giftGrowth")
-            .map(goodsAttr).toProperty("goodsAttr")
+            .map(productAttr).toProperty("productAttr")
         );
     }
 
@@ -175,19 +166,16 @@ public interface OmsOrderItemMapper {
             c.map(id).toPropertyWhenPresent("id", record::getId)
             .map(orderId).toPropertyWhenPresent("orderId", record::getOrderId)
             .map(orderSn).toPropertyWhenPresent("orderSn", record::getOrderSn)
-            .map(goodsId).toPropertyWhenPresent("goodsId", record::getGoodsId)
-            .map(goodsPic).toPropertyWhenPresent("goodsPic", record::getGoodsPic)
-            .map(goodsName).toPropertyWhenPresent("goodsName", record::getGoodsName)
-            .map(goodsBrand).toPropertyWhenPresent("goodsBrand", record::getGoodsBrand)
-            .map(goodsSn).toPropertyWhenPresent("goodsSn", record::getGoodsSn)
-            .map(goodsPrice).toPropertyWhenPresent("goodsPrice", record::getGoodsPrice)
-            .map(goodsQuantity).toPropertyWhenPresent("goodsQuantity", record::getGoodsQuantity)
-            .map(goodsSkuId).toPropertyWhenPresent("goodsSkuId", record::getGoodsSkuId)
-            .map(goodsSkuCode).toPropertyWhenPresent("goodsSkuCode", record::getGoodsSkuCode)
-            .map(goodsCategoryId).toPropertyWhenPresent("goodsCategoryId", record::getGoodsCategoryId)
-            .map(sp1).toPropertyWhenPresent("sp1", record::getSp1)
-            .map(sp2).toPropertyWhenPresent("sp2", record::getSp2)
-            .map(sp3).toPropertyWhenPresent("sp3", record::getSp3)
+            .map(productId).toPropertyWhenPresent("productId", record::getProductId)
+            .map(productPic).toPropertyWhenPresent("productPic", record::getProductPic)
+            .map(productName).toPropertyWhenPresent("productName", record::getProductName)
+            .map(productBrand).toPropertyWhenPresent("productBrand", record::getProductBrand)
+            .map(productSn).toPropertyWhenPresent("productSn", record::getProductSn)
+            .map(productPrice).toPropertyWhenPresent("productPrice", record::getProductPrice)
+            .map(productQuantity).toPropertyWhenPresent("productQuantity", record::getProductQuantity)
+            .map(productSkuId).toPropertyWhenPresent("productSkuId", record::getProductSkuId)
+            .map(productSkuCode).toPropertyWhenPresent("productSkuCode", record::getProductSkuCode)
+            .map(productCategoryId).toPropertyWhenPresent("productCategoryId", record::getProductCategoryId)
             .map(promotionName).toPropertyWhenPresent("promotionName", record::getPromotionName)
             .map(promotionAmount).toPropertyWhenPresent("promotionAmount", record::getPromotionAmount)
             .map(couponAmount).toPropertyWhenPresent("couponAmount", record::getCouponAmount)
@@ -195,7 +183,7 @@ public interface OmsOrderItemMapper {
             .map(realAmount).toPropertyWhenPresent("realAmount", record::getRealAmount)
             .map(giftIntegration).toPropertyWhenPresent("giftIntegration", record::getGiftIntegration)
             .map(giftGrowth).toPropertyWhenPresent("giftGrowth", record::getGiftGrowth)
-            .map(goodsAttr).toPropertyWhenPresent("goodsAttr", record::getGoodsAttr)
+            .map(productAttr).toPropertyWhenPresent("productAttr", record::getProductAttr)
         );
     }
 
@@ -231,19 +219,16 @@ public interface OmsOrderItemMapper {
         return dsl.set(id).equalTo(record::getId)
                 .set(orderId).equalTo(record::getOrderId)
                 .set(orderSn).equalTo(record::getOrderSn)
-                .set(goodsId).equalTo(record::getGoodsId)
-                .set(goodsPic).equalTo(record::getGoodsPic)
-                .set(goodsName).equalTo(record::getGoodsName)
-                .set(goodsBrand).equalTo(record::getGoodsBrand)
-                .set(goodsSn).equalTo(record::getGoodsSn)
-                .set(goodsPrice).equalTo(record::getGoodsPrice)
-                .set(goodsQuantity).equalTo(record::getGoodsQuantity)
-                .set(goodsSkuId).equalTo(record::getGoodsSkuId)
-                .set(goodsSkuCode).equalTo(record::getGoodsSkuCode)
-                .set(goodsCategoryId).equalTo(record::getGoodsCategoryId)
-                .set(sp1).equalTo(record::getSp1)
-                .set(sp2).equalTo(record::getSp2)
-                .set(sp3).equalTo(record::getSp3)
+                .set(productId).equalTo(record::getProductId)
+                .set(productPic).equalTo(record::getProductPic)
+                .set(productName).equalTo(record::getProductName)
+                .set(productBrand).equalTo(record::getProductBrand)
+                .set(productSn).equalTo(record::getProductSn)
+                .set(productPrice).equalTo(record::getProductPrice)
+                .set(productQuantity).equalTo(record::getProductQuantity)
+                .set(productSkuId).equalTo(record::getProductSkuId)
+                .set(productSkuCode).equalTo(record::getProductSkuCode)
+                .set(productCategoryId).equalTo(record::getProductCategoryId)
                 .set(promotionName).equalTo(record::getPromotionName)
                 .set(promotionAmount).equalTo(record::getPromotionAmount)
                 .set(couponAmount).equalTo(record::getCouponAmount)
@@ -251,7 +236,7 @@ public interface OmsOrderItemMapper {
                 .set(realAmount).equalTo(record::getRealAmount)
                 .set(giftIntegration).equalTo(record::getGiftIntegration)
                 .set(giftGrowth).equalTo(record::getGiftGrowth)
-                .set(goodsAttr).equalTo(record::getGoodsAttr);
+                .set(productAttr).equalTo(record::getProductAttr);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -259,19 +244,16 @@ public interface OmsOrderItemMapper {
         return dsl.set(id).equalToWhenPresent(record::getId)
                 .set(orderId).equalToWhenPresent(record::getOrderId)
                 .set(orderSn).equalToWhenPresent(record::getOrderSn)
-                .set(goodsId).equalToWhenPresent(record::getGoodsId)
-                .set(goodsPic).equalToWhenPresent(record::getGoodsPic)
-                .set(goodsName).equalToWhenPresent(record::getGoodsName)
-                .set(goodsBrand).equalToWhenPresent(record::getGoodsBrand)
-                .set(goodsSn).equalToWhenPresent(record::getGoodsSn)
-                .set(goodsPrice).equalToWhenPresent(record::getGoodsPrice)
-                .set(goodsQuantity).equalToWhenPresent(record::getGoodsQuantity)
-                .set(goodsSkuId).equalToWhenPresent(record::getGoodsSkuId)
-                .set(goodsSkuCode).equalToWhenPresent(record::getGoodsSkuCode)
-                .set(goodsCategoryId).equalToWhenPresent(record::getGoodsCategoryId)
-                .set(sp1).equalToWhenPresent(record::getSp1)
-                .set(sp2).equalToWhenPresent(record::getSp2)
-                .set(sp3).equalToWhenPresent(record::getSp3)
+                .set(productId).equalToWhenPresent(record::getProductId)
+                .set(productPic).equalToWhenPresent(record::getProductPic)
+                .set(productName).equalToWhenPresent(record::getProductName)
+                .set(productBrand).equalToWhenPresent(record::getProductBrand)
+                .set(productSn).equalToWhenPresent(record::getProductSn)
+                .set(productPrice).equalToWhenPresent(record::getProductPrice)
+                .set(productQuantity).equalToWhenPresent(record::getProductQuantity)
+                .set(productSkuId).equalToWhenPresent(record::getProductSkuId)
+                .set(productSkuCode).equalToWhenPresent(record::getProductSkuCode)
+                .set(productCategoryId).equalToWhenPresent(record::getProductCategoryId)
                 .set(promotionName).equalToWhenPresent(record::getPromotionName)
                 .set(promotionAmount).equalToWhenPresent(record::getPromotionAmount)
                 .set(couponAmount).equalToWhenPresent(record::getCouponAmount)
@@ -279,7 +261,7 @@ public interface OmsOrderItemMapper {
                 .set(realAmount).equalToWhenPresent(record::getRealAmount)
                 .set(giftIntegration).equalToWhenPresent(record::getGiftIntegration)
                 .set(giftGrowth).equalToWhenPresent(record::getGiftGrowth)
-                .set(goodsAttr).equalToWhenPresent(record::getGoodsAttr);
+                .set(productAttr).equalToWhenPresent(record::getProductAttr);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -287,19 +269,16 @@ public interface OmsOrderItemMapper {
         return update(c ->
             c.set(orderId).equalTo(record::getOrderId)
             .set(orderSn).equalTo(record::getOrderSn)
-            .set(goodsId).equalTo(record::getGoodsId)
-            .set(goodsPic).equalTo(record::getGoodsPic)
-            .set(goodsName).equalTo(record::getGoodsName)
-            .set(goodsBrand).equalTo(record::getGoodsBrand)
-            .set(goodsSn).equalTo(record::getGoodsSn)
-            .set(goodsPrice).equalTo(record::getGoodsPrice)
-            .set(goodsQuantity).equalTo(record::getGoodsQuantity)
-            .set(goodsSkuId).equalTo(record::getGoodsSkuId)
-            .set(goodsSkuCode).equalTo(record::getGoodsSkuCode)
-            .set(goodsCategoryId).equalTo(record::getGoodsCategoryId)
-            .set(sp1).equalTo(record::getSp1)
-            .set(sp2).equalTo(record::getSp2)
-            .set(sp3).equalTo(record::getSp3)
+            .set(productId).equalTo(record::getProductId)
+            .set(productPic).equalTo(record::getProductPic)
+            .set(productName).equalTo(record::getProductName)
+            .set(productBrand).equalTo(record::getProductBrand)
+            .set(productSn).equalTo(record::getProductSn)
+            .set(productPrice).equalTo(record::getProductPrice)
+            .set(productQuantity).equalTo(record::getProductQuantity)
+            .set(productSkuId).equalTo(record::getProductSkuId)
+            .set(productSkuCode).equalTo(record::getProductSkuCode)
+            .set(productCategoryId).equalTo(record::getProductCategoryId)
             .set(promotionName).equalTo(record::getPromotionName)
             .set(promotionAmount).equalTo(record::getPromotionAmount)
             .set(couponAmount).equalTo(record::getCouponAmount)
@@ -307,7 +286,7 @@ public interface OmsOrderItemMapper {
             .set(realAmount).equalTo(record::getRealAmount)
             .set(giftIntegration).equalTo(record::getGiftIntegration)
             .set(giftGrowth).equalTo(record::getGiftGrowth)
-            .set(goodsAttr).equalTo(record::getGoodsAttr)
+            .set(productAttr).equalTo(record::getProductAttr)
             .where(id, isEqualTo(record::getId))
         );
     }
@@ -317,19 +296,16 @@ public interface OmsOrderItemMapper {
         return update(c ->
             c.set(orderId).equalToWhenPresent(record::getOrderId)
             .set(orderSn).equalToWhenPresent(record::getOrderSn)
-            .set(goodsId).equalToWhenPresent(record::getGoodsId)
-            .set(goodsPic).equalToWhenPresent(record::getGoodsPic)
-            .set(goodsName).equalToWhenPresent(record::getGoodsName)
-            .set(goodsBrand).equalToWhenPresent(record::getGoodsBrand)
-            .set(goodsSn).equalToWhenPresent(record::getGoodsSn)
-            .set(goodsPrice).equalToWhenPresent(record::getGoodsPrice)
-            .set(goodsQuantity).equalToWhenPresent(record::getGoodsQuantity)
-            .set(goodsSkuId).equalToWhenPresent(record::getGoodsSkuId)
-            .set(goodsSkuCode).equalToWhenPresent(record::getGoodsSkuCode)
-            .set(goodsCategoryId).equalToWhenPresent(record::getGoodsCategoryId)
-            .set(sp1).equalToWhenPresent(record::getSp1)
-            .set(sp2).equalToWhenPresent(record::getSp2)
-            .set(sp3).equalToWhenPresent(record::getSp3)
+            .set(productId).equalToWhenPresent(record::getProductId)
+            .set(productPic).equalToWhenPresent(record::getProductPic)
+            .set(productName).equalToWhenPresent(record::getProductName)
+            .set(productBrand).equalToWhenPresent(record::getProductBrand)
+            .set(productSn).equalToWhenPresent(record::getProductSn)
+            .set(productPrice).equalToWhenPresent(record::getProductPrice)
+            .set(productQuantity).equalToWhenPresent(record::getProductQuantity)
+            .set(productSkuId).equalToWhenPresent(record::getProductSkuId)
+            .set(productSkuCode).equalToWhenPresent(record::getProductSkuCode)
+            .set(productCategoryId).equalToWhenPresent(record::getProductCategoryId)
             .set(promotionName).equalToWhenPresent(record::getPromotionName)
             .set(promotionAmount).equalToWhenPresent(record::getPromotionAmount)
             .set(couponAmount).equalToWhenPresent(record::getCouponAmount)
@@ -337,7 +313,7 @@ public interface OmsOrderItemMapper {
             .set(realAmount).equalToWhenPresent(record::getRealAmount)
             .set(giftIntegration).equalToWhenPresent(record::getGiftIntegration)
             .set(giftGrowth).equalToWhenPresent(record::getGiftGrowth)
-            .set(goodsAttr).equalToWhenPresent(record::getGoodsAttr)
+            .set(productAttr).equalToWhenPresent(record::getProductAttr)
             .where(id, isEqualTo(record::getId))
         );
     }

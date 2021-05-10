@@ -585,22 +585,19 @@
                                    //参数
                                    else if (type == 1) {
                                        goodsAttribute1DivDom.append(goodsAttributeName + '：<br>');
-                                       for (var j = 0; j < inputListSplit.length; j++) {
-                                           if (goodsAttributeData[i].selectType==0)//唯一
-                                           {
-                                               goodsAttribute1DivDom.append('<input type="text" name="inputList" value="' + inputList+ '" lay-skin="primary">');
-                                           }
-                                           else if (goodsAttributeData[i].selectType==1)//单选
-                                           {
+                                       if (goodsAttributeData[i].selectType==0)//唯一
+                                       {
+                                           goodsAttribute1DivDom.append('<input type="text" name="inputList" value="' + inputList+ '" lay-skin="primary">');
+                                       }
+                                       else if (goodsAttributeData[i].selectType==1)//单选
+                                       {
+                                           for (var j = 0; j < inputListSplit.length; j++) {
                                                goodsAttribute1DivDom.append('<input type="checkbox" checked name="" title="' + inputListSplit[j] + '" lay-skin="primary">');
                                            }
-
                                        }
                                        goodsAttribute1DivDom.append('<br>');
                                    }
                                }
-
-
                             //重新渲染
                             form.render('checkbox',"stepForm3");
                             break;

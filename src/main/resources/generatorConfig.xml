@@ -34,7 +34,8 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="cn.znh.redstar.mbg.mapper"
                              targetProject="src\main\java"/>
         <!-- 生成数据库中所有表的实体 %代表所有表-->
-        <table tableName="%">
+<!--        <table tableName="%">-->
+        <table tableName="oms_order_item">
 <!--            去掉前缀-->
 <!--            <domainObjectRenamingRule searchString="^\wms" replaceString="" />-->
         </table>

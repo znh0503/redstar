@@ -14,44 +14,30 @@ public class OmsOrderItem implements Serializable {
     @ApiModelProperty(value = "订单编号")
     private String orderSn;
 
-    @ApiModelProperty(value = "商品id")
-    private Long goodsId;
+    private Long productId;
 
-    @ApiModelProperty(value = "商品图片")
-    private String goodsPic;
+    private String productPic;
 
-    @ApiModelProperty(value = "商品名称")
-    private String goodsName;
+    private String productName;
 
-    @ApiModelProperty(value = "商品品牌")
-    private String goodsBrand;
+    private String productBrand;
 
-    @ApiModelProperty(value = "商品条码")
-    private String goodsSn;
+    private String productSn;
 
     @ApiModelProperty(value = "销售价格")
-    private BigDecimal goodsPrice;
+    private BigDecimal productPrice;
 
     @ApiModelProperty(value = "购买数量")
-    private Integer goodsQuantity;
+    private Integer productQuantity;
 
     @ApiModelProperty(value = "商品sku编号")
-    private Long goodsSkuId;
+    private Long productSkuId;
 
     @ApiModelProperty(value = "商品sku条码")
-    private String goodsSkuCode;
+    private String productSkuCode;
 
     @ApiModelProperty(value = "商品分类id")
-    private Long goodsCategoryId;
-
-    @ApiModelProperty(value = "商品的销售属性1")
-    private String sp1;
-
-    @ApiModelProperty(value = "商品的销售属性2")
-    private String sp2;
-
-    @ApiModelProperty(value = "商品的销售属性3")
-    private String sp3;
+    private Long productCategoryId;
 
     @ApiModelProperty(value = "商品促销名称")
     private String promotionName;
@@ -68,14 +54,12 @@ public class OmsOrderItem implements Serializable {
     @ApiModelProperty(value = "该商品经过优惠后的分解金额")
     private BigDecimal realAmount;
 
-    @ApiModelProperty(value = "商品赠送积分")
     private Integer giftIntegration;
 
-    @ApiModelProperty(value = "商品赠送成长值")
     private Integer giftGrowth;
 
     @ApiModelProperty(value = "商品销售属性:[{'key':'颜色','value':'颜色'},{'key':'容量','value':'4G'}]")
-    private String goodsAttr;
+    private String productAttr;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private static final long serialVersionUID = 1L;
@@ -111,133 +95,103 @@ public class OmsOrderItem implements Serializable {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Long getGoodsId() {
-        return goodsId;
+    public Long getProductId() {
+        return productId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getGoodsPic() {
-        return goodsPic;
+    public String getProductPic() {
+        return productPic;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsPic(String goodsPic) {
-        this.goodsPic = goodsPic;
+    public void setProductPic(String productPic) {
+        this.productPic = productPic;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getGoodsName() {
-        return goodsName;
+    public String getProductName() {
+        return productName;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getGoodsBrand() {
-        return goodsBrand;
+    public String getProductBrand() {
+        return productBrand;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsBrand(String goodsBrand) {
-        this.goodsBrand = goodsBrand;
+    public void setProductBrand(String productBrand) {
+        this.productBrand = productBrand;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getGoodsSn() {
-        return goodsSn;
+    public String getProductSn() {
+        return productSn;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsSn(String goodsSn) {
-        this.goodsSn = goodsSn;
+    public void setProductSn(String productSn) {
+        this.productSn = productSn;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public BigDecimal getGoodsPrice() {
-        return goodsPrice;
+    public BigDecimal getProductPrice() {
+        return productPrice;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsPrice(BigDecimal goodsPrice) {
-        this.goodsPrice = goodsPrice;
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getGoodsQuantity() {
-        return goodsQuantity;
+    public Integer getProductQuantity() {
+        return productQuantity;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsQuantity(Integer goodsQuantity) {
-        this.goodsQuantity = goodsQuantity;
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Long getGoodsSkuId() {
-        return goodsSkuId;
+    public Long getProductSkuId() {
+        return productSkuId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsSkuId(Long goodsSkuId) {
-        this.goodsSkuId = goodsSkuId;
+    public void setProductSkuId(Long productSkuId) {
+        this.productSkuId = productSkuId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getGoodsSkuCode() {
-        return goodsSkuCode;
+    public String getProductSkuCode() {
+        return productSkuCode;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsSkuCode(String goodsSkuCode) {
-        this.goodsSkuCode = goodsSkuCode;
+    public void setProductSkuCode(String productSkuCode) {
+        this.productSkuCode = productSkuCode;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Long getGoodsCategoryId() {
-        return goodsCategoryId;
+    public Long getProductCategoryId() {
+        return productCategoryId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsCategoryId(Long goodsCategoryId) {
-        this.goodsCategoryId = goodsCategoryId;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getSp1() {
-        return sp1;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setSp1(String sp1) {
-        this.sp1 = sp1;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getSp2() {
-        return sp2;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setSp2(String sp2) {
-        this.sp2 = sp2;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getSp3() {
-        return sp3;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setSp3(String sp3) {
-        this.sp3 = sp3;
+    public void setProductCategoryId(Long productCategoryId) {
+        this.productCategoryId = productCategoryId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -311,13 +265,13 @@ public class OmsOrderItem implements Serializable {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getGoodsAttr() {
-        return goodsAttr;
+    public String getProductAttr() {
+        return productAttr;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setGoodsAttr(String goodsAttr) {
-        this.goodsAttr = goodsAttr;
+    public void setProductAttr(String productAttr) {
+        this.productAttr = productAttr;
     }
 
     @Override
@@ -330,19 +284,16 @@ public class OmsOrderItem implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", orderId=").append(orderId);
         sb.append(", orderSn=").append(orderSn);
-        sb.append(", goodsId=").append(goodsId);
-        sb.append(", goodsPic=").append(goodsPic);
-        sb.append(", goodsName=").append(goodsName);
-        sb.append(", goodsBrand=").append(goodsBrand);
-        sb.append(", goodsSn=").append(goodsSn);
-        sb.append(", goodsPrice=").append(goodsPrice);
-        sb.append(", goodsQuantity=").append(goodsQuantity);
-        sb.append(", goodsSkuId=").append(goodsSkuId);
-        sb.append(", goodsSkuCode=").append(goodsSkuCode);
-        sb.append(", goodsCategoryId=").append(goodsCategoryId);
-        sb.append(", sp1=").append(sp1);
-        sb.append(", sp2=").append(sp2);
-        sb.append(", sp3=").append(sp3);
+        sb.append(", productId=").append(productId);
+        sb.append(", productPic=").append(productPic);
+        sb.append(", productName=").append(productName);
+        sb.append(", productBrand=").append(productBrand);
+        sb.append(", productSn=").append(productSn);
+        sb.append(", productPrice=").append(productPrice);
+        sb.append(", productQuantity=").append(productQuantity);
+        sb.append(", productSkuId=").append(productSkuId);
+        sb.append(", productSkuCode=").append(productSkuCode);
+        sb.append(", productCategoryId=").append(productCategoryId);
         sb.append(", promotionName=").append(promotionName);
         sb.append(", promotionAmount=").append(promotionAmount);
         sb.append(", couponAmount=").append(couponAmount);
@@ -350,7 +301,7 @@ public class OmsOrderItem implements Serializable {
         sb.append(", realAmount=").append(realAmount);
         sb.append(", giftIntegration=").append(giftIntegration);
         sb.append(", giftGrowth=").append(giftGrowth);
-        sb.append(", goodsAttr=").append(goodsAttr);
+        sb.append(", productAttr=").append(productAttr);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -16,31 +16,25 @@ public final class OmsOrderItemDynamicSqlSupport {
 
     public static final SqlColumn<String> orderSn = omsOrderItem.orderSn;
 
-    public static final SqlColumn<Long> goodsId = omsOrderItem.goodsId;
+    public static final SqlColumn<Long> productId = omsOrderItem.productId;
 
-    public static final SqlColumn<String> goodsPic = omsOrderItem.goodsPic;
+    public static final SqlColumn<String> productPic = omsOrderItem.productPic;
 
-    public static final SqlColumn<String> goodsName = omsOrderItem.goodsName;
+    public static final SqlColumn<String> productName = omsOrderItem.productName;
 
-    public static final SqlColumn<String> goodsBrand = omsOrderItem.goodsBrand;
+    public static final SqlColumn<String> productBrand = omsOrderItem.productBrand;
 
-    public static final SqlColumn<String> goodsSn = omsOrderItem.goodsSn;
+    public static final SqlColumn<String> productSn = omsOrderItem.productSn;
 
-    public static final SqlColumn<BigDecimal> goodsPrice = omsOrderItem.goodsPrice;
+    public static final SqlColumn<BigDecimal> productPrice = omsOrderItem.productPrice;
 
-    public static final SqlColumn<Integer> goodsQuantity = omsOrderItem.goodsQuantity;
+    public static final SqlColumn<Integer> productQuantity = omsOrderItem.productQuantity;
 
-    public static final SqlColumn<Long> goodsSkuId = omsOrderItem.goodsSkuId;
+    public static final SqlColumn<Long> productSkuId = omsOrderItem.productSkuId;
 
-    public static final SqlColumn<String> goodsSkuCode = omsOrderItem.goodsSkuCode;
+    public static final SqlColumn<String> productSkuCode = omsOrderItem.productSkuCode;
 
-    public static final SqlColumn<Long> goodsCategoryId = omsOrderItem.goodsCategoryId;
-
-    public static final SqlColumn<String> sp1 = omsOrderItem.sp1;
-
-    public static final SqlColumn<String> sp2 = omsOrderItem.sp2;
-
-    public static final SqlColumn<String> sp3 = omsOrderItem.sp3;
+    public static final SqlColumn<Long> productCategoryId = omsOrderItem.productCategoryId;
 
     public static final SqlColumn<String> promotionName = omsOrderItem.promotionName;
 
@@ -56,7 +50,7 @@ public final class OmsOrderItemDynamicSqlSupport {
 
     public static final SqlColumn<Integer> giftGrowth = omsOrderItem.giftGrowth;
 
-    public static final SqlColumn<String> goodsAttr = omsOrderItem.goodsAttr;
+    public static final SqlColumn<String> productAttr = omsOrderItem.productAttr;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public static final class OmsOrderItem extends SqlTable {
@@ -66,31 +60,25 @@ public final class OmsOrderItemDynamicSqlSupport {
 
         public final SqlColumn<String> orderSn = column("order_sn", JDBCType.VARCHAR);
 
-        public final SqlColumn<Long> goodsId = column("goods_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> productId = column("product_id", JDBCType.BIGINT);
 
-        public final SqlColumn<String> goodsPic = column("goods_pic", JDBCType.VARCHAR);
+        public final SqlColumn<String> productPic = column("product_pic", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> goodsName = column("goods_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> productName = column("product_name", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> goodsBrand = column("goods_brand", JDBCType.VARCHAR);
+        public final SqlColumn<String> productBrand = column("product_brand", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> goodsSn = column("goods_sn", JDBCType.VARCHAR);
+        public final SqlColumn<String> productSn = column("product_sn", JDBCType.VARCHAR);
 
-        public final SqlColumn<BigDecimal> goodsPrice = column("goods_price", JDBCType.DECIMAL);
+        public final SqlColumn<BigDecimal> productPrice = column("product_price", JDBCType.DECIMAL);
 
-        public final SqlColumn<Integer> goodsQuantity = column("goods_quantity", JDBCType.INTEGER);
+        public final SqlColumn<Integer> productQuantity = column("product_quantity", JDBCType.INTEGER);
 
-        public final SqlColumn<Long> goodsSkuId = column("goods_sku_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> productSkuId = column("product_sku_id", JDBCType.BIGINT);
 
-        public final SqlColumn<String> goodsSkuCode = column("goods_sku_code", JDBCType.VARCHAR);
+        public final SqlColumn<String> productSkuCode = column("product_sku_code", JDBCType.VARCHAR);
 
-        public final SqlColumn<Long> goodsCategoryId = column("goods_category_id", JDBCType.BIGINT);
-
-        public final SqlColumn<String> sp1 = column("sp1", JDBCType.VARCHAR);
-
-        public final SqlColumn<String> sp2 = column("sp2", JDBCType.VARCHAR);
-
-        public final SqlColumn<String> sp3 = column("sp3", JDBCType.VARCHAR);
+        public final SqlColumn<Long> productCategoryId = column("product_category_id", JDBCType.BIGINT);
 
         public final SqlColumn<String> promotionName = column("promotion_name", JDBCType.VARCHAR);
 
@@ -106,7 +94,7 @@ public final class OmsOrderItemDynamicSqlSupport {
 
         public final SqlColumn<Integer> giftGrowth = column("gift_growth", JDBCType.INTEGER);
 
-        public final SqlColumn<String> goodsAttr = column("goods_attr", JDBCType.VARCHAR);
+        public final SqlColumn<String> productAttr = column("product_attr", JDBCType.VARCHAR);
 
         public OmsOrderItem() {
             super("oms_order_item");

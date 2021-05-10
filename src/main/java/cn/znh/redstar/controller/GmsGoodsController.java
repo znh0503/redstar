@@ -6,10 +6,7 @@ import cn.znh.redstar.service.GmsGoodsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -41,5 +38,13 @@ public class GmsGoodsController {
     {
         List<GmsGoods> goodsList = gmsGoodsService.getGoods(goodsCategoryId);
         return CommonResult.success(goodsList);
+    }
+
+    @ApiOperation("根据id获取商品信息")
+    @GetMapping("/detail/{id}")
+    public CommonResult getById(@PathVariable("id") Long id)
+    {
+        GmsGoods goods = gmsGoodsService.getGoodsById(id);
+        return CommonResult.success(goods);
     }
 }

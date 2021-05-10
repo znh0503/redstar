@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <div class="layui-card">
+        <div class="layui-card-body" id="cardBody" style="color: #c24f4a;font-size: 18px;background-color: ivory;padding: 25px;">
+            <span>当前订单状态：</span>
+            <span>
+                <button style="float:right;" id="noteBtn" type="button" class="layui-btn layui-btn-warm layui-btn-radius">备注订单</button>
+           </span>
+        </div>
+    </div>
+    <i class="layui-icon layui-icon-form">基本信息</i>
+    <table class="layui-table">
+        <colgroup>
+<!--            <col width="150">-->
+<!--            <col width="200">-->
+<!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>订单编号</th>
+            <th>发货单流水号</th>
+            <th>用户账号</th>
+            <th>支付方式</th>
+            <th>订单来源</th>
+            <th>订单类型</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="orderSn"></td>
+            <td >暂无</td>
+            <td id="memberUsername"></td>
+            <td id="payType"></td>
+            <td id="sourceType"></td>
+            <td id="orderType"></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>配送方式</th>
+            <th>物流单号</th>
+            <th>自动确认收货时间</th>
+            <th>可以获得的积分</th>
+            <th>可以获得的成长值</th>
+            <th>活动信息</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="deliveryCompany"></td>
+            <td id="deliverySn"></td>
+            <td id="autoConfirmDay"></td>
+            <td id="integration"></td>
+            <td id="growth"></td>
+            <td id="promotionInfo"></td>
+        </tr>
+        </tbody>
+    </table>
+    <i class="layui-icon layui-icon-username">收货人信息</i>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>收货人</th>
+            <th>手机号码</th>
+            <th>邮政编码</th>
+            <th>收货地址</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="receiverName"></td>
+            <td id="receiverPhone"></td>
+            <td id="receiverPostCode"></td>
+            <td id="receiverDetailAddress"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="../../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+<script>
+    var ossConfig;
+    layui.use(['form','upload','element'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            upload=layui.upload,
+            element=layui.element,
+            $ = layui.$;
+
+
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+
+            // var index = layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // }, function () {
+            //
+            //     // 关闭弹出层
+            //     layer.close(index);
+            //
+            //     var iframeIndex = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.close(iframeIndex);
+            //
+            // });
+            //文件上传中不能提交表单
+            if (logoUploadFlag==1||bigPicUploadFlag==1)
+            {
+                layer.msg("文件上传中，请稍后提交");
+                return ;
+            }
+            //提交表单
+            $.ajax({
+                //请求方式
+                type:"put",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:IP_HOST+"brand/"+data.field.id,
+                data:JSON.stringify(data.field),
+                //请求成功
+                success:function (result) {
+                    var code=result.code;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            layer.msg("提交成功");
+
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            //1.5秒后关闭
+                            setTimeout(function (){
+                                parent.layer.close(iframeIndex);
+                                parent.location.reload();
+                            }, 1500);
+
+
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    layer.msg("提交失败");
+                }
+            });
+
+
+
+            return false;
+        });
+
+
+        //创建品牌logo上传组件
+        var logoUpload;
+        //0没有上传、1上传中、2上传成功、3上传失败
+        var logoUploadFlag=0;
+        var logoUploadObj=upload.render({
+            elem: '#logoBtn',
+            url: 'localhost:8080',
+            auto:false, //关闭自动提交
+                before:function()
+                {
+                    logoUploadFlag=1;
+                    logoUpload=this;
+                    $.ajax({
+                        //请求方式
+                        type:"get",
+                        //请求的媒体类型
+                        contentType: "application/json;charset=UTF-8",
+                        //请求地址
+                        url:IP_HOST+"aliyunOss/policy",
+                        //同步
+                        async:false,
+                        //请求成功
+                        success:function (result) {
+                            var code=result.code;
+                            var policyData=result.data;
+                            switch (code) {
+                                case RESULT_SUCCESS:
+                                    //将url改为oss
+                                    logoUpload.url=policyData.host;
+                                    //传到oss需要的参数
+                                    logoUpload.data={
+                                        policy:policyData.policy,
+                                        signature:policyData.signature,
+                                        //以当前时间戳命名文件
+                                        key:policyData.dir+"/"+new Date().getTime(),
+                                        ossaccessKeyId:policyData.accessKeyId,
+                                        dir:policyData.dir,
+                                        host:policyData.host,
+                                        callback:policyData.callback
+                                    }
+                                    break;
+                                default:layer.msg('服务器出错了');break;
+                            }
+                        },
+                        //请求失败
+                        error:function (e) {
+                            console.log("服务器连接失败");
+                            console.log(e);
+                        }
+                    });
+
+                }
+            //选择文件回调
+            ,choose: function(obj) {
+                //将每次选择的文件追加到文件队列
+                var files = obj.pushFile();
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                obj.preview(function (index, file, result) {
+                    // console.log(index); //得到文件索引
+                     //console.log(file); //得到文件对象
+                    // console.log(result); //得到文件base64编码，比如图片
+                    //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+                    //这里还可以做一些 append 文件列表 DOM 的操作
+                    $("#logoImg").attr('src', result);
+                    //上传
+                    logoUploadObj.upload();
+                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                })
+            },
+            done: function(res, index, upload){ //上传后的回调
+                // console.log(res); //服务端响应信息
+                // console.log(index); //当前文件的索引
+                // console.log(upload); //重新上传的方法
+                //设置logo的值
+                $("#logo").val(res.data.filename);
+                logoUploadFlag=2;
+            }
+            //进度条
+            ,progress: function(n, elem){
+                var percent = n + '%' //获取进度百分比
+                element.progress('logoProgress', percent); //可配合 layui 进度条元素使用
+
+                //以下系 layui 2.5.6 新增
+                //console.log(elem); //得到当前触发的元素 DOM 对象。可通过该元素定义的属性值匹配到对应的进度条。
+            }
+            ,accept: 'images' //允许上传的文件类型
+            ,size: 10000 //最大允许上传的文件大小
+        })
+
+
+        //创建专区图片
+        var bigPicUpload;
+        //0没有上传、1上传中、2上传成功、3上传失败
+        var bigPicUploadFlag=0;
+        var bigPicUploadObj=upload.render({
+            elem: '#bigPicBtn'
+            ,url: ''
+            ,auto: false
+            ,before:function()
+            {
+                bigPicUploadFlag=1;
+                bigPicUpload=this;
+                $.ajax({
+                    //请求方式
+                    type:"get",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"aliyunOss/policy",
+                    //同步
+                    async:false,
+                    //请求成功
+                    success:function (result) {
+                        var code=result.code;
+                        var policyData=result.data;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                //将url改为oss
+                                bigPicUpload.url=policyData.host;
+                                //传到oss需要的参数
+                                bigPicUpload.data={
+                                    policy:policyData.policy,
+                                    signature:policyData.signature,
+                                    //以当前时间戳命名文件
+                                    key:policyData.dir+"/"+new Date().getTime(),
+                                    ossaccessKeyId:policyData.accessKeyId,
+                                    dir:policyData.dir,
+                                    host:policyData.host,
+                                    callback:policyData.callback
+                                }
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        console.log("服务器连接不上");
+                        console.log(e);
+                    }
+                });
+
+            }
+            //选择文件回调
+            ,choose: function(obj) {
+                //将每次选择的文件追加到文件队列
+                var files = obj.pushFile();
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                obj.preview(function (index, file, result) {
+                    // console.log(index); //得到文件索引
+                    //console.log(file); //得到文件对象
+                    // console.log(result); //得到文件base64编码，比如图片
+                    //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+                    //这里还可以做一些 append 文件列表 DOM 的操作
+                    $("#bigPicImg").attr('src', result);
+                    //上传
+                    bigPicUploadObj.upload();
+                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                })
+            }
+            ,done: function(res, index, upload){ //每个文件提交一次触发一次。详见“请求成功的回调”
+                //设置bigPic的值
+                $("#bigPic").val(res.data.filename);
+                bigPicUploadFlag=2;
+            },progress: function(n, elem){
+                var percent = n + '%' //获取进度百分比
+                element.progress('bigPicProgress', percent); //可配合 layui 进度条元素使用
+
+                //以下系 layui 2.5.6 新增
+                //console.log(elem); //得到当前触发的元素 DOM 对象。可通过该元素定义的属性值匹配到对应的进度条。
+            }
+            ,accept: 'images' //允许上传的文件类型
+            ,size: 10000 //最大允许上传的文件大小
+
+        })
+    });
+</script>
+</body>
+</html>
