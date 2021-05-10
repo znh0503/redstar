@@ -8,11 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
-    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" href="../../../css/public.css" media="all">
     <style>
         body {
             background-color: #ffffff;
+        }
+        .layui-table-cell {
+            height: auto;
+            line-height: 28px;
         }
     </style>
 </head>
@@ -105,20 +108,74 @@
         </tr>
         </tbody>
     </table>
+    <i class="layui-icon layui-icon-cart-simple">商品信息</i>
+    <table class="layui-hide" id="orderGoodsTable" lay-filter="currentTableFilter"></table>
+    <i class="layui-icon layui-icon-rmb">费用信息</i>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>商品合计</th>
+            <th>运费</th>
+            <th>优惠券</th>
+            <th>积分抵扣</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="goodsTotal">￥</td>
+            <td id="freightAmount">￥</td>
+            <td id="couponAmount">-￥</td>
+            <td id="integrationAmount">-￥</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>活动优惠</th>
+            <th>折扣金额</th>
+            <th>订单总金额</th>
+            <th>应付金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="promotionAmount">-￥</td>
+            <td id="discountAmount">-￥</td>
+            <td id="totalAmount">￥</td>
+            <td id="payAmount">￥</td>
+        </tr>
+        </tbody>
+    </table>
+    <i class="layui-icon layui-icon-log">操作记录</i>
+    <table class="layui-hide" id="orderOperateHistoryTable" lay-filter="currentTableFilter"></table>
 </div>
 <script src="../../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
 <script src="../../../js/Config.js"></script>
+    <script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    var ossConfig;
-    layui.use(['form','upload','element'], function () {
+    var orderId=getQueryVariable("orderId");
+    var status=getQueryVariable("status");
+    layui.use(['form','upload','element','table','step'], function () {
         var form = layui.form,
             layer = layui.layer,
-            upload=layui.upload,
-            element=layui.element,
+            upload = layui.upload,
+            element = layui.element,
+            table=layui.table,
+            step=layui.step,
             $ = layui.$;
-
 
 
         //监听提交
@@ -136,228 +193,149 @@
             //
             // });
             //文件上传中不能提交表单
-            if (logoUploadFlag==1||bigPicUploadFlag==1)
-            {
+            if (logoUploadFlag == 1 || bigPicUploadFlag == 1) {
                 layer.msg("文件上传中，请稍后提交");
-                return ;
+                return;
             }
             //提交表单
             $.ajax({
                 //请求方式
-                type:"put",
+                type: "put",
                 //请求的媒体类型
                 contentType: "application/json;charset=UTF-8",
                 //请求地址
-                url:IP_HOST+"brand/"+data.field.id,
-                data:JSON.stringify(data.field),
+                url: IP_HOST + "brand/" + data.field.id,
+                data: JSON.stringify(data.field),
                 //请求成功
-                success:function (result) {
-                    var code=result.code;
+                success: function (result) {
+                    var code = result.code;
                     switch (code) {
                         case RESULT_SUCCESS:
                             layer.msg("提交成功");
 
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             //1.5秒后关闭
-                            setTimeout(function (){
+                            setTimeout(function () {
                                 parent.layer.close(iframeIndex);
                                 parent.location.reload();
                             }, 1500);
 
 
                             break;
-                        default:layer.msg('服务器出错了');break;
+                        default:
+                            layer.msg('服务器出错了');
+                            break;
                     }
                 },
                 //请求失败
-                error:function (e) {
+                error: function (e) {
                     layer.msg("提交失败");
                 }
             });
 
 
-
             return false;
+        });
+        var goodsTotal=0;
+        table.render({
+            elem: '#orderGoodsTable',
+            url: IP_HOST+"order/item/"+orderId,
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {field: 'goodsPic', width: 120,templet: function (d) {
+                        return '<img  src="'+d.goodsPic+'" />';
+                    },title: '商品图片'},
+                {field: 'goodsSn', width: 180, title: '货号'},
+                {field: 'goodsName', minWidth: 180, title: '名称'},
+                {field: 'goodsPrice', width: 180, title: '销售价格',sort:true},
+                {field: 'goodsAttr', minWidth: 180,templet: function (d) {
+                        var goodsAttrJson = JSON.parse(d.goodsAttr);
+                        var text="";
+                        for(var i=0;i<goodsAttrJson.length;i++)
+                        {
+                            text+=(goodsAttrJson[i].key+"："+goodsAttrJson[i].value+"<br>");
+                        }
+                        return text;
+                    }, title: '属性'},
+                {field: 'goodsQuantity',align: "center", width: 120, title: '购买数量',sort:true},
+                {field: '', width: 120,templet: function (d) {
+                    goodsTotal+=d.goodsQuantity*d.goodsPrice;
+                    return "￥"+d.goodsQuantity*d.goodsPrice;
+                    },title: '小计'}
+
+            ]],
+            skin: 'line',
+            done:function()
+            {
+                $("#goodsTotal").append(goodsTotal);
+            },
+            response: {
+                //statusName: 'status', //规定数据状态的字段名称，默认：code
+                statusCode: 200 //规定成功的状态码，默认：0
+                //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                //,countName: 'total' //规定数据总数的字段名称，默认：count
+                //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+            }
+        });
+
+        table.render({
+            elem: '#orderOperateHistoryTable',
+            url: IP_HOST+"order/OperateHistory/"+orderId,
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {field: 'operateMan', width: 180, title: '操作人'},
+                {field: 'createTime', minWidth: 180, title: '操作时间'},
+                {field: 'orderStatus', minWidth: 180,templet: function (d) {
+                      switch(d.orderStatus)
+                      {
+                          case 0:return '待付款';
+                          case 1:return '待发货';
+                          case 2:return '已发货';
+                          case 3:return '已完成';
+                          case 4:return '已关闭';
+                          case 5:return '无效订单';
+                      }
+                    }, title: '订单状态'},
+                {field: 'note',align: "center", width: 120, title: '备注'}
+
+            ]],
+            skin: 'line',
+            response: {
+                //statusName: 'status', //规定数据状态的字段名称，默认：code
+                statusCode: 200 //规定成功的状态码，默认：0
+                //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                //,countName: 'total' //规定数据总数的字段名称，默认：count
+                //,dataName: 'rows' //规定数据列表的字段名称，默认：data
+            }
         });
 
 
-        //创建品牌logo上传组件
-        var logoUpload;
-        //0没有上传、1上传中、2上传成功、3上传失败
-        var logoUploadFlag=0;
-        var logoUploadObj=upload.render({
-            elem: '#logoBtn',
-            url: 'localhost:8080',
-            auto:false, //关闭自动提交
-                before:function()
-                {
-                    logoUploadFlag=1;
-                    logoUpload=this;
-                    $.ajax({
-                        //请求方式
-                        type:"get",
-                        //请求的媒体类型
-                        contentType: "application/json;charset=UTF-8",
-                        //请求地址
-                        url:IP_HOST+"aliyunOss/policy",
-                        //同步
-                        async:false,
-                        //请求成功
-                        success:function (result) {
-                            var code=result.code;
-                            var policyData=result.data;
-                            switch (code) {
-                                case RESULT_SUCCESS:
-                                    //将url改为oss
-                                    logoUpload.url=policyData.host;
-                                    //传到oss需要的参数
-                                    logoUpload.data={
-                                        policy:policyData.policy,
-                                        signature:policyData.signature,
-                                        //以当前时间戳命名文件
-                                        key:policyData.dir+"/"+new Date().getTime(),
-                                        ossaccessKeyId:policyData.accessKeyId,
-                                        dir:policyData.dir,
-                                        host:policyData.host,
-                                        callback:policyData.callback
-                                    }
-                                    break;
-                                default:layer.msg('服务器出错了');break;
-                            }
-                        },
-                        //请求失败
-                        error:function (e) {
-                            console.log("服务器连接失败");
-                            console.log(e);
-                        }
-                    });
-
-                }
-            //选择文件回调
-            ,choose: function(obj) {
-                //将每次选择的文件追加到文件队列
-                var files = obj.pushFile();
-                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
-                obj.preview(function (index, file, result) {
-                    // console.log(index); //得到文件索引
-                     //console.log(file); //得到文件对象
-                    // console.log(result); //得到文件base64编码，比如图片
-                    //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
-                    //这里还可以做一些 append 文件列表 DOM 的操作
-                    $("#logoImg").attr('src', result);
-                    //上传
-                    logoUploadObj.upload();
-                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
-                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
-                })
-            },
-            done: function(res, index, upload){ //上传后的回调
-                // console.log(res); //服务端响应信息
-                // console.log(index); //当前文件的索引
-                // console.log(upload); //重新上传的方法
-                //设置logo的值
-                $("#logo").val(res.data.filename);
-                logoUploadFlag=2;
-            }
-            //进度条
-            ,progress: function(n, elem){
-                var percent = n + '%' //获取进度百分比
-                element.progress('logoProgress', percent); //可配合 layui 进度条元素使用
-
-                //以下系 layui 2.5.6 新增
-                //console.log(elem); //得到当前触发的元素 DOM 对象。可通过该元素定义的属性值匹配到对应的进度条。
-            }
-            ,accept: 'images' //允许上传的文件类型
-            ,size: 10000 //最大允许上传的文件大小
-        })
 
 
-        //创建专区图片
-        var bigPicUpload;
-        //0没有上传、1上传中、2上传成功、3上传失败
-        var bigPicUploadFlag=0;
-        var bigPicUploadObj=upload.render({
-            elem: '#bigPicBtn'
-            ,url: ''
-            ,auto: false
-            ,before:function()
-            {
-                bigPicUploadFlag=1;
-                bigPicUpload=this;
-                $.ajax({
-                    //请求方式
-                    type:"get",
-                    //请求的媒体类型
-                    contentType: "application/json;charset=UTF-8",
-                    //请求地址
-                    url:IP_HOST+"aliyunOss/policy",
-                    //同步
-                    async:false,
-                    //请求成功
-                    success:function (result) {
-                        var code=result.code;
-                        var policyData=result.data;
-                        switch (code) {
-                            case RESULT_SUCCESS:
-                                //将url改为oss
-                                bigPicUpload.url=policyData.host;
-                                //传到oss需要的参数
-                                bigPicUpload.data={
-                                    policy:policyData.policy,
-                                    signature:policyData.signature,
-                                    //以当前时间戳命名文件
-                                    key:policyData.dir+"/"+new Date().getTime(),
-                                    ossaccessKeyId:policyData.accessKeyId,
-                                    dir:policyData.dir,
-                                    host:policyData.host,
-                                    callback:policyData.callback
-                                }
-                                break;
-                            default:layer.msg('服务器出错了');break;
-                        }
-                    },
-                    //请求失败
-                    error:function (e) {
-                        console.log("服务器连接不上");
-                        console.log(e);
-                    }
-                });
-
-            }
-            //选择文件回调
-            ,choose: function(obj) {
-                //将每次选择的文件追加到文件队列
-                var files = obj.pushFile();
-                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
-                obj.preview(function (index, file, result) {
-                    // console.log(index); //得到文件索引
-                    //console.log(file); //得到文件对象
-                    // console.log(result); //得到文件base64编码，比如图片
-                    //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
-                    //这里还可以做一些 append 文件列表 DOM 的操作
-                    $("#bigPicImg").attr('src', result);
-                    //上传
-                    bigPicUploadObj.upload();
-                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
-                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
-                })
-            }
-            ,done: function(res, index, upload){ //每个文件提交一次触发一次。详见“请求成功的回调”
-                //设置bigPic的值
-                $("#bigPic").val(res.data.filename);
-                bigPicUploadFlag=2;
-            },progress: function(n, elem){
-                var percent = n + '%' //获取进度百分比
-                element.progress('bigPicProgress', percent); //可配合 layui 进度条元素使用
-
-                //以下系 layui 2.5.6 新增
-                //console.log(elem); //得到当前触发的元素 DOM 对象。可通过该元素定义的属性值匹配到对应的进度条。
-            }
-            ,accept: 'images' //允许上传的文件类型
-            ,size: 10000 //最大允许上传的文件大小
-
-        })
     });
+        //获取url的参数
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return decodeURI(pair[1]);
+                }
+            }
+            return (false);
+        }
+
+
 </script>
 </body>
 </html>

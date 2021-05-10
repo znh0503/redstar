@@ -139,6 +139,7 @@ public class OmsOrder implements Serializable {
     @ApiModelProperty(value = "修改时间")
     private Date modifyTime;
 
+
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private static final long serialVersionUID = 1L;
 

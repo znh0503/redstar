@@ -240,7 +240,7 @@
                         maxmin:true,
                         shadeClose: true,
                         area: ['85%', '85%'],
-                        content: 'orderDetail.html',
+                        content: 'orderDetail.html?orderId='+data.id+"&status="+data.status,
                         success:function (layero,index) {
                             var body = layer.getChildFrame('body', index);
                             var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
@@ -284,7 +284,14 @@
                             $(layero).find("iframe").contents().find("#receiverPhone").text(data.receiverPhone);
                             $(layero).find("iframe").contents().find("#receiverPostCode").text(data.receiverPostCode);
                             $(layero).find("iframe").contents().find("#receiverDetailAddress").text(data.receiverDetailAddress);
-
+                            //费用信息
+                            $(layero).find("iframe").contents().find("#freightAmount").append(data.freightAmount);
+                            $(layero).find("iframe").contents().find("#couponAmount").append(data.couponAmount);
+                            $(layero).find("iframe").contents().find("#integrationAmount").append(data.integrationAmount);
+                            $(layero).find("iframe").contents().find("#promotionAmount").append(data.promotionAmount);
+                            $(layero).find("iframe").contents().find("#discountAmount").append(data.discountAmount);
+                            $(layero).find("iframe").contents().find("#totalAmount").append(data.totalAmount);
+                            $(layero).find("iframe").contents().find("#payAmount").append(data.payAmount);
                             // $(layero).find("iframe").contents().find("#id").val(data.id);
                             // body.find("input[name=status][value="+data.status+"]").prop("checked", "checked");
                             // //重新渲染

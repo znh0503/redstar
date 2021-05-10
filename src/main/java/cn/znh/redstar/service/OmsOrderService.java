@@ -1,6 +1,8 @@
 package cn.znh.redstar.service;
 
 import cn.znh.redstar.mbg.model.OmsOrder;
+import cn.znh.redstar.mbg.model.OmsOrderItem;
+import cn.znh.redstar.mbg.model.OmsOrderOperateHistory;
 
 
 import java.util.List;
@@ -23,6 +25,20 @@ public interface OmsOrderService {
      * @return
      */
     List<OmsOrder> get(Integer status);
+
+    /**
+     * 根据订单id获取订单商品
+     * @param orderId
+     * @return
+     */
+    List<OmsOrderItem> getItem(Long orderId);
+
+    /**
+     * 根据订单id获取订单操作记录
+     * @param orderId
+     * @return
+     */
+    List<OmsOrderOperateHistory> getOperateHistory(Long orderId);
 
     /**
      * 创建一个订单

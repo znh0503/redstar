@@ -1,12 +1,12 @@
 package cn.znh.redstar.service.impl;
 
-import cn.znh.redstar.mbg.mapper.OmsOrderDynamicSqlSupport;
-import cn.znh.redstar.mbg.mapper.OmsOrderMapper;
-import cn.znh.redstar.mbg.mapper.OmsOrderReturnReasonDynamicSqlSupport;
-import cn.znh.redstar.mbg.mapper.OmsOrderReturnReasonMapper;
+import cn.znh.redstar.mbg.mapper.*;
 import cn.znh.redstar.mbg.model.OmsOrder;
+import cn.znh.redstar.mbg.model.OmsOrderItem;
+import cn.znh.redstar.mbg.model.OmsOrderOperateHistory;
 import cn.znh.redstar.service.OmsOrderService;
 import org.mybatis.dynamic.sql.SqlBuilder;
+import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
@@ -27,6 +27,10 @@ public class OmsOrderServiceImpl implements OmsOrderService {
 
     @Resource
     OmsOrderMapper omsOrderMapper;
+    @Resource
+    OmsOrderItemMapper omsOrderItemMapper;
+    @Resource
+    OmsOrderOperateHistoryMapper omsOrderOperateHistoryMapper;
 
     @Override
     public List<OmsOrder> get() {
@@ -45,6 +49,26 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     }
 
     @Override
+    public List<OmsOrderItem> getItem(Long orderId) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(OmsOrderItemMapper.selectList)
+                .from(OmsOrderItemDynamicSqlSupport.omsOrderItem)
+                .where(OmsOrderItemDynamicSqlSupport.orderId, isEqualTo(orderId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<OmsOrderItem> orderItemList = omsOrderItemMapper.selectMany(selectStatement);
+        return orderItemList;
+    }
+
+    @Override
+    public List<OmsOrderOperateHistory> getOperateHistory(Long orderId) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(OmsOrderOperateHistoryMapper.selectList)
+                .from(OmsOrderOperateHistoryDynamicSqlSupport.omsOrderOperateHistory)
+                .where(OmsOrderOperateHistoryDynamicSqlSupport.orderId, isEqualTo(orderId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<OmsOrderOperateHistory> omsOrderOperateHistoryList = omsOrderOperateHistoryMapper.selectMany(selectStatement);
+        return omsOrderOperateHistoryList;
+    }
+
+    @Override
     public int create(OmsOrder order) {
         int result = omsOrderMapper.insert(order);
         return result;
@@ -59,7 +83,25 @@ public class OmsOrderServiceImpl implements OmsOrderService {
 
     @Override
     public int delete(Long id) {
-        int result = omsOrderMapper.deleteByPrimaryKey(id);
+        int result = 0;
+        //删除订单
+        try {
+            omsOrderMapper.deleteByPrimaryKey(id);
+            //删除订单相关商品信息
+            DeleteStatementProvider deleteStatementItem = SqlBuilder.deleteFrom(OmsOrderItemDynamicSqlSupport.omsOrderItem)
+                    .where(OmsOrderItemDynamicSqlSupport.orderId, isEqualTo(id))
+                    .build().render(RenderingStrategy.MYBATIS3);
+            omsOrderItemMapper.delete(deleteStatementItem);
+            //删除订单相关操作记录
+            DeleteStatementProvider deleteStatementOperateHistory = SqlBuilder.deleteFrom(OmsOrderOperateHistoryDynamicSqlSupport.omsOrderOperateHistory)
+                    .where(OmsOrderOperateHistoryDynamicSqlSupport.orderId, isEqualTo(id))
+                    .build().render(RenderingStrategy.MYBATIS3);
+            omsOrderOperateHistoryMapper.delete(deleteStatementOperateHistory);
+        }catch (Exception e)
+        {
+            result=1;
+            throw e;
+        }
         return result;
     }
 }

@@ -2,6 +2,8 @@ package cn.znh.redstar.controller;
 
 import cn.znh.redstar.common.api.CommonResult;
 import cn.znh.redstar.mbg.model.OmsOrder;
+import cn.znh.redstar.mbg.model.OmsOrderItem;
+import cn.znh.redstar.mbg.model.OmsOrderOperateHistory;
 import cn.znh.redstar.mbg.model.OmsOrderReturnReason;
 import cn.znh.redstar.service.OmsOrderService;
 import io.swagger.annotations.Api;
@@ -95,5 +97,20 @@ public class OmsOrderController {
         return commonResult;
     }
 
+    @ApiOperation("根据订单id获取订单里的商品信息")
+    @GetMapping("/item/{orderId}")
+    public CommonResult getItem(@PathVariable("orderId")Long orderId)
+    {
+        List<OmsOrderItem> orderItemList = omsOrderService.getItem(orderId);
+        return CommonResult.success(orderItemList);
+    }
+
+    @ApiOperation("根据订单id获取订单操作记录")
+    @GetMapping("/OperateHistory/{orderId}")
+    public CommonResult getOperateHistory(@PathVariable("orderId")Long orderId)
+    {
+        List<OmsOrderOperateHistory> orderOperateHistoryList = omsOrderService.getOperateHistory(orderId);
+        return CommonResult.success(orderOperateHistoryList);
+    }
 
 }

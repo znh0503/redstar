@@ -33,7 +33,7 @@ public class GmsGoodsController {
     }
 
     @ApiOperation("获取一级分类下的所有商品")
-    @GetMapping("/{goodsCategoryId}")
+    @GetMapping("/goodsCategory/{goodsCategoryId}")
     public CommonResult get(@PathVariable("goodsCategoryId") Long goodsCategoryId)
     {
         List<GmsGoods> goodsList = gmsGoodsService.getGoods(goodsCategoryId);
