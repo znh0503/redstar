@@ -254,9 +254,7 @@
                                 case 3:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("已完成");
                                     break;
                                 case 4:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("已关闭");
-                                    $(layero).find("iframe").contents().find("#cardBody").find("span:eq(1)").prepend('<button style="float:right;" type="button" id="deleteBtn" class="layui-btn layui-btn-danger layui-btn-radius">删除订单</button>');
-
-
+                                    $(layero).find("iframe").contents().find("#deleteBtn").css("display","block");
                                     break;
                             }
                             $(layero).find("iframe").contents().find("#orderSn").text(data.orderSn);
@@ -283,7 +281,7 @@
                             $(layero).find("iframe").contents().find("#receiverName").text(data.receiverName);
                             $(layero).find("iframe").contents().find("#receiverPhone").text(data.receiverPhone);
                             $(layero).find("iframe").contents().find("#receiverPostCode").text(data.receiverPostCode);
-                            $(layero).find("iframe").contents().find("#receiverDetailAddress").text(data.receiverDetailAddress);
+                            $(layero).find("iframe").contents().find("#receiverDetailAddress").text(data.receiverProvince+data.receiverCity+data.receiverRegion+data.receiverDetailAddress);
                             //费用信息
                             $(layero).find("iframe").contents().find("#freightAmount").append(data.freightAmount);
                             $(layero).find("iframe").contents().find("#couponAmount").append(data.couponAmount);
@@ -303,7 +301,28 @@
                     break;
                 }
                 case 'close':alert("close");break;
-                case 'send':alert("send");break;
+                case 'send':{
+                    var index = layer.open({
+                        title: '订单发货',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin:true,
+                        shadeClose: true,
+                        area: ['85%', '85%'],
+                        content: 'orderSend.html',
+                        success:function (layero,index) {
+                            var body = layer.getChildFrame('body', index);
+                            var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                            $(layero).find("iframe").contents().find("#orderId").val(data.id);
+                            $(layero).find("iframe").contents().find("#orderSn").text(data.orderSn);
+                            $(layero).find("iframe").contents().find("#receiverName").text(data.receiverName);
+                            $(layero).find("iframe").contents().find("#receiverPhone").text(data.receiverPhone);
+                            $(layero).find("iframe").contents().find("#receiverPostCode").text(data.receiverPostCode);
+                            $(layero).find("iframe").contents().find("#receiverDetailAddress").text(data.receiverProvince+data.receiverCity+data.receiverRegion+data.receiverDetailAddress);
+
+                        }
+                    });
+                    break;}
                 case 'track':alert("track");break;
                 case 'delete':{
                     layer.confirm('真的删除行么', function (index) {

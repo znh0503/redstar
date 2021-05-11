@@ -224,7 +224,6 @@
             var data = obj.data;
               if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    console.log(data);
                     $.ajax({
                         //请求方式
                         type:"delete",

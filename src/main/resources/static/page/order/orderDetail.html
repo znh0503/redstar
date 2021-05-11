@@ -25,8 +25,10 @@
         <div class="layui-card-body" id="cardBody" style="color: #c24f4a;font-size: 18px;background-color: ivory;padding: 25px;">
             <span>当前订单状态：</span>
             <span>
+                <button style="float:right;display: none" type="button" id="deleteBtn" class="layui-btn layui-btn-danger layui-btn-radius" >删除订单</button>
                 <button style="float:right;" id="noteBtn" type="button" class="layui-btn layui-btn-warm layui-btn-radius">备注订单</button>
-           </span>
+
+            </span>
         </div>
     </div>
     <i class="layui-icon layui-icon-form">基本信息</i>
@@ -178,64 +180,7 @@
             $ = layui.$;
 
 
-        //监听提交
-        form.on('submit(saveBtn)', function (data) {
 
-            // var index = layer.alert(JSON.stringify(data.field), {
-            //     title: '最终的提交信息'
-            // }, function () {
-            //
-            //     // 关闭弹出层
-            //     layer.close(index);
-            //
-            //     var iframeIndex = parent.layer.getFrameIndex(window.name);
-            //     parent.layer.close(iframeIndex);
-            //
-            // });
-            //文件上传中不能提交表单
-            if (logoUploadFlag == 1 || bigPicUploadFlag == 1) {
-                layer.msg("文件上传中，请稍后提交");
-                return;
-            }
-            //提交表单
-            $.ajax({
-                //请求方式
-                type: "put",
-                //请求的媒体类型
-                contentType: "application/json;charset=UTF-8",
-                //请求地址
-                url: IP_HOST + "brand/" + data.field.id,
-                data: JSON.stringify(data.field),
-                //请求成功
-                success: function (result) {
-                    var code = result.code;
-                    switch (code) {
-                        case RESULT_SUCCESS:
-                            layer.msg("提交成功");
-
-                            var iframeIndex = parent.layer.getFrameIndex(window.name);
-                            //1.5秒后关闭
-                            setTimeout(function () {
-                                parent.layer.close(iframeIndex);
-                                parent.location.reload();
-                            }, 1500);
-
-
-                            break;
-                        default:
-                            layer.msg('服务器出错了');
-                            break;
-                    }
-                },
-                //请求失败
-                error: function (e) {
-                    layer.msg("提交失败");
-                }
-            });
-
-
-            return false;
-        });
         var goodsTotal=0;
         table.render({
             elem: '#orderGoodsTable',
@@ -318,7 +263,59 @@
             }
         });
 
+        //备注订单
+        $('#noteBtn').on('click',function(){
+            var index = layer.open({
+                title: '订单备注',
+                type: 2,
+                shade: 0.2,
+                maxmin:true,
+                shadeClose: true,
+                area: ['85%', '85%'],
+                content: 'orderNote.html',
+                //open成功回调
+                success:function (layero,index) {
+                    var body = layer.getChildFrame('body', index);
+                    var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                    $(layero).find("iframe").contents().find("#id").val(orderId);
+                    $(layero).find("iframe").contents().find("#status").val(status);
+                }
+            });
+        })
 
+        //删除订单
+        $('#deleteBtn').on('click',function(){
+            layer.confirm('确定删除？', function (index) {
+                $.ajax({
+                    //请求方式
+                    type:"delete",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url:IP_HOST+"order/"+orderId,
+                    //请求成功
+                    success:function (result) {
+                        var code=result.code;
+                        switch (code) {
+                            case RESULT_SUCCESS:
+                                layer.msg("删除成功");
+                                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                                //1.5秒后关闭
+                                setTimeout(function (){
+                                    parent.layer.close(iframeIndex);
+                                    parent.location.reload();
+                                }, 1500);
+                                break;
+                            default:layer.msg('服务器出错了');break;
+                        }
+                    },
+                    //请求失败
+                    error:function (e) {
+                        layer.msg("提交失败");
+                    }
+                });
+            });
+        })
 
 
     });

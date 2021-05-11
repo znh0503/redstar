@@ -10,13 +10,15 @@ import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.or;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 /**
  * @author : znh
@@ -97,11 +99,57 @@ public class OmsOrderServiceImpl implements OmsOrderService {
                     .where(OmsOrderOperateHistoryDynamicSqlSupport.orderId, isEqualTo(id))
                     .build().render(RenderingStrategy.MYBATIS3);
             omsOrderOperateHistoryMapper.delete(deleteStatementOperateHistory);
+            result=1;
         }catch (Exception e)
         {
             result=1;
             throw e;
         }
         return result;
+    }
+
+    @Override
+    public int note(Map<String, String> orderNote) {
+        Long orderId =Long.parseLong( orderNote.get("orderId"));
+        Integer status =Integer.parseInt( orderNote.get("status"));
+        String note = orderNote.get("note");
+        //更新订单
+        UpdateStatementProvider updateStatement=SqlBuilder.update(OmsOrderDynamicSqlSupport.omsOrder)
+                .set(OmsOrderDynamicSqlSupport.note).equalTo(note)
+                .where(OmsOrderDynamicSqlSupport.id,isEqualTo(orderId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        int update = omsOrderMapper.update(updateStatement);
+        //更新订单操作记录
+        OmsOrderOperateHistory orderOperateHistory=new OmsOrderOperateHistory();
+        orderOperateHistory.setOrderId(orderId);
+        orderOperateHistory.setOrderStatus(status);
+        orderOperateHistory.setCreateTime(new Date());
+        orderOperateHistory.setOperateMan("后台管理员");
+        orderOperateHistory.setNote(note);
+        int insert = omsOrderOperateHistoryMapper.insert(orderOperateHistory);
+        return insert*update;
+    }
+
+    @Override
+    public int send(Map orderSend) {
+        Long orderId = Long.parseLong(String.valueOf(orderSend.get("orderId")));
+        String deliveryCompany =(String) orderSend.get("deliveryCompany");
+        String deliverySn = (String) orderSend.get("deliverySn");
+        //更新订单
+        UpdateStatementProvider updateStatement=SqlBuilder.update(OmsOrderDynamicSqlSupport.omsOrder)
+                .set(OmsOrderDynamicSqlSupport.deliveryCompany).equalTo(deliveryCompany)
+                .set(OmsOrderDynamicSqlSupport.deliverySn).equalTo(deliverySn)
+                .set(OmsOrderDynamicSqlSupport.status).equalTo(2)//已发货
+                .where(OmsOrderDynamicSqlSupport.id,isEqualTo(orderId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        int update = omsOrderMapper.update(updateStatement);
+        OmsOrderOperateHistory orderOperateHistory=new OmsOrderOperateHistory();
+        orderOperateHistory.setOrderId(orderId);
+        orderOperateHistory.setOrderStatus(2);
+        orderOperateHistory.setCreateTime(new Date());
+        orderOperateHistory.setOperateMan("后台管理员");
+        orderOperateHistory.setNote("完成发货");
+        int insert = omsOrderOperateHistoryMapper.insert(orderOperateHistory);
+        return insert*update;
     }
 }

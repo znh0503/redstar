@@ -6,6 +6,7 @@ import cn.znh.redstar.mbg.model.OmsOrderOperateHistory;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : znh
@@ -62,4 +63,17 @@ public interface OmsOrderService {
      */
     int delete(Long id);
 
+    /**
+     * 备注订单
+     * @param orderNote
+     * @return
+     */
+    int note(Map<String,String> orderNote);
+
+    /**
+     * 订单发货
+     * @param orderSend
+     * @return
+     */
+    int send(Map orderSend);
 }

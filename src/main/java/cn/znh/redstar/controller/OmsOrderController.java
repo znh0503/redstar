@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : znh
@@ -77,6 +78,20 @@ public class OmsOrderController {
         return commonResult;
     }
 
+    @ApiOperation("订单备注")
+    @PutMapping("/note")
+    public CommonResult note(@RequestBody Map<String,String> orderNote)
+    {
+        int result = omsOrderService.note(orderNote);
+        if (result!=0)
+        {
+            return CommonResult.success("订单备注成功");
+        }
+        else {
+            return CommonResult.failed("订单备注失败");
+        }
+    }
+
     @ApiOperation("根据id删除订单")
     @DeleteMapping("/{id}")
     public CommonResult delete(@PathVariable("id")Long id)
@@ -111,6 +126,21 @@ public class OmsOrderController {
     {
         List<OmsOrderOperateHistory> orderOperateHistoryList = omsOrderService.getOperateHistory(orderId);
         return CommonResult.success(orderOperateHistoryList);
+    }
+
+    @ApiOperation("订单发货")
+    @PutMapping("/send")
+    public CommonResult send(@RequestBody Map orderSend)
+    {
+        int result = omsOrderService.send(orderSend);
+        if (result!=0)
+        {
+            return CommonResult.success("订单发货成功");
+        }
+        else {
+            return CommonResult.failed("订单发货失败");
+        }
+
     }
 
 }

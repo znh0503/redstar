@@ -21,7 +21,7 @@ import java.util.List;
 @Api(tags = "GmsGoodsAttributeCategoryController",description = "商品属性分类管理")
 @RestController
 @RequestMapping("/goodsAttributeCategory")
-public class GmsGoodsAttributeCategoryController {
+public class    GmsGoodsAttributeCategoryController {
     @Resource
     GmsGoodsAttributeCategoryService gmsGoodsAttributeCategoryService;
 
