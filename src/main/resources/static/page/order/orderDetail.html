@@ -21,10 +21,15 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <input type="hidden" id="receiverProvince" name="receiverProvince">
+    <input type="hidden" id="receiverCity" name="receiverCity">
+    <input type="hidden" id="receiverRegion" name="receiverRegion">
+    <input type="hidden" id="receiverDetailAddress" name="receiverDetailAddress">
     <div class="layui-card">
         <div class="layui-card-body" id="cardBody" style="color: #c24f4a;font-size: 18px;background-color: ivory;padding: 25px;">
             <span>当前订单状态：</span>
             <span>
+                                <button style="float:right;display: none" type="button" id="updateReceiverBtn" class="layui-btn  layui-btn-radius" >修改收货人信息</button>
                 <button style="float:right;display: none" type="button" id="deleteBtn" class="layui-btn layui-btn-danger layui-btn-radius" >删除订单</button>
                 <button style="float:right;" id="noteBtn" type="button" class="layui-btn layui-btn-warm layui-btn-radius">备注订单</button>
 
@@ -106,7 +111,7 @@
             <td id="receiverName"></td>
             <td id="receiverPhone"></td>
             <td id="receiverPostCode"></td>
-            <td id="receiverDetailAddress"></td>
+            <td id="address"></td>
         </tr>
         </tbody>
     </table>
@@ -201,9 +206,12 @@
                 {field: 'goodsAttr', minWidth: 180,templet: function (d) {
                         var goodsAttrJson = JSON.parse(d.goodsAttr);
                         var text="";
+                        if (goodsAttrJson!=null)
+                        {
                         for(var i=0;i<goodsAttrJson.length;i++)
                         {
                             text+=(goodsAttrJson[i].key+"："+goodsAttrJson[i].value+"<br>");
+                        }
                         }
                         return text;
                     }, title: '属性'},
@@ -317,6 +325,33 @@
             });
         })
 
+        //修改收货人信息
+        $('#updateReceiverBtn').on('click',function(){
+            var index = layer.open({
+                title: '修改收货人信息',
+                type: 2,
+                shade: 0.2,
+                maxmin:true,
+                shadeClose: true,
+                area: ['85%', '85%'],
+                content: 'updateReceiver.html',
+                //open成功回调
+                success:function (layero,index) {
+                    var body = layer.getChildFrame('body', index);
+                    var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                    $(layero).find("iframe").contents().find("#id").val(orderId);
+                    $(layero).find("iframe").contents().find("#status").val(status);
+                    $(layero).find("iframe").contents().find("#receiverName").val($("#receiverName")[0].innerText);
+                    $(layero).find("iframe").contents().find("#receiverPhone").val($("#receiverPhone")[0].innerText);
+                    $(layero).find("iframe").contents().find("#receiverPostCode").val($("#receiverPostCode")[0].innerText);
+                    $(layero).find("iframe").contents().find("#receiverProvince").val($("#receiverProvince").val());
+                    $(layero).find("iframe").contents().find("#receiverCity").val($("#receiverCity").val());
+                    $(layero).find("iframe").contents().find("#receiverRegion").val($("#receiverRegion").val());
+                    $(layero).find("iframe").contents().find("#receiverDetailAddress").val($("#receiverDetailAddress").val());
+
+                }
+            });
+        })
 
     });
         //获取url的参数

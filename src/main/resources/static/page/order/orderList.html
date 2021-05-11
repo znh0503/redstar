@@ -248,6 +248,7 @@
                                 case 0:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("待付款");
                                 break;
                                 case 1:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("待发货");
+                                    $(layero).find("iframe").contents().find("#updateReceiverBtn").css("display","block");
                                     break;
                                 case 2:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("已发货");
                                     break;
@@ -281,7 +282,11 @@
                             $(layero).find("iframe").contents().find("#receiverName").text(data.receiverName);
                             $(layero).find("iframe").contents().find("#receiverPhone").text(data.receiverPhone);
                             $(layero).find("iframe").contents().find("#receiverPostCode").text(data.receiverPostCode);
-                            $(layero).find("iframe").contents().find("#receiverDetailAddress").text(data.receiverProvince+data.receiverCity+data.receiverRegion+data.receiverDetailAddress);
+                            $(layero).find("iframe").contents().find("#address").text(data.receiverProvince+data.receiverCity+data.receiverRegion+data.receiverDetailAddress);
+                            $(layero).find("iframe").contents().find("#receiverProvince").val(data.receiverProvince);
+                            $(layero).find("iframe").contents().find("#receiverCity").val(data.receiverCity);
+                            $(layero).find("iframe").contents().find("#receiverRegion").val(data.receiverRegion);
+                            $(layero).find("iframe").contents().find("#receiverDetailAddress").val(data.receiverDetailAddress);
                             //费用信息
                             $(layero).find("iframe").contents().find("#freightAmount").append(data.freightAmount);
                             $(layero).find("iframe").contents().find("#couponAmount").append(data.couponAmount);
@@ -300,7 +305,24 @@
                     });
                     break;
                 }
-                case 'close':alert("close");break;
+                case 'close':{
+                    var index = layer.open({
+                        title: '关闭订单',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin:true,
+                        shadeClose: true,
+                        area: ['50%', '50%'],
+                        content: 'orderClose.html',
+                        //open成功回调
+                        success:function (layero,index) {
+                            var body = layer.getChildFrame('body', index);
+                            var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
+                            $(layero).find("iframe").contents().find("#id").val(data.id);
+                            $(layero).find("iframe").contents().find("#status").val(data.status);
+                        }
+                    });
+                    break;}
                 case 'send':{
                     var index = layer.open({
                         title: '订单发货',

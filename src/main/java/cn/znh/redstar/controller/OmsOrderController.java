@@ -140,7 +140,34 @@ public class OmsOrderController {
         else {
             return CommonResult.failed("订单发货失败");
         }
+    }
 
+    @ApiOperation("修改收货信息")
+    @PutMapping("/updateReceiver")
+    public CommonResult updateReceiver(@RequestBody Map orderReceiver)
+    {
+        int result = omsOrderService.updateReceiver(orderReceiver);
+        if (result!=0)
+        {
+            return CommonResult.success("修改收货信息成功");
+        }
+        else {
+            return CommonResult.failed("修改收货信息失败");
+        }
+    }
+
+    @ApiOperation("关闭订单")
+    @PutMapping("/close")
+    public CommonResult close(@RequestBody Map<String,String> orderClose)
+    {
+        int result = omsOrderService.close(orderClose);
+        if (result!=0)
+        {
+            return CommonResult.success("订单关闭成功");
+        }
+        else {
+            return CommonResult.failed("订单关闭失败");
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import cn.znh.redstar.mbg.model.OmsOrderSetting;
 import cn.znh.redstar.service.OmsOrderSettingService;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -12,8 +13,10 @@ import java.util.List;
 /**
  * @author : znh
  * @date : 18:26 2021/5/9
+ * 订单设置service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class OmsOrderSettingServiceImpl implements OmsOrderSettingService {
     @Resource
     OmsOrderSettingMapper omsOrderSettingMapper;

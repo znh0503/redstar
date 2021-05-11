@@ -71,9 +71,23 @@ public interface OmsOrderService {
     int note(Map<String,String> orderNote);
 
     /**
+     * 关闭订单
+     * @param orderClose
+     * @return
+     */
+    int close(Map orderClose);
+
+    /**
      * 订单发货
      * @param orderSend
      * @return
      */
     int send(Map orderSend);
+
+    /**
+     * 修改订单的收货信息
+     * @param orderReceiver
+     * @return
+     */
+    int updateReceiver(Map orderReceiver);
 }

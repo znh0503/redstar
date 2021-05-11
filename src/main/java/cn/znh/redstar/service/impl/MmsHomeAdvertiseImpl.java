@@ -11,6 +11,7 @@ import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -20,8 +21,10 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 /**
  * @author : znh
  * @date : 0:06 2021/4/28
+ * 首页轮播广告service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MmsHomeAdvertiseImpl implements MmsHomeAdvertiseSevice {
     @Resource
     MmsHomeAdvertiseMapper mmsHomeAdvertiseMapper;

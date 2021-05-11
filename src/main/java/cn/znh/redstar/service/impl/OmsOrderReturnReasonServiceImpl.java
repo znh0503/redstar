@@ -12,6 +12,7 @@ import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -22,8 +23,10 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 /**
  * @author : znh
  * @date : 0:10 2021/5/10
+ * 订单退货原因service实现类
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class OmsOrderReturnReasonServiceImpl implements OmsOrderReturnReasonService {
     @Resource
     OmsOrderReturnReasonMapper omsOrderReturnReasonMapper;

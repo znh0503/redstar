@@ -10,6 +10,7 @@ import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -23,6 +24,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  * 秒杀时间段service实现
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MmsFlashPromotionSessionServiceImpl implements MmsFlashPromotionSessionService {
     @Resource
     MmsFlashPromotionSessionMapper mmsFlashPromotionSessionMapper;

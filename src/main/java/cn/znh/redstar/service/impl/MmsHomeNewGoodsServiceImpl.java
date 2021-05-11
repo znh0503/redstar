@@ -13,6 +13,7 @@ import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 /**
  * @author : znh
  * @date : 16:14 2021/4/28
+ * 新品推荐service实现
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MmsHomeNewGoodsServiceImpl implements MmsHomeNewGoodsService {
     @Resource
     MmsHomeNewGoodsMapper mmsHomeNewGoodsMapper;
