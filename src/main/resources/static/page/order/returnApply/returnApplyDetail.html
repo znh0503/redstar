@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .layui-table-cell {
+            height: auto;
+            line-height: 28px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" id="receiverProvince" name="receiverProvince">
+    <input type="hidden" id="receiverCity" name="receiverCity">
+    <input type="hidden" id="receiverRegion" name="receiverRegion">
+    <input type="hidden" id="receiverDetailAddress" name="receiverDetailAddress">
+    <div class="layui-card">
+        <div class="layui-card-body" id="cardBody" style="color: #c24f4a;font-size: 18px;background-color: ivory;padding: 25px;">
+            <span>当前申请状态：</span>
+        </div>
+    </div>
+    <i class="layui-icon layui-icon-cart">商品信息</i>
+    <table class="layui-table">
+        <colgroup>
+<!--            <col width="150">-->
+<!--            <col width="200">-->
+<!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>商品图片</th>
+            <th>商品名称</th>
+            <th>价格</th>
+            <th>实际支付价格</th>
+            <th>属性</th>
+            <th>数量</th>
+            <th>小计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="goodsPic"></td>
+            <td id="goodsName"></td>
+            <td id="goodsPrice">￥</td>
+            <td id="goodsRealPrice">￥</td>
+            <td id="goodsAttr"></td>
+            <td id="goodsCount"></td>
+            <td id="goodsTotalSmall">￥</td>
+        </tr>
+        </tbody>
+    </table>
+    <i class="layui-icon layui-icon-form">服务单信息</i>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>服务单号</th>
+            <th>订单编号</th>
+            <th>申请时间</th>
+            <th>用户账户</th>
+            <th>联系人</th>
+            <th>联系电话</th>
+            <th>退货原因</th>
+            <th>问题描述</th>
+            <th>凭证图片</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="id"></td>
+            <td id="orderSn"></td>
+            <td id="createTime"></td>
+            <td id="memberUsername"></td>
+            <td id="returnName"></td>
+            <td id="returnPhone"></td>
+            <td id="reason"></td>
+            <td id="description"></td>
+            <td id="proofPics"></td>
+        </tr>
+        </tbody>
+    </table>
+    <i class="layui-icon layui-icon-survey">收货信息</i>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>退款金额</th>
+            <th>确认退款金额</th>
+            <th>选择收货点</th>
+            <th>收货人姓名</th>
+            <th>所在区域</th>
+            <th>详细地址</th>
+            <th>联系电话</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="returnAmount">￥</td>
+            <td >￥<input type="number" id="returnAmountConfirm" class="layui-input-inline"></td>
+            <td >
+                <section>
+                    <select id="companyAddressId" name="companyAddressId" lay-filter="companyAddressId">
+
+                    </select>
+                </section>
+            </td>
+            <td id="companyAddressName"></td>
+            <td id="companyAddressRegion"></td>
+            <td id="companyAddressIdDetailAddress"></td>
+            <td id="companyAddressPhone"></td>
+
+        </tr>
+        </tbody>
+    </table>
+    <i class="layui-icon layui-icon-tips">处理备注</i>
+    <textarea id="handleNote" class="layui-textarea"></textarea>
+</div>
+<script src="../../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
+<script src="../../../js/Config.js"></script>
+    <script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    var goodsId=getQueryVariable("goodsId");
+    layui.use(['form','upload','element','table','step'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            upload = layui.upload,
+            element = layui.element,
+            table=layui.table,
+            step=layui.step,
+            $ = layui.$;
+
+
+
+        var companyAddress=new Map();
+        //填充收货地点下拉框
+        $.ajax({
+            //请求方式
+            type:"get",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url:IP_HOST+"companyAddress",
+            //请求成功
+            success:function (result) {
+                var code=result.code;
+                var data=result.data;
+                switch (code) {
+                    case RESULT_SUCCESS:
+                        layer.msg("提交成功");
+                        for (var i=0;i<data.length;i++)
+                        {
+                            $("#companyAddressId").append(' <option value="'+data[i].id+'">'+data[i].addressName+'</option>')
+                            var key=data[i].id;
+                            companyAddress.set(parseInt(key),data[i]);
+                        }
+                        layui.form.render("select");
+
+
+                        break;
+                    default:layer.msg('服务器出错了');break;
+                }
+            },
+            //请求失败
+            error:function (e) {
+                layer.msg("提交失败");
+            }
+        });
+
+        form.on('select(companyAddressId)', function(data){
+            var key=data.value;
+            var companyAddressData = companyAddress.get(0);
+            console.log(companyAddress);
+            console.log(companyAddressData);
+            $("companyAddressName").append(companyAddressData.get("name"));
+            $("companyAddressRegion").append(companyAddressData.get("province")+" "+companyAddressData.get("city")+" "+companyAddressData.get("region"));
+            $("companyAddressIdDetailAddress").append(companyAddressData.get("detailAddress"));
+            $("companyAddressPhone").append(companyAddressData.get("phone"));
+        });
+
+
+    });
+        //获取url的参数
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return decodeURI(pair[1]);
+                }
+            }
+            return (false);
+        }
+
+
+</script>
+</body>
+</html>
