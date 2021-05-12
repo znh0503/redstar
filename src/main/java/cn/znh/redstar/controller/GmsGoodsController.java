@@ -47,4 +47,12 @@ public class GmsGoodsController {
         GmsGoods goods = gmsGoodsService.getGoodsById(id);
         return CommonResult.success(goods);
     }
+
+    @ApiOperation("根据分类id获取商品信息")
+    @GetMapping("/{goodsCategoryId}")
+    CommonResult getGoodsByGoodsCategoryId(@PathVariable("goodsCategoryId") Long goodsCategoryId)
+    {
+        List<GmsGoods> goodsList = gmsGoodsService.getGoodsByGoodsCategoryId(goodsCategoryId);
+        return CommonResult.success(goodsList);
+    }
 }

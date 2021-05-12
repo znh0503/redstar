@@ -1,16 +1,23 @@
 package cn.znh.redstar.controller;
 
 import cn.znh.redstar.common.api.CommonResult;
+import cn.znh.redstar.mbg.mapper.OmsOrderReturnApplyDynamicSqlSupport;
 import cn.znh.redstar.mbg.model.OmsOrderReturnApply;
 import cn.znh.redstar.mbg.model.OmsOrderReturnReason;
 import cn.znh.redstar.service.OmsOrderReturnApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.dynamic.sql.SqlBuilder;
+import org.mybatis.dynamic.sql.render.RenderingStrategy;
+import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @author : znh
@@ -94,5 +101,44 @@ public class OmsOrderReturnApplyController {
             log.debug("删除退货申请失败,id={}",id);
         }
         return commonResult;
+    }
+
+    @ApiOperation("拒绝退货")
+    @PutMapping("/reject")
+    public CommonResult reject(@RequestBody Map returnApplyReject) {
+        int result = omsOrderReturnApplyService.reject(returnApplyReject);
+        if(result!=0)
+        {
+            return CommonResult.success("拒绝退货成功");
+        }
+        else {
+            return CommonResult.success("拒绝退货失败");
+        }
+    }
+
+    @ApiOperation("确认退货")
+    @PutMapping("/confirm")
+    public CommonResult confirm(@RequestBody Map returnApplyConfirm) {
+        int result = omsOrderReturnApplyService.confirm(returnApplyConfirm);
+        if(result!=0)
+        {
+            return CommonResult.success("确认退货成功");
+        }
+        else {
+            return CommonResult.success("确认退货失败");
+        }
+    }
+
+    @ApiOperation("确认收货")
+    @PutMapping("/receive")
+    public CommonResult receive(@RequestBody Map returnApplyReceive) {
+        int result = omsOrderReturnApplyService.receive(returnApplyReceive);
+        if(result!=0)
+        {
+            return CommonResult.success("确认收货成功");
+        }
+        else {
+            return CommonResult.success("确认收货失败");
+        }
     }
 }

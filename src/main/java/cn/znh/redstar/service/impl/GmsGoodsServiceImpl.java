@@ -55,6 +55,16 @@ public class GmsGoodsServiceImpl implements GmsGoodsService {
     }
 
     @Override
+    public List<GmsGoods> getGoodsByGoodsCategoryId(Long goodsCategoryId) {
+        SelectStatementProvider selectStatement= SqlBuilder.select(GmsGoodsMapper.selectList)
+                .from(GmsGoodsDynamicSqlSupport.gmsGoods)
+                .where(GmsGoodsDynamicSqlSupport.goodsCategoryId,SqlBuilder.isEqualTo(goodsCategoryId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<GmsGoods> goodsList = gmsGoodsMapper.selectMany(selectStatement);
+        return goodsList;
+    }
+
+    @Override
     public int updateGoods(Long id,GmsGoods goods) {
         goods.setId(id);
         int result = gmsGoodsMapper.updateByPrimaryKey(goods);

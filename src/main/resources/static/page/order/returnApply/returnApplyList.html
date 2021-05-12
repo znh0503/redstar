@@ -201,12 +201,38 @@
                         var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
                         switch (data.status) {
                             case 0:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("待处理");
-                                break;
+                                $(layero).find("iframe").contents().find("#confirmBtn").css("display","inline");
+                                $(layero).find("iframe").contents().find("#rejectBtn").css("display","inline");
+                                $(layero).find("iframe").contents().find("#handleNoteDiv").css("display","block");
+
+
+                            break;
                             case 1:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("退货中");
-                                break;
+                                $(layero).find("iframe").contents().find("#receiveBtn").css("display","inline");
+                                $(layero).find("iframe").contents().find("#receiveNoteDiv").css("display","block");
+                                $(layero).find("iframe").contents().find("#handleInfoDiv").css("display","block");
+                                $(layero).find("iframe").contents().find("#handleManText").append(data.handleMan);
+                                $(layero).find("iframe").contents().find("#handleTimeText").append(data.handleTime);
+                                $(layero).find("iframe").contents().find("#handleNoteText").append(data.handleNote);
+                            break;
                             case 2:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("已完成");
+                                //处理记录
+                                $(layero).find("iframe").contents().find("#handleInfoDiv").css("display","block");
+                                $(layero).find("iframe").contents().find("#handleManText").append(data.handleMan);
+                                $(layero).find("iframe").contents().find("#handleTimeText").append(data.handleTime);
+                                $(layero).find("iframe").contents().find("#handleNoteText").append(data.handleNote);
+                                //收货记录
+                                $(layero).find("iframe").contents().find("#receiveInfoDiv").css("display","block");
+                                $(layero).find("iframe").contents().find("#receiveManText").append(data.receiveMan);
+                                $(layero).find("iframe").contents().find("#receiveTimeText").append(data.receiveTime);
+                                $(layero).find("iframe").contents().find("#receiveNoteText").append(data.receiveNote);
                                 break;
                             case 3:$(layero).find("iframe").contents().find("#cardBody").find("span:eq(0)").append("已拒绝");
+                                //处理记录
+                                $(layero).find("iframe").contents().find("#handleInfoDiv").css("display","block");
+                                $(layero).find("iframe").contents().find("#handleManText").append(data.handleMan);
+                                $(layero).find("iframe").contents().find("#handleTimeText").append(data.handleTime);
+                                $(layero).find("iframe").contents().find("#handleNoteText").append(data.handleNote);
                                 break;
                         }
                         $(layero).find("iframe").contents().find("#goodsPic").append('<img src="'+data.goodsPic+'" />');
@@ -244,6 +270,8 @@
                 return false;
             }
         });
+
+
 
     });
 </script>

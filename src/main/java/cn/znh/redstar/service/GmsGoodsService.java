@@ -31,6 +31,13 @@ public interface GmsGoodsService {
     List<GmsGoods> getGoods(Long goodsCategoryId);
 
     /**
+     * 根据分类id获取商品
+     * @param goodsCategoryId
+     * @return
+     */
+    List<GmsGoods> getGoodsByGoodsCategoryId(Long goodsCategoryId);
+
+    /**
      * 根据id更新商品信息
      * @param id
      * @param goods

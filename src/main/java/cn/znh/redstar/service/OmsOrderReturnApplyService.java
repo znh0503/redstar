@@ -4,6 +4,7 @@ import cn.znh.redstar.mbg.model.OmsOrderReturnApply;
 import cn.znh.redstar.mbg.model.OmsOrderReturnReason;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : znh
@@ -45,5 +46,26 @@ public interface OmsOrderReturnApplyService {
      * @return
      */
     int delete(Long id);
+
+    /**
+     * 拒绝退货
+     * @param returnApplyReject
+     * @return
+     */
+    int reject(Map returnApplyReject);
+
+    /**
+     * 确认退货
+     * @param returnApplyConfirm
+     * @return
+     */
+    int confirm(Map returnApplyConfirm);
+
+    /**
+     * 确认收货
+     * @param returnApplyReceive
+     * @return
+     */
+    int receive(Map returnApplyReceive);
 
 }

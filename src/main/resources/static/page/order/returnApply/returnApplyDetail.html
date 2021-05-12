@@ -21,10 +21,7 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <input type="hidden" id="receiverProvince" name="receiverProvince">
-    <input type="hidden" id="receiverCity" name="receiverCity">
-    <input type="hidden" id="receiverRegion" name="receiverRegion">
-    <input type="hidden" id="receiverDetailAddress" name="receiverDetailAddress">
+
     <div class="layui-card">
         <div class="layui-card-body" id="cardBody" style="color: #c24f4a;font-size: 18px;background-color: ivory;padding: 25px;">
             <span>当前申请状态：</span>
@@ -131,9 +128,75 @@
         </tr>
         </tbody>
     </table>
-    <i class="layui-icon layui-icon-tips">处理备注</i>
-    <textarea id="handleNote" class="layui-textarea"></textarea>
-</div>
+
+    <div id="handleInfoDiv" style="display: none">
+    <i class="layui-icon layui-icon-log">处理记录</i>
+    <table class="layui-table">
+        <colgroup>
+            <!--            <col width="150">-->
+            <!--            <col width="200">-->
+            <!--            <col>-->
+        </colgroup>
+        <thead>
+        <tr>
+            <th>处理人员</th>
+            <th>处理时间</th>
+            <th>处理备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="handleManText"></td>
+            <td id="handleTimeText"></td>
+            <td id="handleNoteText"></td>
+
+        </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div id="receiveInfoDiv" style="display: none">
+        <i class="layui-icon layui-icon-log">收货记录</i>
+        <table class="layui-table">
+            <colgroup>
+                <!--            <col width="150">-->
+                <!--            <col width="200">-->
+                <!--            <col>-->
+            </colgroup>
+            <thead>
+            <tr>
+                <th>收货人员</th>
+                <th>收货时间</th>
+                <th>收货备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="receiveManText"></td>
+                <td id="receiveTimeText"></td>
+                <td id="receiveNoteText"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="handleNoteDiv" style="display: none">
+    <i id="handleNoteI" class="layui-icon layui-icon-tips">处理备注</i>
+    <textarea name="handleNote" id="handleNote" class="layui-textarea"></textarea>
+    </div>
+
+    <div id="receiveNoteDiv" style="display: none">
+    <i id="receiveNoteI" class="layui-icon layui-icon-tips">收货备注</i>
+    <textarea id="receiveNote" name="receiveNote" class="layui-textarea"></textarea>
+    </div>
+
+    <div style="margin-left: 30px;margin-top: 10px">
+    <button type="button" style="display: none" id="confirmBtn" class="layui-btn layui-btn-warm layui-btn-radius">确认退货</button>
+    <button type="button" style="display: none" id="rejectBtn" class="layui-btn layui-btn-danger layui-btn-radius">拒绝退货</button>
+    <button type="button" style="display: none" id="receiveBtn" class="layui-btn layui-btn-warm layui-btn-radius">确认收货</button>
+    </div>
+    </div>
 <script src="../../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
@@ -167,12 +230,11 @@
                 var data=result.data;
                 switch (code) {
                     case RESULT_SUCCESS:
-                        layer.msg("提交成功");
                         for (var i=0;i<data.length;i++)
                         {
                             $("#companyAddressId").append(' <option value="'+data[i].id+'">'+data[i].addressName+'</option>')
                             var key=data[i].id;
-                            companyAddress.set(parseInt(key),data[i]);
+                            companyAddress.set(key.toString(),data[i]);
                         }
                         layui.form.render("select");
 
@@ -189,15 +251,124 @@
 
         form.on('select(companyAddressId)', function(data){
             var key=data.value;
-            var companyAddressData = companyAddress.get(0);
-            console.log(companyAddress);
-            console.log(companyAddressData);
-            $("companyAddressName").append(companyAddressData.get("name"));
-            $("companyAddressRegion").append(companyAddressData.get("province")+" "+companyAddressData.get("city")+" "+companyAddressData.get("region"));
-            $("companyAddressIdDetailAddress").append(companyAddressData.get("detailAddress"));
-            $("companyAddressPhone").append(companyAddressData.get("phone"));
+            var companyAddressData = companyAddress.get(data.value.toString());
+            $("#companyAddressName").text(companyAddressData.name);
+            $("#companyAddressRegion").text(companyAddressData.province+" "+companyAddressData.city+" "+companyAddressData.region);
+            $("#companyAddressIdDetailAddress").text(companyAddressData.detailAddress);
+            $("#companyAddressPhone").text(companyAddressData.phone);
         });
 
+        $("#confirmBtn").on('click',function () {
+            var returnApplyConfirm={};
+            returnApplyConfirm.id=$("#id")[0].innerText;
+            returnApplyConfirm.companyAddressId=$("#companyAddressId")[0].value;
+            returnApplyConfirm.handleNote=$("#handleNote")[0].value;
+            $.ajax({
+                //请求方式
+                type:"put",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:IP_HOST+"orderReturnApply/confirm",
+                data:JSON.stringify(returnApplyConfirm),
+                //请求成功
+                success:function (result) {
+                    var code=result.code;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            layer.msg("确认退货成功");
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            //1.5秒后关闭
+                            setTimeout(function (){
+                                parent.layer.close(iframeIndex);
+                                parent.close();
+                                parent.parent.location.reload();
+                            }, 1500);
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    layer.msg("提交失败");
+                }
+            });
+
+
+        })
+
+        $("#rejectBtn").on('click',function () {
+            var returnApplyReject={};
+            returnApplyReject.id=$("#id")[0].innerText;
+            returnApplyReject.companyAddressId=$("#companyAddressId")[0].value;
+            returnApplyReject.handleNote=$("#handleNote")[0].value;
+            $.ajax({
+                //请求方式
+                type:"put",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:IP_HOST+"orderReturnApply/reject",
+                data:JSON.stringify(returnApplyReject),
+                //请求成功
+                success:function (result) {
+                    var code=result.code;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            layer.msg("拒绝退货成功");
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            //1.5秒后关闭
+                            setTimeout(function (){
+                                parent.layer.close(iframeIndex);
+                                parent.close();
+                                parent.parent.location.reload();
+                            }, 1500);
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    layer.msg("提交失败");
+                }
+            });
+        })
+
+        $("#receiveBtn").on('click',function () {
+            var returnApplyReceive={};
+            returnApplyReceive.id=$("#id")[0].innerText;
+            returnApplyReceive.receiveNote=$("#receiveNote")[0].value;
+            $.ajax({
+                //请求方式
+                type:"put",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //请求地址
+                url:IP_HOST+"orderReturnApply/receive",
+                data:JSON.stringify(returnApplyReceive),
+                //请求成功
+                success:function (result) {
+                    var code=result.code;
+                    switch (code) {
+                        case RESULT_SUCCESS:
+                            layer.msg("确认收货成功");
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            //1.5秒后关闭
+                            setTimeout(function (){
+                                parent.layer.close(iframeIndex);
+                                parent.close();
+                                parent.parent.location.reload();
+                            }, 1500);
+                            break;
+                        default:layer.msg('服务器出错了');break;
+                    }
+                },
+                //请求失败
+                error:function (e) {
+                    layer.msg("提交失败");
+                }
+            });
+        })
 
     });
         //获取url的参数
@@ -212,6 +383,7 @@
             }
             return (false);
         }
+
 
 
 </script>
