@@ -5,16 +5,15 @@ import cn.znh.redstar.common.api.CommonResult;
 import cn.znh.redstar.common.api.ResultCode;
 import cn.znh.redstar.component.mail.MailServer;
 import cn.znh.redstar.dto.UmsMemberParam;
-import cn.znh.redstar.mbg.mapper.UmsAdminDynamicSqlSupport;
-import cn.znh.redstar.mbg.mapper.UmsAdminMapper;
-import cn.znh.redstar.mbg.mapper.UmsMemberDynamicSqlSupport;
-import cn.znh.redstar.mbg.mapper.UmsMemberMapper;
+import cn.znh.redstar.mbg.mapper.*;
 import cn.znh.redstar.mbg.model.UmsMember;
+import cn.znh.redstar.mbg.model.UmsMemberReceiveAddress;
 import cn.znh.redstar.service.RedisService;
 import cn.znh.redstar.service.UmsMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,6 +38,8 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UmsMemberServiceImpl implements UmsMemberService {
+    @Resource
+    UmsMemberReceiveAddressMapper umsMemberReceiveAddressMapper;
     @Resource
     UmsMemberMapper umsMemberMapper;
     @Resource
@@ -206,5 +207,39 @@ public class UmsMemberServiceImpl implements UmsMemberService {
             //账号不存在
             return CommonResult.validateFailed("账号或密码不正确");
         }
+    }
+
+    @Override
+    public List<UmsMember> get() {
+        List<UmsMember> memberList = umsMemberMapper.select(SelectDSLCompleter.allRows());
+        return memberList;
+    }
+
+    @Override
+    public List<UmsMemberReceiveAddress> receiveAddressGet(Long memberId) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(UmsMemberReceiveAddressMapper.selectList)
+                .from(UmsMemberReceiveAddressDynamicSqlSupport.umsMemberReceiveAddress)
+                .where(UmsMemberReceiveAddressDynamicSqlSupport.memberId, isEqualToWhenPresent(memberId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<UmsMemberReceiveAddress> memberReceiveAddressList = umsMemberReceiveAddressMapper.selectMany(selectStatement);
+        return memberReceiveAddressList;
+    }
+
+    @Override
+    public int receiveAddressCreate(UmsMemberReceiveAddress memberReceiveAddress) {
+        int insert = umsMemberReceiveAddressMapper.insert(memberReceiveAddress);
+        return insert;
+    }
+
+    @Override
+    public int receiveAddressUpdate(UmsMemberReceiveAddress memberReceiveAddress) {
+        int update = umsMemberReceiveAddressMapper.updateByPrimaryKey(memberReceiveAddress);
+        return update;
+    }
+
+    @Override
+    public int receiveAddressDelete(Long id) {
+        int delete = umsMemberReceiveAddressMapper.deleteByPrimaryKey(id);
+        return delete;
     }
 }

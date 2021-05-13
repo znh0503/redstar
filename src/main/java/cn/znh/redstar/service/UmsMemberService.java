@@ -3,6 +3,9 @@ package cn.znh.redstar.service;
 import cn.znh.redstar.common.api.CommonResult;
 import cn.znh.redstar.dto.UmsMemberParam;
 import cn.znh.redstar.mbg.model.UmsMember;
+import cn.znh.redstar.mbg.model.UmsMemberReceiveAddress;
+
+import java.util.List;
 
 /**
  * @author : znh
@@ -48,4 +51,38 @@ public interface UmsMemberService {
      * @return
      */
     CommonResult loginByPassword(String username,String password);
+
+    /**
+     * 获取全部用户
+     * @return
+     */
+    List<UmsMember> get();
+
+    /**
+     * 获取会员的收货地址
+     * @param memberId
+     * @return
+     */
+    List<UmsMemberReceiveAddress> receiveAddressGet(Long memberId);
+
+    /**
+     * 创建一条会员的收货地址
+     * @param memberReceiveAddress
+     * @return
+     */
+    int receiveAddressCreate(UmsMemberReceiveAddress memberReceiveAddress);
+
+    /**
+     * 更新一条会员收货地址
+     * @param memberReceiveAddress
+     * @return
+     */
+    int receiveAddressUpdate(UmsMemberReceiveAddress memberReceiveAddress);
+
+    /**
+     * 根据id删除一条会员收货地址
+     * @param id
+     * @return
+     */
+    int receiveAddressDelete(Long id);
 }

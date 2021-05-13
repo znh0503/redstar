@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author : znh
@@ -24,5 +25,11 @@ public class UmsMemberLevelServiceImpl implements UmsMemberLevelService {
     public List<UmsMemberLevel> getMemberLevel() {
         List<UmsMemberLevel> memberLevelList = umsMemberLevelMapper.select(SelectDSLCompleter.allRows());
         return memberLevelList;
+    }
+
+    @Override
+    public UmsMemberLevel getMemberLevel(Long id) {
+        Optional<UmsMemberLevel> memberLevel = umsMemberLevelMapper.selectByPrimaryKey(id);
+        return memberLevel.orElse(null);
     }
 }

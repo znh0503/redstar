@@ -150,6 +150,38 @@
           ]
         },
         {
+          "title": "权限管理",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "会员管理",
+              "href": "page/power/member/memberList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "订单设置",
+              "href": "page/order/setting/setting.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "退货申请处理",
+              "href": "page/order/returnApply/returnApplyList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "退货原因设置",
+              "href": "page/order/returnReason/returnReasonList.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
           "title": "菜单管理",
           "href": "page/menu.html",
           "icon": "fa fa-window-maximize",

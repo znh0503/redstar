@@ -16,4 +16,11 @@ public interface UmsMemberLevelService {
      * @return
      */
     List<UmsMemberLevel> getMemberLevel();
+
+    /**
+     * 根据id获取会员等级信息
+     * @param id
+     * @return
+     */
+    UmsMemberLevel getMemberLevel(Long id);
 }
