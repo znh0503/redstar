@@ -22,10 +22,18 @@ public interface OmsOrderService {
 
     /**
      * 根据订单状态获取订单
+     * @param memberId
      * @param status
      * @return
      */
-    List<OmsOrder> get(Integer status);
+    List<OmsOrder> get(Long memberId,Integer status);
+
+    /**
+     * 根据会员Id获取订单
+     * @param memberId
+     * @return
+     */
+    List<OmsOrder> get(Long memberId);
 
     /**
      * 根据订单id获取订单商品

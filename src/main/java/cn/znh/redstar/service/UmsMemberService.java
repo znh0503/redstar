@@ -59,6 +59,21 @@ public interface UmsMemberService {
     List<UmsMember> get();
 
     /**
+     * 根据用户名获取用户信息
+     * @param username
+     * @return
+     */
+    UmsMember get(String username);
+
+    /**
+     * 绑定手机号码
+     * @param username
+     * @param phone
+     * @return
+     */
+    int phone(String username,String phone);
+
+    /**
      * 获取会员的收货地址
      * @param memberId
      * @return
@@ -85,4 +100,6 @@ public interface UmsMemberService {
      * @return
      */
     int receiveAddressDelete(Long id);
+
+
 }

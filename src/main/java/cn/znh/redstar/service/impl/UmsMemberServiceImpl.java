@@ -15,6 +15,7 @@ import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.dynamic.sql.render.RenderingStrategy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,10 @@ import sun.rmi.runtime.Log;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 /**
  * @author : znh
@@ -149,6 +151,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
             umsMember.setStatus(1);
             //注册时间
             umsMember.setCreateTime(new Date());
+            //普通会员
+            umsMember.setMemberLevelId(1L);
             umsMemberMapper.insert(umsMember);
             return umsMember;
         }
@@ -213,6 +217,26 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     public List<UmsMember> get() {
         List<UmsMember> memberList = umsMemberMapper.select(SelectDSLCompleter.allRows());
         return memberList;
+    }
+
+    @Override
+    public UmsMember get(String username) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(UmsMemberMapper.selectList)
+                .from(UmsMemberDynamicSqlSupport.umsMember)
+                .where(UmsMemberDynamicSqlSupport.username, isEqualToWhenPresent(username))
+                .build().render(RenderingStrategy.MYBATIS3);
+        Optional<UmsMember> member = umsMemberMapper.selectOne(selectStatement);
+        return member.orElse(null);
+    }
+
+    @Override
+    public int phone(String username,String phone) {
+        UpdateStatementProvider updateStatement=update(UmsMemberDynamicSqlSupport.umsMember)
+                .set(UmsMemberDynamicSqlSupport.phone).equalTo(phone)
+                .where(UmsMemberDynamicSqlSupport.username,isEqualTo(username))
+                .build().render(RenderingStrategy.MYBATIS3);
+        int update = umsMemberMapper.update(updateStatement);
+        return update;
     }
 
     @Override

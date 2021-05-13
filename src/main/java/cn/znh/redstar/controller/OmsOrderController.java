@@ -35,11 +35,19 @@ public class OmsOrderController {
         return CommonResult.success(orderList);
     }
 
-    @ApiOperation("根据订单状态获取订单")
-    @GetMapping("/{status}")
-    public CommonResult get(@PathVariable("status") Integer status)
+    @ApiOperation("根据会员id和订单状态获取订单")
+    @GetMapping("/{memberId}/{status}")
+    public CommonResult get(@PathVariable("memberId") Long memberId,@PathVariable("status") Integer status)
     {
-        List<OmsOrder> orderList = omsOrderService.get(status);
+        List<OmsOrder> orderList = omsOrderService.get(memberId,status);
+        return CommonResult.success(orderList);
+    }
+
+    @ApiOperation("根据会员id获取全部订单")
+    @GetMapping("/{memberId}")
+    public CommonResult get(@PathVariable("memberId") Long memberId)
+    {
+        List<OmsOrder> orderList = omsOrderService.get(memberId);
         return CommonResult.success(orderList);
     }
 

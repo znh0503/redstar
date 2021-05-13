@@ -156,20 +156,20 @@
           "target": "_self",
           "child": [
             {
-              "title": "会员管理",
+              "title": "会员列表",
               "href": "page/power/member/memberList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
             {
-              "title": "订单设置",
-              "href": "page/order/setting/setting.html",
+              "title": "后台用户列表",
+              "href": "page/power/admin/adminList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
             {
-              "title": "退货申请处理",
-              "href": "page/order/returnApply/returnApplyList.html",
+              "title": "角色列表",
+              "href": "page/power/role/roleList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },

@@ -3,11 +3,13 @@ package cn.znh.redstar.service;
 import cn.znh.redstar.dto.UmsAdminParam;
 import cn.znh.redstar.dto.UpdateAdminPasswordParam;
 import cn.znh.redstar.mbg.model.UmsAdmin;
+import cn.znh.redstar.mbg.model.UmsAdminRoleRelation;
 import cn.znh.redstar.mbg.model.UmsResource;
 import cn.znh.redstar.mbg.model.UmsRole;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : znh
@@ -110,4 +112,31 @@ public interface UmsAdminService {
      * @return
      */
     UserDetails loadUserByUsername(String username);
+
+    /**
+     * 获取全部后台用户
+     * @return
+     */
+    List<UmsAdmin> get();
+
+    /**
+     * 创建一个后台用户
+     * @param admin
+     * @return
+     */
+    int create(UmsAdmin admin);
+
+    /**
+     * 获取角色和用户拥有的角色
+     * @param adminId
+     * @return
+     */
+    public Map getRoleAndAdminRole(Long adminId);
+
+    /**
+     * 批量添加用户角色关系
+     * @param map
+     * @return
+     */
+    public int createAdminRoleRelation(Map map);
 }

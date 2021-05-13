@@ -29,6 +29,22 @@ public class AdminUserDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public UmsAdmin getUmsAdmin() {
+        return umsAdmin;
+    }
+
+    public void setUmsAdmin(UmsAdmin umsAdmin) {
+        this.umsAdmin = umsAdmin;
+    }
+
+    public List<UmsResource> getResourceList() {
+        return resourceList;
+    }
+
+    public void setResourceList(List<UmsResource> resourceList) {
+        this.resourceList = resourceList;
+    }
+
     @Override
     public String getPassword() {
         return umsAdmin.getPassword();

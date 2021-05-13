@@ -9,13 +9,20 @@
     <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../../css/public.css" media="all">
 </head>
+<style>
+    .layui-table-cell {
+        height: auto;
+        line-height: 28px;
+    }
+</style>
 <body>
+
 <div class="layuimini-container">
     <div class="layuimini-main">
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-<!--                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>-->
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
 <!--                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
 <!--            -->
             </div>
@@ -23,9 +30,10 @@
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
+
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看详情</a>
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="receiveAddress">收货地址</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="delete">删除</a>
 
         </script>
 
@@ -42,7 +50,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: IP_HOST+"member",
+            url: IP_HOST+"role",
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -51,9 +59,10 @@
             }],
             cols: [[
                 {field: 'id', width: 80, title: '编号', sort: true},
-                {field: 'username', width: 180, title: '用户名'},
-                {field: 'nickname', width: 150, title: '昵称'},
-                {field: 'phone', width: 150, title: '手机号码'},
+                {field: 'name', width: 180, title: '名称'},
+                {field: 'description', width: 150, title: '描述'},
+                {field: 'adminCount', width: 150, title: '用户数量'},
+                {field: 'createTime', width: 150, title: '创建时间'},
                 {
                     field: 'status', width: 120,templet: function (d) {
                         if (d.status == 0) {
@@ -64,7 +73,7 @@
                         }
                     }, title: '启用状态'
                 },
-                {field: 'createTime', width: 180, title: '注册时间', sort: true,align: "center"},
+                {field: 'sort', width: 150, title: '排序',sort:true},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -101,7 +110,59 @@
         // });
 
 
-
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if(obj.event=='add')
+            {
+                var index = layer.open({
+                    title: '添加后台用户',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: 'adminAdd.html',
+                });
+            // }else if (obj.event === 'delete') {  // 监听删除操作
+            //     var ids= [];
+            //     var checkStatus = table.checkStatus('currentTableId')
+            //         , data = checkStatus.data;
+            //     for (var i=0;i<data.length;i++)
+            //     {
+            //         ids.push(data[i].id);
+            //     }
+            //     if (ids.length>0)
+            //     {
+            //         $.ajax({
+            //             //请求方式
+            //             type:"delete",
+            //             //请求的媒体类型
+            //             contentType: "application/json;charset=UTF-8",
+            //             //请求地址
+            //             url:IP_HOST+"orderReturnReason",
+            //             data:JSON.stringify(ids),
+            //             //请求成功
+            //             success:function (result) {
+            //                 var code=result.code;
+            //                 switch (code) {
+            //                     case RESULT_SUCCESS:
+            //                         alert("删除成功");
+            //                         window.location.reload();
+            //                         break;
+            //                     default:layer.msg('服务器出错了');break;
+            //                 }
+            //             },
+            //             //请求失败
+            //             error:function (e) {
+            //                 layer.msg("提交失败");
+            //             }
+            //         });
+            //     }
+            //     console.log(ids);
+            }
+        });
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
@@ -110,58 +171,58 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'detail')
+            if (obj.event === 'edit')
               {
                   var index = layer.open({
-                      title: '会员详情',
+                      title: '用户详情',
                       type: 2,
                       shade: 0.2,
                       maxmin: true,
                       shadeClose: true,
                       area: ['85%', '85%'],
-                      content: 'memberDetail.html?memberLevelId='+data.memberLevelId,
+                      content: 'adminEdit.html',
                       //open成功回调
                       success: function (layero, index) {
                           var body = layer.getChildFrame('body', index);
                           var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
                           $(layero).find("iframe").contents().find("#id").val(data.id);
-                          $(layero).find("iframe").contents().find("#memberLevelId").val(data.memberLevelId);
-                          $(layero).find("iframe").contents().find("#icon").attr("src",data.icon);
                           $(layero).find("iframe").contents().find("#username").val(data.username);
                           $(layero).find("iframe").contents().find("#nickname").val(data.nickname);
-                          $(layero).find("iframe").contents().find("#phone").val(data.nickname);
+                          $(layero).find("iframe").contents().find("#email").val(data.email);
                           body.find("input[name=status][value="+data.status+"]").prop("checked", "checked");
-                          $(layero).find("iframe").contents().find("#createTime").val(data.createTime);
-                          body.find("input[name=status][value="+data.status+"]").prop("checked", "checked");
-                          $(layero).find("iframe").contents().find("#birthday").val(data.birthday);
-                          $(layero).find("iframe").contents().find("#city").val(data.city);
-                          $(layero).find("iframe").contents().find("#job").val(data.job);
-                          $(layero).find("iframe").contents().find("#personalizedSignature").val(data.personalizedSignature);
-                          $(layero).find("iframe").contents().find("#integration").val(data.integration);
-                          $(layero).find("iframe").contents().find("#growth").val(data.growth);
-                          $(layero).find("iframe").contents().find("#luckeyCount").val(data.luckeyCount);
-                          $(layero).find("iframe").contents().find("#historyIntegration").val(data.historyIntegration);
+                          $(layero).find("iframe").contents().find("#note").val(data.note);
                           //重新渲染radio
                           iframeWin.layui.form.render("radio");
                       }
                   });
               }
-            else if (obj.event==="receiveAddress")
+            else if (obj.event==="delete")
             {
-                var index = layer.open({
-                    title: '收货地址-'+data.username,
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['85%', '85%'],
-                    content: 'receiveAddressList.html?memberId='+data.id,
-                    //open成功回调
-                    success: function (layero, index) {
-                        var body = layer.getChildFrame('body', index);
-                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象
-
-                    }
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        //请求方式
+                        type:"delete",
+                        //请求的媒体类型
+                        contentType: "application/json;charset=UTF-8",
+                        //请求地址
+                        url:IP_HOST+"admin/"+data.id,
+                        //请求成功
+                        success:function (result) {
+                            var code=result.code;
+                            switch (code) {
+                                case RESULT_SUCCESS:
+                                    layer.msg("删除成功");
+                                    obj.del();
+                                    layer.close(index);
+                                    break;
+                                default:layer.msg('服务器出错了');break;
+                            }
+                        },
+                        //请求失败
+                        error:function (e) {
+                            layer.msg("提交失败");
+                        }
+                    });
                 });
             }
 

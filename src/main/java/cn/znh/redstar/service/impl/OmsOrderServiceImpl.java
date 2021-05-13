@@ -44,14 +44,27 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     }
 
     @Override
-    public List<OmsOrder> get(Integer status) {
+    public List<OmsOrder> get(Long memberId, Integer status) {
         SelectStatementProvider selectStatement = SqlBuilder.select(OmsOrderMapper.selectList)
                 .from(OmsOrderDynamicSqlSupport.omsOrder)
                 .where(OmsOrderDynamicSqlSupport.status, isEqualTo(status))
+                .and(OmsOrderDynamicSqlSupport.memberId,isEqualTo(memberId))
+                .build().render(RenderingStrategy.MYBATIS3);
+        List<OmsOrder> orderList = omsOrderMapper.selectMany(selectStatement);
+        return orderList;
+
+    }
+
+    @Override
+    public List<OmsOrder> get(Long memberId) {
+        SelectStatementProvider selectStatement = SqlBuilder.select(OmsOrderMapper.selectList)
+                .from(OmsOrderDynamicSqlSupport.omsOrder)
+                .where(OmsOrderDynamicSqlSupport.memberId,isEqualTo(memberId))
                 .build().render(RenderingStrategy.MYBATIS3);
         List<OmsOrder> orderList = omsOrderMapper.selectMany(selectStatement);
         return orderList;
     }
+
 
     @Override
     public List<OmsOrderItem> getItem(Long orderId) {

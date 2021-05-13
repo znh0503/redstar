@@ -4,6 +4,7 @@ import cn.znh.redstar.common.api.CommonResult;
 import cn.znh.redstar.dto.UmsAdminLoginParam;
 import cn.znh.redstar.dto.UmsAdminParam;
 import cn.znh.redstar.mbg.model.UmsAdmin;
+import cn.znh.redstar.mbg.model.UmsAdminRoleRelation;
 import cn.znh.redstar.mbg.model.UmsRole;
 import cn.znh.redstar.service.UmsAdminService;
 import io.swagger.annotations.Api;
@@ -26,7 +27,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@Api(tags = "UmsAdminController",description = "后台用户管理")
+@Api(tags = "UmsAdminController",description = "权限后台用户管理")
 @RequestMapping("/admin")
 public class UmsAdminController {
     @Resource
@@ -57,7 +58,7 @@ public class UmsAdminController {
         String token = umsAdminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
         if(token==null)
         {
-            return CommonResult.validateFailed("用户名和密码错误");
+            return CommonResult.validateFailed("用户名和密码错误或者账号被禁用");
         }
         Map<String,String> tokenMap=new HashMap<>();
         tokenMap.put("token",token);
@@ -70,5 +71,72 @@ public class UmsAdminController {
     public CommonResult<List<UmsRole>> getRoleList(@PathVariable("adminId") Long adminId) {
         List<UmsRole> roleList = umsAdminService.getAdminRoleList(adminId);
         return CommonResult.success(roleList);
+    }
+
+    @ApiOperation("获取全部后台用户")
+    @GetMapping("")
+    public CommonResult get()
+    {
+        List<UmsAdmin> adminList = umsAdminService.get();
+        return CommonResult.success(adminList);
+    }
+
+    @ApiOperation("获取全部角色信息和用户拥有角色")
+    @GetMapping("/roleAndAdminRole/{adminId}")
+    public CommonResult getRoleAndAdminRole(@PathVariable("adminId") Long adminId)
+    {
+        Map roleAndAdminRole = umsAdminService.getRoleAndAdminRole(adminId);
+        return CommonResult.success(roleAndAdminRole);
+    }
+
+    @ApiOperation("根据id更新后台用户")
+    @PutMapping("/{id}")
+    public CommonResult update(@PathVariable("id") Long id,@RequestBody UmsAdmin admin)
+    {
+        int result = umsAdminService.updateAdmin(id, admin);
+        if (result!=0)
+        {
+            return CommonResult.success("更新后台用户信息成功");
+        }
+        else {
+            return CommonResult.failed("更新后台用户信息失败");
+        }
+    }
+
+    @ApiOperation("根据id更新后台用户")
+    @DeleteMapping("/{id}")
+    public CommonResult delete(@PathVariable("id") Long id)
+    {
+        int result = umsAdminService.deleteAdmin(id);
+        if (result!=0)
+        {
+            return CommonResult.success("删除后台用户信息成功");
+        }
+        else {
+            return CommonResult.failed("删除后台用户信息失败");
+        }
+    }
+
+
+    @ApiOperation("创建一个后台用户")
+    @PostMapping("")
+    public CommonResult create(@RequestBody UmsAdmin admin)
+    {
+        int result = umsAdminService.create(admin);
+        if (result!=0)
+        {
+            return CommonResult.success("添加后台用户信息成功");
+        }
+        else {
+            return CommonResult.validateFailed("用户名重复");
+        }
+    }
+
+    @ApiOperation("分配角色")
+    @PostMapping("adminRoleRelation")
+    public CommonResult createAdminRoleRelation(@RequestBody Map map)
+    {
+        int result = umsAdminService.createAdminRoleRelation(map);
+        return CommonResult.success(result);
     }
 }

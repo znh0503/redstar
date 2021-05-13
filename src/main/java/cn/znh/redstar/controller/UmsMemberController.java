@@ -94,6 +94,14 @@ public class UmsMemberController {
         return CommonResult.success(memberList);
     }
 
+    @ApiOperation("根据用户名获取用户信息")
+    @GetMapping("/{username}")
+    public  CommonResult get(@PathVariable("username") String username)
+    {
+        UmsMember member = umsMemberService.get(username);
+        return CommonResult.success(member);
+    }
+
     @ApiOperation("获取会员的收货地址")
     @GetMapping("/receiveAddress/{memberId}")
     CommonResult receiveAddressGet(@PathVariable("memberId") Long memberId)
@@ -137,10 +145,23 @@ public class UmsMemberController {
         int result = umsMemberService.receiveAddressDelete(id);
         if (result!=0)
         {
-            return CommonResult.success(result);
+            return CommonResult.success("删除收货地址成功");
         }
         else {
             return CommonResult.failed("删除收货地址失败");
+        }
+    }
+
+    @ApiOperation("绑定手机号码")
+    @PutMapping("/phone/{username}/{phone}")
+    public CommonResult phone(@PathVariable("username") String username,@PathVariable("phone") String phone) {
+        int result = umsMemberService.phone(username, phone);
+        if (result!=0)
+        {
+            return CommonResult.success("绑定手机号码成功");
+        }
+        else {
+            return CommonResult.failed("绑定手机号码失败");
         }
     }
 
