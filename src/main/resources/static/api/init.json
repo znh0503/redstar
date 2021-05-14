@@ -174,8 +174,8 @@
               "target": "_self"
             },
             {
-              "title": "退货原因设置",
-              "href": "page/order/returnReason/returnReasonList.html",
+              "title": "资源管理",
+              "href": "page/power/resource/resourceList.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             }

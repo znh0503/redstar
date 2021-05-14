@@ -1,6 +1,7 @@
 package cn.znh.redstar.service;
 
 import cn.znh.redstar.mbg.model.UmsResource;
+import cn.znh.redstar.mbg.model.UmsResourceCategory;
 
 import java.util.List;
 
@@ -55,4 +56,32 @@ public interface UmsResourceService {
      * @return
      */
     int delete(Long id);
+
+    /**
+     * 查询资源分类
+     * @return
+     */
+    List<UmsResourceCategory> getCategory();
+
+    /**
+     * 创建资源分类
+     * @param  resourceCategory
+     * @return
+     */
+    int createCategory(UmsResourceCategory resourceCategory);
+
+    /**
+     * 更新资源分类
+     * @param id
+     * @param resourceCategory
+     * @return
+     */
+    int updateCategory(Long id,UmsResourceCategory resourceCategory);
+
+    /**
+     * 根据id删除资源分类
+     * @param id
+     * @return
+     */
+    int deleteCategory(Long id);
 }

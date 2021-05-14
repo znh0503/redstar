@@ -3,10 +3,7 @@ package cn.znh.redstar.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.znh.redstar.dao.UmsRoleDao;
 import cn.znh.redstar.mbg.mapper.*;
-import cn.znh.redstar.mbg.model.UmsAdmin;
-import cn.znh.redstar.mbg.model.UmsResource;
-import cn.znh.redstar.mbg.model.UmsRole;
-import cn.znh.redstar.mbg.model.UmsRoleMenuRelation;
+import cn.znh.redstar.mbg.model.*;
 import cn.znh.redstar.service.UmsAdminCacheService;
 import cn.znh.redstar.service.UmsResourceService;
 import com.github.pagehelper.PageHelper;
@@ -41,6 +38,8 @@ public class UmsResourceServiceImpl implements UmsResourceService {
 
     @Resource
     UmsResourceMapper umsResourceMapper;
+    @Resource
+    UmsResourceCategoryMapper umsResourceCategoryMapper;
     @Resource
     private UmsAdminCacheService umsAdminCacheService;
 
@@ -87,5 +86,31 @@ public class UmsResourceServiceImpl implements UmsResourceService {
         int result = umsResourceMapper.deleteByPrimaryKey(id);
         //umsAdminCacheService.deleteResourceListByResource(id);
         return result;
+    }
+
+    @Override
+    public List<UmsResourceCategory> getCategory() {
+        List<UmsResourceCategory> resourceCategoryList = umsResourceCategoryMapper.select(SelectDSLCompleter.allRows());
+        return resourceCategoryList;
+    }
+
+    @Override
+    public int createCategory(UmsResourceCategory resourceCategory) {
+        resourceCategory.setCreateTime(new Date());
+        int insert = umsResourceCategoryMapper.insert(resourceCategory);
+        return insert;
+    }
+
+    @Override
+    public int updateCategory(Long id, UmsResourceCategory resourceCategory) {
+        resourceCategory.setId(id);
+        int update = umsResourceCategoryMapper.updateByPrimaryKey(resourceCategory);
+        return update;
+    }
+
+    @Override
+    public int deleteCategory(Long id) {
+        int delete = umsResourceCategoryMapper.deleteByPrimaryKey(id);
+        return delete;
     }
 }
